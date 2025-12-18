@@ -10,6 +10,14 @@ Route::get('/home', function () {
     ]);
 })->name('home');
 
+Route::get('/search', function () {
+    return Inertia::render('search');
+})->name('search');
+
+Route::get('/read-news', function () {
+    return Inertia::render('read-news');
+})->name('read-news');
+
 Route::get('/', function () {
     return Inertia::render('welcome', [
         'canRegister' => Features::enabled(Features::registration()),
