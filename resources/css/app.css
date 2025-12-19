@@ -139,3 +139,7 @@
         @apply bg-background text-foreground;
     }
 }
+
+.react-player__preview {
+    @apply absolute inset-0 rounded-lg brightness-75;
+}

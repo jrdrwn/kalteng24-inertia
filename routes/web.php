@@ -1,12 +1,22 @@
 <?php
 
+use App\Models\BeritaRed;
+use App\Models\BeritaVid;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Laravel\Fortify\Features;
 
 Route::get('/home', function () {
     return Inertia::render('home', [
-        'nama' => 'Kalteng24 Inertia',
+        'hero_berita' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'asc')->take(4)->get(),
+        'breaking_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'asc')->take(16)->offset(4)->get(),
+        'latest_news_single' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'asc')->take(1)->get(),
+        'latest_news' => Inertia::scroll(
+            fn() =>
+            BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'asc')->paginate(8)
+        ),
+        'latest_news_video' => BeritaVid::orderBy('tgl', 'asc')->take(5)->get(),
+        'perspektif' => BeritaRed::where('id_ber', '=', 69)->get(),
+        'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('hits', 'desc')->take(5)->get(),
     ]);
 })->name('home');
 
@@ -29,17 +39,3 @@ Route::get('/pedoman-media-siber', function () {
 Route::get('/disclaimer', function () {
     return Inertia::render('disclaimer');
 })->name('disclaimer');
-
-Route::get('/', function () {
-    return Inertia::render('welcome', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-});
-
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
-});
-
-require __DIR__.'/settings.php';

@@ -1,7 +1,12 @@
+import { BeritaRed } from '@/types/entities';
 import Autoplay from 'embla-carousel-autoplay';
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
 
-export default function BreakingNews() {
+interface ComponentProps {
+    breaking_news: BeritaRed[];
+}
+
+export default function BreakingNews({ breaking_news }: ComponentProps) {
     return (
         <section className="px-4 py-2">
             <div className="container">
@@ -23,16 +28,24 @@ export default function BreakingNews() {
                     ]}
                 >
                     <CarouselContent>
-                        {Array.from({ length: 10 }).map((_, index) => (
+                        {breaking_news.map((item, index) => (
                             <CarouselItem key={index} className="basis-1/4">
                                 <div className="flex flex-row items-center gap-4 p-4">
-                                    <div className="size-26 rounded-md bg-primary/40"></div>
+                                    <img
+                                        src={`/foto_berita/${item.foto_berita}`}
+                                        alt={item.judul}
+                                        className="size-26 rounded-md bg-primary/40 object-cover shadow-md"
+                                    />
                                     <div className="flex flex-1 flex-col gap-2">
                                         <p className="text-sm text-muted-foreground">
-                                            14 Juni 2024
+                                            {new Date(
+                                                item.tgl,
+                                            ).toLocaleDateString('id-ID', {
+                                                dateStyle: 'full',
+                                            })}
                                         </p>
                                         <p className="line-clamp-2 font-medium">
-                                            Gubernur Pastikan Kalteng Makin Maju
+                                            {item.judul}
                                         </p>
                                     </div>
                                 </div>
