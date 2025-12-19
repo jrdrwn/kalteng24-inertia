@@ -23,86 +23,90 @@ export default function SearchResult() {
             <section className="px-4 pt-2 pb-4">
                 <div className="container mx-auto grid grid-cols-4 gap-10">
                     <div className="col-span-1 mt-12">
-                        <h1 className="font-bold">Filter</h1>
-                        <div className="mt-4">
-                            <p className="text-sm font-medium text-muted-foreground">
-                                Urut berdasarkan
-                            </p>
-                            <Button className="mt-2 w-full justify-between rounded-full">
-                                Terbaru
-                                <ArrowRight className="ml-2 inline-block size-4" />
-                            </Button>
-                            <Button
-                                variant="outline"
-                                className="mt-2 w-full justify-between rounded-full"
-                            >
-                                Terpopuler
-                                <ArrowRight className="ml-2 hidden size-4" />
-                            </Button>
-                        </div>
-                        <div className="mt-4">
-                            <p className="text-sm font-medium text-muted-foreground">
-                                Urut berdasarkan
-                            </p>
-                            <Button className="mt-2 w-full justify-between rounded-full">
-                                Semua
-                                <ArrowRight className="ml-2 inline-block size-4" />
-                            </Button>
-                            <Button
-                                variant="outline"
-                                className="mt-2 w-full justify-between rounded-full"
-                            >
-                                Berita
-                                <ArrowRight className="ml-2 hidden size-4" />
-                            </Button>
-                            <Button
-                                variant="outline"
-                                className="mt-2 w-full justify-between rounded-full"
-                            >
-                                Artikel
-                                <ArrowRight className="ml-2 hidden size-4" />
-                            </Button>
-                            <Button
-                                variant="outline"
-                                className="mt-2 w-full justify-between rounded-full"
-                            >
-                                Opini
-                                <ArrowRight className="ml-2 hidden size-4" />
-                            </Button>
-                        </div>
-                        <div className="mt-4">
-                            <p className="mb-2 text-sm font-medium text-muted-foreground">
-                                Kategori
-                            </p>
-                            <Select>
-                                <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Pilih Kategori" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="nasional">
-                                        Nasional
-                                    </SelectItem>
-                                    <SelectItem value="internasional">
-                                        Internasional
-                                    </SelectItem>
-                                    <SelectItem value="ekonomi">
-                                        Ekonomi
-                                    </SelectItem>
-                                    <SelectItem value="olahraga">
-                                        Olahraga
-                                    </SelectItem>
-                                    <SelectItem value="hiburan">
-                                        Hiburan
-                                    </SelectItem>
-                                    <SelectItem value="teknologi">
-                                        Teknologi
-                                    </SelectItem>
-                                    <SelectItem value="sains">Sains</SelectItem>
-                                    <SelectItem value="gaya-hidup">
-                                        Gaya Hidup
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
+                        <div className="sticky top-10">
+                            <h1 className="font-bold">Filter</h1>
+                            <div className="mt-4">
+                                <p className="text-sm font-medium text-muted-foreground">
+                                    Urut berdasarkan
+                                </p>
+                                <Button className="mt-2 w-full justify-between rounded-full">
+                                    Terbaru
+                                    <ArrowRight className="ml-2 inline-block size-4" />
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    className="mt-2 w-full justify-between rounded-full"
+                                >
+                                    Terpopuler
+                                    <ArrowRight className="ml-2 hidden size-4" />
+                                </Button>
+                            </div>
+                            <div className="mt-4">
+                                <p className="text-sm font-medium text-muted-foreground">
+                                    Urut berdasarkan
+                                </p>
+                                <Button className="mt-2 w-full justify-between rounded-full">
+                                    Semua
+                                    <ArrowRight className="ml-2 inline-block size-4" />
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    className="mt-2 w-full justify-between rounded-full"
+                                >
+                                    Berita
+                                    <ArrowRight className="ml-2 hidden size-4" />
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    className="mt-2 w-full justify-between rounded-full"
+                                >
+                                    Artikel
+                                    <ArrowRight className="ml-2 hidden size-4" />
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    className="mt-2 w-full justify-between rounded-full"
+                                >
+                                    Opini
+                                    <ArrowRight className="ml-2 hidden size-4" />
+                                </Button>
+                            </div>
+                            <div className="mt-4">
+                                <p className="mb-2 text-sm font-medium text-muted-foreground">
+                                    Kategori
+                                </p>
+                                <Select>
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Pilih Kategori" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="nasional">
+                                            Nasional
+                                        </SelectItem>
+                                        <SelectItem value="internasional">
+                                            Internasional
+                                        </SelectItem>
+                                        <SelectItem value="ekonomi">
+                                            Ekonomi
+                                        </SelectItem>
+                                        <SelectItem value="olahraga">
+                                            Olahraga
+                                        </SelectItem>
+                                        <SelectItem value="hiburan">
+                                            Hiburan
+                                        </SelectItem>
+                                        <SelectItem value="teknologi">
+                                            Teknologi
+                                        </SelectItem>
+                                        <SelectItem value="sains">
+                                            Sains
+                                        </SelectItem>
+                                        <SelectItem value="gaya-hidup">
+                                            Gaya Hidup
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
                         </div>
                     </div>
                     <div className="col-span-3 gap-4">

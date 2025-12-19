@@ -1,3 +1,4 @@
+import Footer from '@/components/shared/footer';
 import Header from '@/components/shared/header';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -47,7 +48,7 @@ export default function ReadNews() {
             </section>
             <section className="p-4">
                 <div className="container mx-auto grid grid-cols-6 gap-4">
-                    <div></div>
+                    <div className="col-span-1">iklan</div>
                     <div className="col-span-3 prose gap-2 prose-h1:mb-0">
                         <div className="mb-4 aspect-video w-full rounded-2xl bg-primary/40"></div>
                         <Card className="mb-4 gap-0 p-4">
@@ -239,7 +240,7 @@ export default function ReadNews() {
                     </div>
                 </div>
             </section>
-            <section className="p-4"></section>
+            <Footer />
         </>
     );
 }

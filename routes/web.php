@@ -18,6 +18,18 @@ Route::get('/read-news', function () {
     return Inertia::render('read-news');
 })->name('read-news');
 
+Route::get('/about-us', function () {
+    return Inertia::render('about-us');
+})->name('about-us');
+
+Route::get('/pedoman-media-siber', function () {
+    return Inertia::render('pedoman-media-siber');
+})->name('pedoman-media-siber');
+
+Route::get('/disclaimer', function () {
+    return Inertia::render('disclaimer');
+})->name('disclaimer');
+
 Route::get('/', function () {
     return Inertia::render('welcome', [
         'canRegister' => Features::enabled(Features::registration()),
