@@ -56,7 +56,9 @@ export default function ReadNews() {
                 <div className="container mx-auto grid grid-cols-6 gap-4">
                     <div className="col-span-1">iklan</div>
                     <div className="col-span-3 prose gap-2 prose-h1:mb-0">
-                        <div className="mb-4 aspect-video w-full rounded-2xl bg-primary/40"></div>
+                        <div className="mb-4 aspect-video w-full rounded-2xl bg-primary/40">
+                            {/* TODO: tambahkan text foto / caption/license */}
+                        </div>
                         <Card className="mb-4 gap-0 p-4">
                             <div className="not-prose flex items-center gap-2 text-sm text-muted-foreground">
                                 <span>

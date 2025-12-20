@@ -2,6 +2,7 @@
 
 use App\Models\BeritaRed;
 use App\Models\BeritaVid;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -20,8 +21,50 @@ Route::get('/home', function () {
     ]);
 })->name('home');
 
-Route::get('/search', function () {
-    return Inertia::render('search');
+Route::get('/search', function (Request $request) {
+    $order_by = $request->input('sort', 'latest');
+
+    $kategori = $request->input('kategori', null);
+    $jenis_rubrik = $request->input('jenis_rubrik', null);
+
+
+    $search_query = $request->input('q', '');
+    $search_results = BeritaRed::when($search_query, function ($query, $search_query) {
+        $query->where(function ($q) use ($search_query) {
+            $q->where('judul', 'like', '%' . $search_query . '%')
+                ->orWhere('isi_berita', 'like', '%' . $search_query . '%');
+        });
+    })
+        ->when($kategori, function ($query, $kategori) {
+            if ($kategori === 'null' || $kategori === 'unknown') {
+                $kategori = '';
+            }
+            $query->where('kategori', $kategori);
+        })
+        ->when($jenis_rubrik, function ($query, $jenis_rubrik) {
+            if ($jenis_rubrik === 'null' || $jenis_rubrik === 'unknown') {
+                $jenis_rubrik = '';
+            }
+            $query->where('jenis_rubrik', $jenis_rubrik);
+        })
+        ->when($order_by === 'latest', function ($query) {
+            $query->orderBy('tgl', 'desc');
+        })
+        ->when($order_by === 'popular', function ($query) {
+            $query->orderBy('hits', 'desc');
+        })
+        ->when($order_by === 'oldest', function ($query) {
+            $query->orderBy('tgl', 'asc');
+        })
+        ->paginate(10)
+        ->withQueryString();
+    return Inertia::render('search', [
+        'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('hits', 'desc')->take(5)->get(),
+        'kategori_list' => BeritaRed::select('kategori')->distinct()->get(),
+        'jenis_rubrik_list' => BeritaRed::select('jenis_rubrik')->distinct()->get(),
+        'search_results' => $search_results,
+        'search_query' => $search_query,
+    ]);
 })->name('search');
 
 Route::get('/read-news', function () {
