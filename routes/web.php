@@ -67,8 +67,22 @@ Route::get('/search', function (Request $request) {
     ]);
 })->name('search');
 
-Route::get('/read-news', function () {
-    return Inertia::render('read-news');
+Route::get('/read-news/{slug}', function (Request $request, $slug) {
+    // slug: id_judul-with-dashes
+    // split by first underscore
+    $parts = explode('_', $slug, 2);
+    $id_ber = $parts[0];
+    return Inertia::render('read-news', [
+        'news' => BeritaRed::findOr($id_ber, function () {
+            abort(404);
+        }),
+        'popular_news' => BeritaRed::whereNot('id_ber', '=', $id_ber)->orderBy('hits', 'desc')->take(5)->get(),
+        'trending_news' => BeritaRed::whereNot('id_ber', '=', $id_ber)->orderBy('hits', 'desc')->take(10)->get(),
+        'latest_news_video' => BeritaVid::orderBy('tgl', 'desc')->take(5)->get(),
+        'latest_news' => Inertia::scroll(
+            fn() => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->paginate(8)
+        ),
+    ]);
 })->name('read-news');
 
 Route::get('/about-us', function () {

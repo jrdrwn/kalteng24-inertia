@@ -1,7 +1,6 @@
 import Footer from '@/components/shared/footer';
 import Header from '@/components/shared/header';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
     Carousel,
@@ -10,15 +9,21 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from '@/components/ui/carousel';
-import { Separator } from '@/components/ui/separator';
 import {
-    Eye,
-    LucideTriangle,
-    Timer,
-    Triangle,
-    User,
-    UserCircle,
-} from 'lucide-react';
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
+import { Separator } from '@/components/ui/separator';
+import { Spinner } from '@/components/ui/spinner';
+import { getRubrikOrKategori } from '@/lib/utils';
+import { BeritaRed, BeritaVid } from '@/types/entities';
+import { InfiniteScroll } from '@inertiajs/react';
+import parse from 'html-react-parser';
+import { Eye, LucideTriangle, Timer, User, UserCircle } from 'lucide-react';
 import {
     FaFacebookSquare,
     FaInstagramSquare,
@@ -26,87 +31,102 @@ import {
     FaTwitterSquare,
     FaYoutubeSquare,
 } from 'react-icons/fa';
+import ReactPlayer from 'react-player';
 
-export default function ReadNews() {
+interface PageProps {
+    news: BeritaRed;
+    popular_news: BeritaRed[];
+    trending_news: BeritaRed[];
+    latest_news_video: BeritaVid[];
+    latest_news: {
+        data: BeritaRed[];
+    };
+}
+
+export default function ReadNews({
+    news,
+    popular_news,
+    trending_news,
+    latest_news_video,
+    latest_news,
+}: PageProps) {
     return (
         <>
             <Header />
             <section className="p-4">
                 <div className="container mx-auto">
-                    <div className="flex gap-4">
-                        <div className="flex w-full items-center justify-between rounded-full bg-primary px-4 py-2 font-medium text-primary-foreground">
-                            <p>Trending Topics</p>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit.
-                            </p>
+                    <Carousel
+                        opts={{
+                            align: 'end',
+                            loop: true,
+                        }}
+                        className="flex gap-4"
+                    >
+                        <div className="flex items-center justify-between gap-4 rounded-full bg-primary px-4 py-2 font-medium text-primary-foreground">
+                            <p className="whitespace-nowrap">Trending Topics</p>
+                            <CarouselContent>
+                                {trending_news.map((item, index) => (
+                                    <CarouselItem
+                                        key={index}
+                                        className="line-clamp-1 text-end"
+                                    >
+                                        {item.judul}
+                                    </CarouselItem>
+                                ))}
+                            </CarouselContent>
                         </div>
-                        <div className="flex items-center gap-4">
-                            <Button size={'icon'} className="rounded-full">
-                                <Triangle className="-rotate-90" />
-                            </Button>
-                            <Button size={'icon'} className="rounded-full">
-                                <Triangle className="rotate-90" />
-                            </Button>
+                        <div className="relative flex gap-2">
+                            <CarouselPrevious className="static top-auto size-10 -translate-0 bg-primary text-primary-foreground" />
+                            <CarouselNext className="static top-auto size-10 -translate-0 bg-primary text-primary-foreground" />
                         </div>
-                    </div>
+                    </Carousel>
                 </div>
             </section>
             <section className="p-4">
                 <div className="container mx-auto grid grid-cols-6 gap-4">
                     <div className="col-span-1">iklan</div>
                     <div className="col-span-3 prose gap-2 prose-h1:mb-0">
-                        <div className="mb-4 aspect-video w-full rounded-2xl bg-primary/40">
-                            {/* TODO: tambahkan text foto / caption/license */}
+                        <div className="not-prose mb-4 aspect-video w-full rounded-2xl bg-muted">
+                            <img
+                                src={`/foto_berita/${news.foto_berita}`}
+                                alt={news.judul}
+                                className="h-full w-full rounded-2xl object-cover"
+                            />
+                            <p className="py-1 text-center text-xs text-muted-foreground italic">
+                                {news.text_foto}
+                            </p>
                         </div>
                         <Card className="mb-4 gap-0 p-4">
                             <div className="not-prose flex items-center gap-2 text-sm text-muted-foreground">
                                 <span>
                                     <User className="mr-2 inline-block size-4" />
-                                    Redaksi
+                                    {news.user}
                                 </span>
                                 <span>
                                     <Eye className="mr-2 inline-block size-4" />
-                                    1.2K Views
+                                    {news.hits} Views
                                 </span>
                                 <span>
                                     <Timer className="mr-2 inline-block size-4" />
-                                    21 Jan 2024, 14:30 WIB
+                                    {new Date(news.tgl).toLocaleDateString(
+                                        'id-ID',
+                                        {
+                                            dateStyle: 'full',
+                                        },
+                                    )}
+                                    <span> jam </span>
+                                    {new Date(news.jam).toLocaleTimeString(
+                                        'id-ID',
+                                        {
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                            timeZoneName: 'short',
+                                        },
+                                    )}
                                 </span>
                             </div>
-                            <h1 className="mt-4 mb-2">
-                                Judul Berita Lorem ipsum dolor sit amet
-                                consectetur adipisicing elit.
-                            </h1>
-                            <p className="">
-                                <span className="font-bold">PALANGKA RAYA</span>{' '}
-                                - There are many variations of passages of Lorem
-                                Ipsum available, but the majority have suffered
-                                alteration in some form, by injected humour, or
-                                randomised words which don't look even slightly
-                                believable. If you are going to use a passage of
-                                Lorem Ipsum, you need to be sure there isn't
-                                anything embarrassing hidden in the middle of
-                                text. All the Lorem Ipsum generators on the
-                                Internet tend to repeat predefined chunks as
-                                necessary, making this the first true generator
-                                on the Internet. It uses a dictionary of over
-                                200 Latin words, combined with a handful.
-                            </p>
-                            <p className="">
-                                There are many variations of passages of Lorem
-                                Ipsum available, but the majority have suffered
-                                alteration in some form, by injected humour, or
-                                randomised words which don't look even slightly
-                                believable. If you are going to use a passage of
-                                Lorem Ipsum, you need to be sure there isn't
-                                anything embarrassing hidden in the middle of
-                                text. All the Lorem Ipsum generators on the
-                                Internet tend to repeat predefined chunks as
-                                necessary, making this the first true generator
-                                on the Internet. It uses a dictionary of over
-                                200 Latin words, combined with a handful.
-                            </p>
+                            <h1 className="mt-4 mb-2">{news.judul}</h1>
+                            <div>{parse(news.isi_berita)}</div>
                         </Card>
                         <Card className="not-prose p-4">
                             <Carousel
@@ -128,64 +148,128 @@ export default function ReadNews() {
                                     </div>
                                 </div>
                                 <CarouselContent className="pt-4">
-                                    {Array.from({ length: 6 }).map(
-                                        (_, index) => (
-                                            <CarouselItem
-                                                key={index}
-                                                className="basis-1/3"
-                                            >
-                                                <div className="relative flex h-35 flex-col justify-end rounded-lg bg-primary/35 p-2">
-                                                    <div className="absolute inset-x-0 top-1/2 mx-auto mb-2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-secondary p-2">
-                                                        <LucideTriangle className="inline-block size-5 rotate-90 text-primary" />
+                                    {latest_news_video.map((item, index) => (
+                                        <CarouselItem
+                                            key={index}
+                                            className="basis-1/3"
+                                        >
+                                            <Dialog>
+                                                <DialogTrigger asChild>
+                                                    <div className="relative flex h-28 flex-col justify-end rounded-lg bg-primary/35 p-2">
+                                                        <div className="absolute inset-0 z-1"></div>
+                                                        <ReactPlayer
+                                                            src={
+                                                                'https://www.youtube.com/watch?v=' +
+                                                                item.link
+                                                            }
+                                                            width="100%"
+                                                            height="100%"
+                                                            className="absolute inset-0 z-0 rounded-lg"
+                                                            light={true}
+                                                            playIcon={<></>}
+                                                        />
+
+                                                        <div className="absolute inset-x-0 top-1/2 z-1 mx-auto mb-2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-secondary p-2">
+                                                            <LucideTriangle className="inline-block size-5 rotate-90 text-primary" />
+                                                        </div>
+                                                        <p className="z-1 line-clamp-2 text-xs font-medium tracking-wide text-white">
+                                                            {item.judul_vid}
+                                                        </p>
                                                     </div>
-                                                    <p className="text-sm font-medium tracking-wide">
-                                                        Messi Mau Lengserkan
-                                                        Joan Laporta dari
-                                                        Barcelona?
-                                                    </p>
-                                                </div>
-                                            </CarouselItem>
-                                        ),
-                                    )}
+                                                </DialogTrigger>
+                                                <DialogContent>
+                                                    <DialogHeader>
+                                                        <DialogTitle>
+                                                            {item.judul_vid}
+                                                        </DialogTitle>
+                                                        <DialogDescription>
+                                                            <Badge
+                                                                variant={
+                                                                    'outline'
+                                                                }
+                                                                className="mr-2"
+                                                            >
+                                                                {item.kategori}
+                                                            </Badge>
+                                                            Video oleh{' '}
+                                                            {item.admin}
+                                                        </DialogDescription>
+                                                    </DialogHeader>
+                                                    <div className="overflow-hidden rounded-2xl">
+                                                        <ReactPlayer
+                                                            src={
+                                                                'https://www.youtube.com/watch?v=' +
+                                                                item.link
+                                                            }
+                                                            width="100%"
+                                                            height="100%"
+                                                            playing={true}
+                                                            controls={true}
+                                                            style={{
+                                                                aspectRatio:
+                                                                    '16/9',
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </DialogContent>
+                                            </Dialog>
+                                        </CarouselItem>
+                                    ))}
                                 </CarouselContent>
                             </Carousel>
-                            <div className="grid grid-cols-2 gap-8 pt-4">
-                                {Array.from({ length: 4 }).map((_, index) => (
+                            <InfiniteScroll
+                                data={'latest_news'}
+                                loading={<Spinner className="mx-auto" />}
+                                className="grid grid-cols-2 gap-8 pt-4"
+                                onlyNext
+                            >
+                                {latest_news.data.map((item, index) => (
                                     <div
                                         key={index}
                                         className="relative flex flex-col gap-4 rounded-xl"
                                     >
                                         <div className="relative h-60 w-full rounded-xl bg-primary/40">
+                                            <img
+                                                src={`/foto_berita/${item.foto_berita}`}
+                                                alt={item.judul}
+                                                className="h-full w-full rounded-xl object-cover"
+                                            />
                                             <div className="absolute right-2 bottom-2 flex items-center gap-1 rounded-full bg-black/40 px-2 py-1">
                                                 <Eye className="inline-block size-4 text-white" />
                                                 <span className="text-xs text-white">
-                                                    1.2K
+                                                    {item.hits}
                                                 </span>
                                             </div>
                                         </div>
-                                        <Badge className="absolute top-2 left-2">
-                                            Nasional
+                                        <Badge className="absolute top-2 left-2 uppercase">
+                                            {getRubrikOrKategori(item, true)}
                                         </Badge>
                                         <div className="overflow-hidden rounded-xl p-2">
-                                            <h1 className="text-xl leading-relaxed font-semibold tracking-wide">
-                                                Tengadah Sang Tingang
+                                            <h1 className="line-clamp-2 text-xl leading-relaxed font-semibold tracking-wide">
+                                                {item.judul}
                                             </h1>
                                             <div className="mb-4 flex flex-row items-center gap-1.5 pt-2 text-sm text-primary">
                                                 <UserCircle className="inline-block size-4" />
-                                                <span>Admin</span>
+                                                <span>{item.user}</span>
                                                 <span className="size-1.5 rounded-full bg-primary"></span>
-                                                <span>12 Juni 2024</span>
+                                                <span>
+                                                    {new Date(
+                                                        item.tgl,
+                                                    ).toLocaleDateString(
+                                                        'id-ID',
+                                                        {
+                                                            dateStyle: 'medium',
+                                                        },
+                                                    )}
+                                                </span>
                                             </div>
-                                            <p className="line-clamp-3 leading-relaxed tracking-wide text-muted-foreground">
-                                                SEKETIKA - menengadah ke langit,
-                                                ia serupa pendoa yang berucap
-                                                pinta kepada Khalik-nya. Sebuah
-                                                filosofi alam yang tak jarang
-                                            </p>
+                                            <div className="line-clamp-3 leading-relaxed tracking-wide text-muted-foreground">
+                                                {parse(item.isi_berita)}
+                                            </div>
                                         </div>
                                     </div>
                                 ))}
-                            </div>
+                            </InfiniteScroll>
                         </Card>
                     </div>
                     <div className="sticky top-4 col-span-2 space-y-4 self-start">
@@ -201,18 +285,35 @@ export default function ReadNews() {
                         </div>
                         <div className="mt-4">
                             <div className="flex flex-col gap-2">
-                                {[1, 2, 3, 4].map((item) => (
-                                    <div key={item} className="p-2">
+                                {popular_news.map((item, index) => (
+                                    <div key={index} className="p-2">
                                         <div className="flex gap-2">
-                                            <div className="aspect-square w-20 rounded-md bg-primary/40"></div>
+                                            <div className="aspect-square w-20 rounded-md bg-primary/40">
+                                                <img
+                                                    src={`/foto_berita/${item.foto_berita}`}
+                                                    alt={item.judul}
+                                                    className="h-full w-full rounded-md object-cover"
+                                                />
+                                            </div>
                                             <div className="flex flex-1 flex-col justify-center gap-0.5">
-                                                <Badge>Nasional</Badge>
+                                                <Badge className="uppercase">
+                                                    {getRubrikOrKategori(
+                                                        item,
+                                                        true,
+                                                    )}
+                                                </Badge>
                                                 <p className="line-clamp-1 font-medium">
-                                                    Judul Berita Popular Lorem
-                                                    ipsum dolor sit amet
+                                                    {item.judul}
                                                 </p>
                                                 <span className="text-sm">
-                                                    21 Jan 2024
+                                                    {new Date(
+                                                        news.tgl,
+                                                    ).toLocaleDateString(
+                                                        'id-ID',
+                                                        {
+                                                            dateStyle: 'full',
+                                                        },
+                                                    )}
                                                 </span>
                                             </div>
                                         </div>
