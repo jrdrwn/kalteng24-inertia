@@ -13,13 +13,19 @@ import {
 import { Separator } from '@/components/ui/separator';
 import {
     Eye,
-    Instagram,
     LucideTriangle,
     Timer,
     Triangle,
     User,
     UserCircle,
 } from 'lucide-react';
+import {
+    FaFacebookSquare,
+    FaInstagramSquare,
+    FaLinkedin,
+    FaTwitterSquare,
+    FaYoutubeSquare,
+} from 'react-icons/fa';
 
 export default function ReadNews() {
     return (
@@ -184,10 +190,11 @@ export default function ReadNews() {
                         <div className="flex justify-between rounded-md bg-muted px-2 py-2">
                             <p className="font-bold">Share</p>
                             <div className="flex gap-2">
-                                <Instagram className="inline-block size-6" />
-                                <Instagram className="inline-block size-6" />
-                                <Instagram className="inline-block size-6" />
-                                <Instagram className="inline-block size-6" />
+                                <FaFacebookSquare className="size-6 text-blue-600" />
+                                <FaInstagramSquare className="size-6 text-pink-600" />
+                                <FaTwitterSquare className="size-6 text-blue-400" />
+                                <FaYoutubeSquare className="size-6 text-red-600" />
+                                <FaLinkedin className="size-6 text-blue-700" />
                             </div>
                         </div>
                         <div className="mt-4">

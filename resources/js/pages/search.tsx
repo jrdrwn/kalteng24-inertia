@@ -1,3 +1,4 @@
+import Footer from '@/components/shared/footer';
 import { Header2 } from '@/components/shared/header';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -211,6 +212,7 @@ export default function SearchResult() {
                     </div>
                 </div>
             </section>
+            <Footer />
         </>
     );
 }

@@ -7,14 +7,14 @@ use Inertia\Inertia;
 
 Route::get('/home', function () {
     return Inertia::render('home', [
-        'hero_berita' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'asc')->take(4)->get(),
-        'breaking_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'asc')->take(16)->offset(4)->get(),
-        'latest_news_single' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'asc')->take(1)->get(),
+        'hero_berita' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->take(4)->get(),
+        'breaking_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->take(16)->offset(4)->get(),
+        'latest_news_single' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->take(1)->get(),
         'latest_news' => Inertia::scroll(
             fn() =>
-            BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'asc')->paginate(8)
+            BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->paginate(8)
         ),
-        'latest_news_video' => BeritaVid::orderBy('tgl', 'asc')->take(5)->get(),
+        'latest_news_video' => BeritaVid::orderBy('tgl', 'desc')->take(5)->get(),
         'perspektif' => BeritaRed::where('id_ber', '=', 69)->get(),
         'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('hits', 'desc')->take(5)->get(),
     ]);

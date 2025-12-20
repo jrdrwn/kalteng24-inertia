@@ -1,13 +1,11 @@
+import { Mail, MapPin, Phone } from 'lucide-react';
 import {
-    Facebook,
-    Instagram,
-    Linkedin,
-    Mail,
-    MapPin,
-    Phone,
-    Twitter,
-    Youtube,
-} from 'lucide-react';
+    FaFacebookSquare,
+    FaInstagramSquare,
+    FaLinkedin,
+    FaTwitterSquare,
+    FaYoutubeSquare,
+} from 'react-icons/fa';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 
@@ -104,11 +102,11 @@ export default function Footer() {
                             follow us
                         </h1>
                         <div className="flex flex-wrap gap-4">
-                            <Facebook className="size-8 text-blue-600" />
-                            <Instagram className="size-8 text-pink-600" />
-                            <Twitter className="size-8 text-blue-400" />
-                            <Youtube className="size-8 text-red-600" />
-                            <Linkedin className="size-8 text-blue-700" />
+                            <FaFacebookSquare className="size-8 text-blue-600" />
+                            <FaInstagramSquare className="size-8 text-pink-600" />
+                            <FaTwitterSquare className="size-8 text-blue-400" />
+                            <FaYoutubeSquare className="size-8 text-red-600" />
+                            <FaLinkedin className="size-8 text-blue-700" />
                         </div>
                     </div>
                 </div>
