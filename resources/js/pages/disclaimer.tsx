@@ -1,8 +1,12 @@
 import Footer from '@/components/shared/footer';
 import Header from '@/components/shared/header';
 import { Card } from '@/components/ui/card';
+import { BeritaRed } from '@/types/entities';
 
-export default function Disclaimer() {
+interface PageProps {
+    popular_news: BeritaRed[];
+}
+export default function Disclaimer({ popular_news }: PageProps) {
     return (
         <>
             <Header />
@@ -60,7 +64,7 @@ export default function Disclaimer() {
                     </Card>
                 </div>
             </section>
-            <Footer />
+            <Footer popular_news={popular_news} />
         </>
     );
 }

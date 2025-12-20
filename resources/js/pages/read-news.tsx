@@ -19,9 +19,10 @@ import {
 } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
-import { getRubrikOrKategori } from '@/lib/utils';
+import { createSlug, getRubrikOrKategori } from '@/lib/utils';
 import { BeritaRed, BeritaVid } from '@/types/entities';
-import { InfiniteScroll } from '@inertiajs/react';
+import { InfiniteScroll, Link } from '@inertiajs/react';
+import Autoplay from 'embla-carousel-autoplay';
 import parse from 'html-react-parser';
 import { Eye, LucideTriangle, Timer, User, UserCircle } from 'lucide-react';
 import {
@@ -60,6 +61,13 @@ export default function ReadNews({
                             align: 'end',
                             loop: true,
                         }}
+                        plugins={[
+                            Autoplay({
+                                delay: 3000,
+                                stopOnInteraction: false,
+                                jump: false,
+                            }),
+                        ]}
                         className="flex gap-4"
                     >
                         <div className="flex items-center justify-between gap-4 rounded-full bg-primary px-4 py-2 font-medium text-primary-foreground">
@@ -286,7 +294,12 @@ export default function ReadNews({
                         <div className="mt-4">
                             <div className="flex flex-col gap-2">
                                 {popular_news.map((item, index) => (
-                                    <div key={index} className="p-2">
+                                    <Link
+                                        as={'div'}
+                                        href={`/read-news/${createSlug(item.id_ber, item.judul)}`}
+                                        key={index}
+                                        className="group cursor-pointer p-2"
+                                    >
                                         <div className="flex gap-2">
                                             <div className="aspect-square w-20 rounded-md bg-primary/40">
                                                 <img
@@ -302,7 +315,7 @@ export default function ReadNews({
                                                         true,
                                                     )}
                                                 </Badge>
-                                                <p className="line-clamp-1 font-medium">
+                                                <p className="line-clamp-1 font-medium group-hover:underline">
                                                     {item.judul}
                                                 </p>
                                                 <span className="text-sm">
@@ -317,7 +330,7 @@ export default function ReadNews({
                                                 </span>
                                             </div>
                                         </div>
-                                    </div>
+                                    </Link>
                                 ))}
                             </div>
                         </div>
@@ -350,7 +363,7 @@ export default function ReadNews({
                     </div>
                 </div>
             </section>
-            <Footer />
+            <Footer popular_news={popular_news} />
         </>
     );
 }

@@ -28,6 +28,7 @@ import {
 import {
     InputGroup,
     InputGroupAddon,
+    InputGroupButton,
     InputGroupInput,
 } from '../ui/input-group';
 import {
@@ -178,6 +179,15 @@ const navigationItems: NavItem[] = [
 export default function Header() {
     const [mobileOpen, setMobileOpen] = useState(false);
 
+    function handleSearch(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const query = formData.get('search') as string;
+        const currentParams = new URLSearchParams(window.location.search);
+        currentParams.set('q', query);
+        window.location.href = `/search?${currentParams.toString()}`;
+    }
+
     return (
         <header className="px-4">
             <div className="container mx-auto">
@@ -232,20 +242,26 @@ export default function Header() {
                     >
                         <MenuIcon />
                     </button>
-                    <div>
+                    <form onSubmit={handleSearch}>
                         <InputGroup className="bg-primary py-5 pl-1">
                             <InputGroupInput
-                                className="mr-2 h-8 rounded-sm bg-primary-foreground"
+                                className="mr-1 h-8 rounded-sm bg-primary-foreground"
                                 placeholder="Cari Berita"
+                                name="search"
                             />
                             <InputGroupAddon
                                 align={'inline-end'}
                                 className="text-primary-foreground"
                             >
-                                <SearchIcon />
+                                <InputGroupButton
+                                    type="submit"
+                                    size={'icon-sm'}
+                                >
+                                    <SearchIcon />
+                                </InputGroupButton>
                             </InputGroupAddon>
                         </InputGroup>
-                    </div>
+                    </form>
                 </div>
             </div>
             {/* Mobile Navigation Drawer using Drawer component */}

@@ -141,5 +141,5 @@
 }
 
 .react-player__preview {
-    @apply absolute inset-0 rounded-lg brightness-75;
+    @apply absolute inset-0 rounded-lg brightness-75 transition group-hover:brightness-60;
 }

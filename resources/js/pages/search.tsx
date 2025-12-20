@@ -25,9 +25,10 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { getRubrikOrKategori } from '@/lib/utils';
+import { createSlug, getRubrikOrKategori } from '@/lib/utils';
 import { BeritaRed } from '@/types/entities';
 import { TPagination } from '@/types/pagination';
+import { Link } from '@inertiajs/react';
 import parse from 'html-react-parser';
 import {
     ArrowRight,
@@ -243,9 +244,11 @@ export default function SearchResult({
                             <div className="col-span-2 row-span-1">
                                 <Card className="p-4">
                                     {search_results.data.map((item, index) => (
-                                        <div
+                                        <Link
+                                            as={'div'}
+                                            href={`/read-news/${createSlug(item.id_ber, item.judul)}`}
                                             key={index}
-                                            className="relative mb-2 flex h-74 gap-2 rounded-xl"
+                                            className="group relative mb-2 flex h-74 cursor-pointer gap-2 rounded-xl"
                                         >
                                             <div className="relative mr-2 w-60 rounded-xl bg-primary/40">
                                                 <img
@@ -267,7 +270,7 @@ export default function SearchResult({
                                                 )}
                                             </Badge>
                                             <div className="flex-1 overflow-hidden rounded-xl py-4 pr-4">
-                                                <h1 className="line-clamp-2 text-xl leading-relaxed font-semibold tracking-wide">
+                                                <h1 className="line-clamp-2 text-xl leading-relaxed font-semibold tracking-wide group-hover:underline">
                                                     {item.judul}
                                                 </h1>
                                                 <div className="mb-4 flex flex-row items-center gap-1.5 pt-2 text-sm text-primary">
@@ -302,7 +305,7 @@ export default function SearchResult({
                                                     {parse(item.isi_berita)}
                                                 </div>
                                             </div>
-                                        </div>
+                                        </Link>
                                     ))}
                                     <Pagination>
                                         <PaginationContent>
@@ -387,9 +390,11 @@ export default function SearchResult({
                                         Popular Posts
                                     </h1>
                                     {popular_news.map((item, index) => (
-                                        <div
+                                        <Link
+                                            as={'div'}
+                                            href={`/read-news/${createSlug(item.id_ber, item.judul)}`}
                                             key={index}
-                                            className="mb-4 flex flex-row gap-2"
+                                            className="group mb-4 flex cursor-pointer flex-row gap-2"
                                         >
                                             <div className="w-16 rounded-md bg-primary/40">
                                                 <img
@@ -399,7 +404,7 @@ export default function SearchResult({
                                                 />
                                             </div>
                                             <div className="flex-1">
-                                                <h2 className="line-clamp-2 text-sm leading-relaxed font-semibold">
+                                                <h2 className="line-clamp-2 text-sm leading-relaxed font-semibold group-hover:underline">
                                                     {item.judul}
                                                 </h2>
                                                 <div className="mt-1 flex flex-row items-center gap-1.5 text-xs text-primary">
@@ -419,7 +424,7 @@ export default function SearchResult({
                                                     </span>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </Link>
                                     ))}
                                 </Card>
                             </div>
@@ -427,7 +432,7 @@ export default function SearchResult({
                     </div>
                 </div>
             </section>
-            <Footer />
+            <Footer popular_news={popular_news} />
         </>
     );
 }

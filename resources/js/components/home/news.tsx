@@ -1,6 +1,6 @@
-import { getRubrikOrKategori } from '@/lib/utils';
+import { createSlug, getRubrikOrKategori } from '@/lib/utils';
 import { BeritaRed, BeritaVid } from '@/types/entities';
-import { InfiniteScroll } from '@inertiajs/react';
+import { InfiniteScroll, Link } from '@inertiajs/react';
 import parse from 'html-react-parser';
 import { Eye, LucideTriangle, UserCircle } from 'lucide-react';
 import ReactPlayer from 'react-player';
@@ -54,7 +54,11 @@ export default function News({
                         </div>
                     </div>
                     <Card className="p-4">
-                        <div className="relative flex h-80 gap-4 rounded-xl bg-muted">
+                        <Link
+                            as={'div'}
+                            href={`/read-news/${createSlug(latest_news_single[0].id_ber, latest_news_single[0].judul)}`}
+                            className="group relative flex h-80 cursor-pointer gap-4 rounded-xl bg-muted"
+                        >
                             <div className="relative w-2/3 rounded-l-xl bg-primary/40">
                                 <img
                                     src={`/foto_berita/${latest_news_single[0].foto_berita}`}
@@ -75,7 +79,7 @@ export default function News({
                                 )}
                             </Badge>
                             <div className="w-1/2 overflow-hidden rounded-xl p-2">
-                                <h1 className="line-clamp-3 text-xl leading-relaxed font-semibold tracking-wide">
+                                <h1 className="line-clamp-3 text-xl leading-relaxed font-semibold tracking-wide group-hover:underline">
                                     {latest_news_single[0].judul}
                                 </h1>
                                 <div className="mb-4 flex flex-row items-center gap-1.5 pt-2 text-sm">
@@ -101,7 +105,7 @@ export default function News({
                                     {parse(latest_news_single[0].isi_berita)}
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                         <Carousel
                             opts={{
                                 loop: true,
@@ -126,7 +130,7 @@ export default function News({
                                     >
                                         <Dialog>
                                             <DialogTrigger asChild>
-                                                <div className="relative flex h-40 flex-col justify-end rounded-lg bg-primary/35 p-2">
+                                                <div className="group relative flex h-40 cursor-pointer flex-col justify-end overflow-hidden rounded-lg bg-primary/35 p-2">
                                                     <div className="absolute inset-0 z-1"></div>
                                                     <ReactPlayer
                                                         src={
@@ -143,7 +147,7 @@ export default function News({
                                                     <div className="absolute inset-x-0 top-1/2 z-1 mx-auto mb-2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-secondary p-2">
                                                         <LucideTriangle className="inline-block size-5 rotate-90 text-primary" />
                                                     </div>
-                                                    <p className="z-1 line-clamp-2 font-medium tracking-wide text-white">
+                                                    <p className="z-1 line-clamp-2 font-medium tracking-wide text-white group-hover:underline">
                                                         {item.judul_vid}
                                                     </p>
                                                 </div>
@@ -191,9 +195,11 @@ export default function News({
                             onlyNext
                         >
                             {latest_news.data.map((item, index) => (
-                                <div
+                                <Link
+                                    as={'div'}
+                                    href={`/read-news/${createSlug(item.id_ber, item.judul)}`}
                                     key={index}
-                                    className="relative flex flex-col gap-4 rounded-xl"
+                                    className="group relative flex cursor-pointer flex-col gap-4 rounded-xl"
                                 >
                                     <div className="relative h-60 w-full rounded-xl bg-primary/40">
                                         <img
@@ -212,7 +218,7 @@ export default function News({
                                         {getRubrikOrKategori(item, true)}
                                     </Badge>
                                     <div className="overflow-hidden rounded-xl p-2">
-                                        <h1 className="text-xl leading-relaxed font-semibold tracking-wide">
+                                        <h1 className="text-xl leading-relaxed font-semibold tracking-wide group-hover:underline">
                                             {item.judul}
                                         </h1>
                                         <div className="mb-4 flex flex-row items-center gap-1.5 pt-2 text-sm text-primary">
@@ -239,7 +245,7 @@ export default function News({
                                             {parse(item.isi_berita)}
                                         </div>
                                     </div>
-                                </div>
+                                </Link>
                             ))}
                         </InfiniteScroll>
                     </Card>
@@ -254,7 +260,11 @@ export default function News({
                         </div>
                     </div>
                     <Card className="p-4">
-                        <div className="relative flex h-60 gap-4 rounded-xl">
+                        <Link
+                            as={'div'}
+                            href={`/read-news/${createSlug(perspektif[0].id_ber, perspektif[0].judul)}`}
+                            className="group relative flex h-60 cursor-pointer gap-4 rounded-xl"
+                        >
                             <div className="relative w-2/3 rounded-xl bg-primary/40">
                                 <img
                                     src={`/foto_berita/${perspektif[0].foto_berita}`}
@@ -272,18 +282,18 @@ export default function News({
                                 </Badge>
                             </div>
                             <div className="w-2/3 overflow-hidden rounded-xl p-2">
-                                <h1 className="text-xl leading-relaxed font-semibold tracking-wide">
+                                <h1 className="text-xl leading-relaxed font-semibold tracking-wide group-hover:underline">
                                     {perspektif[0].judul}
                                 </h1>
                                 <div className="mb-4 flex flex-row items-center gap-1.5 pt-2 text-sm text-primary">
                                     <UserCircle className="inline-block size-4" />
                                     <span>{perspektif[0].user}</span>
                                 </div>
-                                <p className="line-clamp-4 leading-relaxed tracking-wide text-muted-foreground">
+                                <div className="line-clamp-4 leading-relaxed tracking-wide text-muted-foreground">
                                     {parse(perspektif[0].isi_berita)}
-                                </p>
+                                </div>
                             </div>
-                        </div>
+                        </Link>
                     </Card>
                     <div className="sticky top-0 py-4">
                         <div className="relative pb-1">
@@ -293,9 +303,11 @@ export default function News({
                         <Separator className="mb-4" />
                         <div className="flex flex-col gap-6">
                             {popular_news.map((item, index) => (
-                                <div
+                                <Link
+                                    as={'div'}
+                                    href={`/read-news/${createSlug(item.id_ber, item.judul)}`}
                                     key={index}
-                                    className="flex flex-row items-center gap-4"
+                                    className="group flex cursor-pointer flex-row items-center gap-4"
                                 >
                                     <img
                                         src={`/foto_berita/${item.foto_berita}`}
@@ -321,11 +333,11 @@ export default function News({
                                                 timeZoneName: 'short',
                                             })}
                                         </p>
-                                        <p className="line-clamp-2 font-medium">
+                                        <p className="line-clamp-2 font-medium group-hover:underline">
                                             {item.judul}
                                         </p>
                                     </div>
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     </div>

@@ -1,4 +1,6 @@
+import { createSlug } from '@/lib/utils';
 import { BeritaRed } from '@/types/entities';
+import { Link } from '@inertiajs/react';
 import Autoplay from 'embla-carousel-autoplay';
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
 
@@ -30,7 +32,11 @@ export default function BreakingNews({ breaking_news }: ComponentProps) {
                     <CarouselContent>
                         {breaking_news.map((item, index) => (
                             <CarouselItem key={index} className="basis-1/4">
-                                <div className="flex flex-row items-center gap-4 p-4">
+                                <Link
+                                    as={'div'}
+                                    href={`/read-news/${createSlug(item.id_ber, item.judul)}`}
+                                    className="group flex cursor-pointer flex-row items-center gap-4 p-4"
+                                >
                                     <img
                                         src={`/foto_berita/${item.foto_berita}`}
                                         alt={item.judul}
@@ -44,11 +50,11 @@ export default function BreakingNews({ breaking_news }: ComponentProps) {
                                                 dateStyle: 'full',
                                             })}
                                         </p>
-                                        <p className="line-clamp-2 font-medium">
+                                        <p className="line-clamp-2 font-medium group-hover:underline">
                                             {item.judul}
                                         </p>
                                     </div>
-                                </div>
+                                </Link>
                             </CarouselItem>
                         ))}
                     </CarouselContent>

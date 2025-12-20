@@ -1,3 +1,6 @@
+import { createSlug, getRubrikOrKategori } from '@/lib/utils';
+import { BeritaRed } from '@/types/entities';
+import { Link } from '@inertiajs/react';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import {
     FaFacebookSquare,
@@ -9,7 +12,11 @@ import {
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 
-export default function Footer() {
+interface FooterProps {
+    popular_news: BeritaRed[];
+}
+
+export default function Footer({ popular_news }: FooterProps) {
     return (
         <footer className="mt-10 border-t bg-muted/20 px-4">
             <div className="container mx-auto">
@@ -43,42 +50,32 @@ export default function Footer() {
                             popular news
                         </h1>
                         <div className="flex flex-col gap-4">
-                            <div>
-                                <div className="flex items-center gap-2">
-                                    <Badge>pemkab kalteng</Badge>
-                                    <span className="text-sm">
-                                        21 Juli 2024
-                                    </span>
-                                </div>
-                                <p className="mt-1 line-clamp-1 text-sm">
-                                    Pemerintah Kabupaten Kotawaringin Timur
-                                    menggelar acara rutin tahunan dalam
-                                </p>
-                            </div>
-                            <div>
-                                <div className="flex items-center gap-2">
-                                    <Badge>pemkab kalteng</Badge>
-                                    <span className="text-sm">
-                                        21 Juli 2024
-                                    </span>
-                                </div>
-                                <p className="mt-1 line-clamp-1 text-sm">
-                                    Pemerintah Kabupaten Kotawaringin Timur
-                                    menggelar acara rutin tahunan dalam
-                                </p>
-                            </div>
-                            <div>
-                                <div className="flex items-center gap-2">
-                                    <Badge>pemkab kalteng</Badge>
-                                    <span className="text-sm">
-                                        21 Juli 2024
-                                    </span>
-                                </div>
-                                <p className="mt-1 line-clamp-1 text-sm">
-                                    Pemerintah Kabupaten Kotawaringin Timur
-                                    menggelar acara rutin tahunan dalam
-                                </p>
-                            </div>
+                            {popular_news.slice(0, 3).map((item, index) => (
+                                <Link
+                                    as={'div'}
+                                    href={`
+                            /read-news/${createSlug(item.id_ber, item.judul)}
+                            `}
+                                    key={index}
+                                    className="group cursor-pointer"
+                                >
+                                    <div className="flex items-center gap-2">
+                                        <Badge className="uppercase">
+                                            {getRubrikOrKategori(item, true)}
+                                        </Badge>
+                                        <span className="text-sm">
+                                            {new Date(
+                                                item.tgl,
+                                            ).toLocaleDateString('id-ID', {
+                                                dateStyle: 'medium',
+                                            })}
+                                        </span>
+                                    </div>
+                                    <p className="mt-1 line-clamp-1 text-sm font-medium group-hover:underline">
+                                        {item.judul}
+                                    </p>
+                                </Link>
+                            ))}
                         </div>
                     </div>
                     <div className="col-span-1">
@@ -116,9 +113,15 @@ export default function Footer() {
                         reserved.
                     </p>
                     <div>
-                        <Button variant="link">Tentang Kami</Button>
-                        <Button variant="link">Pedoman Media Cyber</Button>
-                        <Button variant="link">Disclaimer</Button>
+                        <Link href="/about-us">
+                            <Button variant="link">Tentang Kami</Button>
+                        </Link>
+                        <Link href="/pedoman-media-siber">
+                            <Button variant="link">Pedoman Media Siber</Button>
+                        </Link>
+                        <Link href="/disclaimer">
+                            <Button variant="link">Disclaimer</Button>
+                        </Link>
                     </div>
                 </div>
             </div>

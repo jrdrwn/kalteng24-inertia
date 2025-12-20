@@ -69,13 +69,34 @@ Route::get('/search', function (Request $request) {
 
 Route::get('/read-news/{slug}', function (Request $request, $slug) {
     // slug: id_judul-with-dashes
-    // split by first underscore
     $parts = explode('_', $slug, 2);
     $id_ber = $parts[0];
+    $news = BeritaRed::findOr($id_ber, function () {
+        abort(404);
+    });
+
+
+    // Check IP for increment with manual max size cache
+    $ip = $request->ip();
+    $ipListKey = "news_hit_iplist_{$id_ber}";
+    $cacheKey = "news_hit_{$id_ber}_{$ip}";
+    $maxIp = 100;
+
+    $ipList = cache()->get($ipListKey, []);
+
+    if (!in_array($ip, $ipList)) {
+        $news->increment('hits');
+        array_unshift($ipList, $ip);
+        if (count($ipList) > $maxIp) {
+            $ipList = array_slice($ipList, 0, $maxIp);
+        }
+        cache()->put($ipListKey, $ipList, now()->addMinutes(30));
+        cache()->put($cacheKey, true, now()->addMinutes(30));
+    }
+
+
     return Inertia::render('read-news', [
-        'news' => BeritaRed::findOr($id_ber, function () {
-            abort(404);
-        }),
+        'news' => $news,
         'popular_news' => BeritaRed::whereNot('id_ber', '=', $id_ber)->orderBy('hits', 'desc')->take(5)->get(),
         'trending_news' => BeritaRed::whereNot('id_ber', '=', $id_ber)->orderBy('hits', 'desc')->take(10)->get(),
         'latest_news_video' => BeritaVid::orderBy('tgl', 'desc')->take(5)->get(),
@@ -86,13 +107,19 @@ Route::get('/read-news/{slug}', function (Request $request, $slug) {
 })->name('read-news');
 
 Route::get('/about-us', function () {
-    return Inertia::render('about-us');
+    return Inertia::render('about-us', [
+        'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('hits', 'desc')->take(5)->get(),
+    ]);
 })->name('about-us');
 
 Route::get('/pedoman-media-siber', function () {
-    return Inertia::render('pedoman-media-siber');
+    return Inertia::render('pedoman-media-siber', [
+        'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('hits', 'desc')->take(5)->get(),
+    ]);
 })->name('pedoman-media-siber');
 
 Route::get('/disclaimer', function () {
-    return Inertia::render('disclaimer');
+    return Inertia::render('disclaimer', [
+        'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('hits', 'desc')->take(5)->get(),
+    ]);
 })->name('disclaimer');

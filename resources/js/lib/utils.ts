@@ -21,3 +21,10 @@ export function getRubrikOrKategori(
     }
     return result;
 }
+
+export function createSlug(id: string | number, title: string): string {
+    return `${id}_${title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')}`;
+}

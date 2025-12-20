@@ -38,7 +38,7 @@ export default function Home({
                 perspektif={perspektif}
                 popular_news={popular_news}
             />
-            <Footer />
+            <Footer popular_news={popular_news} />
         </>
     );
 }

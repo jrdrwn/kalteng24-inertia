@@ -1,8 +1,12 @@
 import Footer from '@/components/shared/footer';
 import Header from '@/components/shared/header';
 import { Card } from '@/components/ui/card';
+import { BeritaRed } from '@/types/entities';
 
-export default function AboutUs() {
+interface PageProps {
+    popular_news: BeritaRed[];
+}
+export default function AboutUs({ popular_news }: PageProps) {
     return (
         <>
             <Header />
@@ -71,7 +75,7 @@ export default function AboutUs() {
                     </Card>
                 </div>
             </section>
-            <Footer />
+            <Footer popular_news={popular_news} />
         </>
     );
 }
