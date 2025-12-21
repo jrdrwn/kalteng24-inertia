@@ -19,7 +19,7 @@ export default function Hero({ hero_berita }: ComponentProps) {
                 <Link
                     href={`/read-news/${createSlug(hero_berita[0].id_ber, hero_berita[0].judul)}`}
                     as={'div'}
-                    className="group relative col-span-2 row-span-2 h-full w-full cursor-pointer bg-primary/80"
+                    className="group relative col-span-4 row-span-2 h-full w-full cursor-pointer bg-primary/80 lg:col-span-2"
                 >
                     <img
                         src={`${imageUrl}/${hero_berita[0].foto_berita}`}
@@ -69,7 +69,7 @@ export default function Hero({ hero_berita }: ComponentProps) {
                 <Link
                     as={'div'}
                     href={`/read-news/${createSlug(hero_berita[1].id_ber, hero_berita[1].judul)}`}
-                    className="group relative col-span-2 row-span-1 h-full w-full cursor-pointer bg-primary/70"
+                    className="group relative col-span-2 row-span-1 !hidden h-full w-full cursor-pointer bg-primary/70 lg:!flex"
                 >
                     <img
                         src={`${imageUrl}/${hero_berita[1].foto_berita}`}
@@ -87,7 +87,7 @@ export default function Hero({ hero_berita }: ComponentProps) {
                     >
                         {getRubrikOrKategori(hero_berita[1], true)}
                     </Badge>
-                    <h1 className="z-1 line-clamp-2 text-2xl font-semibold group-hover:underline">
+                    <h1 className="z-1 line-clamp-2 font-semibold group-hover:underline lg:text-xl 2xl:text-2xl">
                         {hero_berita[1].judul}
                     </h1>
                     <div className="z-1 flex flex-row items-center gap-1 text-sm">
@@ -116,7 +116,7 @@ export default function Hero({ hero_berita }: ComponentProps) {
                 <Link
                     as={'div'}
                     href={`/read-news/${createSlug(hero_berita[2].id_ber, hero_berita[2].judul)}`}
-                    className="group relative col-span-1 row-span-1 h-full w-full cursor-pointer bg-primary/50"
+                    className="group relative col-span-1 row-span-1 !hidden h-full w-full cursor-pointer bg-primary/50 lg:!flex"
                 >
                     <img
                         src={`${imageUrl}/${hero_berita[2].foto_berita}`}
@@ -134,18 +134,26 @@ export default function Hero({ hero_berita }: ComponentProps) {
                     >
                         {getRubrikOrKategori(hero_berita[2], true)}
                     </Badge>
-                    <h1 className="z-1 line-clamp-2 text-2xl font-semibold group-hover:underline">
+                    <h1 className="z-1 line-clamp-2 text-2xl font-semibold group-hover:underline lg:text-lg">
                         {hero_berita[2].judul}
                     </h1>
                     <div className="z-1 flex flex-row items-center gap-1 text-sm">
                         <UserCircle className="inline-block size-4" />
                         <span>{hero_berita[2].user}</span>
                         <span className="size-1.5 rounded-full bg-white"></span>
-                        <span>
+                        <span className="hidden 2xl:block">
                             {new Date(hero_berita[2].tgl).toLocaleDateString(
                                 'id-ID',
                                 {
                                     dateStyle: 'full',
+                                },
+                            )}
+                        </span>
+                        <span className="2xl:hidden">
+                            {new Date(hero_berita[2].tgl).toLocaleDateString(
+                                'id-ID',
+                                {
+                                    dateStyle: 'medium',
                                 },
                             )}
                         </span>
@@ -154,7 +162,7 @@ export default function Hero({ hero_berita }: ComponentProps) {
                 <Link
                     as={'div'}
                     href={`/read-news/${createSlug(hero_berita[3].id_ber, hero_berita[3].judul)}`}
-                    className="group relative col-span-1 row-span-1 h-full w-full cursor-pointer bg-primary/30"
+                    className="group relative col-span-1 row-span-1 !hidden h-full w-full cursor-pointer bg-primary/30 lg:!flex"
                 >
                     <img
                         src={`${imageUrl}/${hero_berita[3].foto_berita}`}
@@ -172,18 +180,26 @@ export default function Hero({ hero_berita }: ComponentProps) {
                     >
                         {getRubrikOrKategori(hero_berita[3], true)}
                     </Badge>
-                    <h1 className="z-1 line-clamp-2 text-2xl font-semibold group-hover:underline">
+                    <h1 className="z-1 line-clamp-2 text-2xl font-semibold group-hover:underline lg:text-lg">
                         {hero_berita[3].judul}
                     </h1>
                     <div className="z-1 flex flex-row items-center gap-1 text-sm">
                         <UserCircle className="inline-block size-4" />
                         <span>{hero_berita[3].user}</span>
                         <span className="size-1.5 rounded-full bg-white"></span>
-                        <span>
-                            {new Date(hero_berita[3].tgl).toLocaleDateString(
+                        <span className="hidden xl:block">
+                            {new Date(hero_berita[2].tgl).toLocaleDateString(
                                 'id-ID',
                                 {
                                     dateStyle: 'full',
+                                },
+                            )}
+                        </span>
+                        <span className="xl:hidden">
+                            {new Date(hero_berita[2].tgl).toLocaleDateString(
+                                'id-ID',
+                                {
+                                    dateStyle: 'medium',
                                 },
                             )}
                         </span>

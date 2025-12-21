@@ -20,7 +20,7 @@ export default function Footer({ popular_news }: FooterProps) {
     return (
         <footer className="mt-10 border-t bg-muted/20 px-4">
             <div className="container mx-auto">
-                <div className="grid grid-cols-4 gap-8 pt-4 pb-4">
+                <div className="grid grid-cols-1 gap-8 pt-4 pb-4 sm:grid-cols-2 lg:grid-cols-4">
                     <div className="col-span-1">
                         <h1 className="mb-6 text-2xl font-bold uppercase">
                             official support
@@ -117,7 +117,7 @@ export default function Footer({ popular_news }: FooterProps) {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col items-center justify-between gap-4 border-t py-2 sm:flex-row">
+                <div className="flex flex-col-reverse items-center justify-between gap-4 border-t py-2 text-center lg:flex-row">
                     <p className="text-sm">
                         Copyright © 2020 Berita Kalteng 24. All rights
                         reserved.

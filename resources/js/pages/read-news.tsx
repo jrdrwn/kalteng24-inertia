@@ -101,9 +101,9 @@ export default function ReadNews({
                         ]}
                         className="flex gap-4"
                     >
-                        <div className="flex items-center justify-between gap-4 rounded-full bg-primary px-4 py-2 font-medium text-primary-foreground">
+                        <div className="flex w-full justify-between gap-4 overflow-hidden rounded-full bg-primary px-4 py-2 font-medium text-primary-foreground">
                             <p className="whitespace-nowrap">Trending Topics</p>
-                            <CarouselContent>
+                            <CarouselContent className=" ">
                                 {trending_news.map((item, index) => (
                                     <CarouselItem
                                         key={index}
@@ -123,13 +123,13 @@ export default function ReadNews({
             </section>
             <section className="p-4">
                 <div className="container mx-auto grid grid-cols-6 gap-4">
-                    <div className="sticky top-4 col-span-1 self-start">
+                    <div className="sticky top-4 col-span-1 hidden self-start xl:block">
                         <Skeleton className="mb-2 h-100 w-full rounded-lg" />
                         <p className="text-center text-sm text-muted-foreground">
                             Space Iklan
                         </p>
                     </div>
-                    <div className="col-span-3 prose gap-2 prose-h1:mb-0">
+                    <div className="col-span-6 mx-auto prose prose-sm w-full gap-2 md:col-span-4 lg:prose-base xl:col-span-3 prose-h1:mb-0 prose-h1:text-center sm:prose-h1:text-left">
                         <div className="not-prose mb-4 aspect-video w-full rounded-2xl bg-muted">
                             <img
                                 src={`${imageUrl}/${news.foto_berita}`}
@@ -144,8 +144,9 @@ export default function ReadNews({
                                 {news.text_foto}
                             </p>
                         </div>
+
                         <Card className="mb-4 gap-0 p-4">
-                            <div className="not-prose flex items-center gap-2 text-sm text-muted-foreground">
+                            <div className="not-prose flex flex-wrap items-center justify-center gap-2 text-sm text-muted-foreground sm:justify-start">
                                 <span>
                                     <User className="mr-2 inline-block size-4" />
                                     {news.user}
@@ -176,6 +177,119 @@ export default function ReadNews({
                             <h1 className="mt-4 mb-2">{news.judul}</h1>
                             <div>{parse(news.isi_berita)}</div>
                         </Card>
+                        <div className="block xl:hidden">
+                            <Skeleton className="mb-2 h-50 w-full rounded-lg" />
+                            <p className="text-center text-sm text-muted-foreground">
+                                Space Iklan
+                            </p>
+                        </div>
+                        <div className="not-prose mb-8 block md:hidden">
+                            <div className="flex items-center justify-between rounded-md bg-muted px-2 py-2">
+                                <p className="font-bold">Share</p>
+                                <div className="flex gap-2">
+                                    <FaFacebookSquare
+                                        onClick={() => handleShare('facebook')}
+                                        className="size-6 text-blue-600"
+                                    />
+                                    <FaWhatsapp
+                                        onClick={() => handleShare('whatsapp')}
+                                        className="size-6 text-green-500"
+                                    />
+                                    <FaTwitterSquare
+                                        onClick={() => handleShare('twitter')}
+                                        className="size-6 text-blue-400"
+                                    />
+                                    <FaTelegram
+                                        onClick={() => handleShare('telegram')}
+                                        className="size-6 text-blue-500"
+                                    />
+                                    <FaLinkedin
+                                        onClick={() => handleShare('linkedin')}
+                                        className="size-6 text-blue-700"
+                                    />
+                                </div>
+                            </div>
+                            <div className="mt-4">
+                                <div className="flex flex-col gap-2">
+                                    {popular_news.map((item, index) => (
+                                        <Link
+                                            as={'div'}
+                                            href={`/read-news/${createSlug(item.id_ber, item.judul)}`}
+                                            key={index}
+                                            className="group cursor-pointer p-2"
+                                        >
+                                            <div className="flex gap-2">
+                                                <div className="aspect-square w-20 rounded-md bg-primary/40">
+                                                    <img
+                                                        src={`${imageUrl}/${item.foto_berita}`}
+                                                        alt={item.judul}
+                                                        className="h-full w-full rounded-md object-cover"
+                                                        onError={(e) => {
+                                                            (
+                                                                e.currentTarget as HTMLImageElement
+                                                            ).src =
+                                                                '/no-image.png';
+                                                        }}
+                                                    />
+                                                </div>
+                                                <div className="flex flex-1 flex-col justify-center gap-0.5">
+                                                    <Badge className="uppercase">
+                                                        {getRubrikOrKategori(
+                                                            item,
+                                                            true,
+                                                        )}
+                                                    </Badge>
+                                                    <p className="line-clamp-1 font-medium group-hover:underline">
+                                                        {item.judul}
+                                                    </p>
+                                                    <span className="text-sm">
+                                                        {new Date(
+                                                            news.tgl,
+                                                        ).toLocaleDateString(
+                                                            'id-ID',
+                                                            {
+                                                                dateStyle:
+                                                                    'full',
+                                                            },
+                                                        )}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="mt-4">
+                                <div className="relative pb-1">
+                                    <h1 className="font-semibold">Tags</h1>
+                                    <div className="absolute -bottom-[3px] left-0 h-1 w-16 rounded-full bg-primary"></div>
+                                </div>
+                                <Separator className="mb-4" />
+                                <div className="flex flex-wrap gap-2">
+                                    {[
+                                        'Kalteng',
+                                        'Palangka Raya',
+                                        'Berita',
+                                        'Nasional',
+                                        'Olahraga',
+                                        'Teknologi',
+                                        'Health',
+                                    ].map((tag, index) => (
+                                        <Link
+                                            href={'/search?q=' + tag}
+                                            key={index}
+                                        >
+                                            <Badge
+                                                key={tag}
+                                                className="cursor-pointer px-3 py-1"
+                                            >
+                                                {tag}
+                                            </Badge>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
                         <Card className="not-prose p-4">
                             <Carousel
                                 opts={{
@@ -278,7 +392,7 @@ export default function ReadNews({
                                         key={index}
                                         className="group relative flex cursor-pointer flex-col gap-4 rounded-xl"
                                     >
-                                        <div className="relative h-60 w-full rounded-xl bg-primary/40">
+                                        <div className="relative h-40 w-full rounded-xl bg-primary/40 lg:h-60">
                                             <img
                                                 src={`${imageUrl}/${item.foto_berita}`}
                                                 alt={item.judul}
@@ -327,7 +441,7 @@ export default function ReadNews({
                             </InfiniteScroll>
                         </Card>
                     </div>
-                    <div className="sticky top-4 col-span-2 space-y-4 self-start">
+                    <div className="sticky top-4 col-span-6 hidden space-y-4 self-start md:col-span-2 md:block">
                         <div className="flex justify-between rounded-md bg-muted px-2 py-2">
                             <p className="font-bold">Share</p>
                             <div className="flex gap-2">
@@ -363,7 +477,7 @@ export default function ReadNews({
                                         className="group cursor-pointer p-2"
                                     >
                                         <div className="flex gap-2">
-                                            <div className="aspect-square w-20 rounded-md bg-primary/40">
+                                            <div className="hidden aspect-square w-20 rounded-md bg-primary/40 lg:block">
                                                 <img
                                                     src={`${imageUrl}/${item.foto_berita}`}
                                                     alt={item.judul}

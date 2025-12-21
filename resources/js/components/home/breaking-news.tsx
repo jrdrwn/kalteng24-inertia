@@ -13,7 +13,7 @@ export default function BreakingNews({ breaking_news }: ComponentProps) {
     const { imageUrl } = usePage<SharedData>().props;
     return (
         <section className="px-4 py-2">
-            <div className="container">
+            <div className="container mx-auto">
                 <div className="w-max rounded-t-xl bg-primary px-4 py-1 text-primary-foreground">
                     Breaking News
                 </div>
@@ -33,7 +33,10 @@ export default function BreakingNews({ breaking_news }: ComponentProps) {
                 >
                     <CarouselContent>
                         {breaking_news.map((item, index) => (
-                            <CarouselItem key={index} className="basis-1/4">
+                            <CarouselItem
+                                key={index}
+                                className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+                            >
                                 <Link
                                     as={'div'}
                                     href={`/read-news/${createSlug(item.id_ber, item.judul)}`}
@@ -42,7 +45,7 @@ export default function BreakingNews({ breaking_news }: ComponentProps) {
                                     <img
                                         src={`${imageUrl}/${item.foto_berita}`}
                                         alt={item.judul}
-                                        className="size-26 rounded-md bg-primary/40 object-cover shadow-md"
+                                        className="size-22 rounded-md bg-primary/40 object-cover shadow-md xl:size-24 2xl:size-26"
                                         onError={(e) => {
                                             (
                                                 e.currentTarget as HTMLImageElement
@@ -50,11 +53,18 @@ export default function BreakingNews({ breaking_news }: ComponentProps) {
                                         }}
                                     />
                                     <div className="flex flex-1 flex-col gap-2">
-                                        <p className="text-sm text-muted-foreground">
+                                        <p className="hidden text-sm text-muted-foreground 2xl:block">
                                             {new Date(
                                                 item.tgl,
                                             ).toLocaleDateString('id-ID', {
                                                 dateStyle: 'full',
+                                            })}
+                                        </p>
+                                        <p className="text-sm text-muted-foreground 2xl:hidden">
+                                            {new Date(
+                                                item.tgl,
+                                            ).toLocaleDateString('id-ID', {
+                                                dateStyle: 'medium',
                                             })}
                                         </p>
                                         <p className="line-clamp-2 font-medium group-hover:underline">

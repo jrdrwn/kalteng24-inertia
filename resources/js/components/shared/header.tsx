@@ -213,7 +213,7 @@ export default function Header() {
                 <div className="flex flex-row items-center justify-between pt-1.5">
                     <img src="/logo.png" alt="Logo" className="h-8" />
                     {/* Desktop Navigation */}
-                    <nav className="hidden md:block">
+                    <nav className="hidden lg:block">
                         <NavigationMenu>
                             <NavigationMenuList className="flex-wrap">
                                 {navigationItems.map((item, idx) =>
@@ -234,18 +234,31 @@ export default function Header() {
                             </NavigationMenuList>
                         </NavigationMenu>
                     </nav>
-                    {/* Mobile Hamburger */}
-                    <button
-                        className="block p-2 md:hidden"
-                        onClick={() => setMobileOpen(true)}
-                        aria-label="Open menu"
-                    >
-                        <MenuIcon />
-                    </button>
-                    <form onSubmit={handleSearch}>
+                    <div className="flex items-center justify-end gap-2">
+                        <Link href="/search" className="block lg:hidden">
+                            <Button
+                                className="flex lg:hidden"
+                                variant={'ghost'}
+                            >
+                                <SearchIcon />
+                            </Button>
+                        </Link>
+
+                        {/* Mobile Hamburger */}
+                        <Button
+                            size={'icon'}
+                            className="flex lg:hidden"
+                            onClick={() => setMobileOpen(true)}
+                            aria-label="Open menu"
+                            variant={'outline'}
+                        >
+                            <MenuIcon />
+                        </Button>
+                    </div>
+                    <form onSubmit={handleSearch} className="hidden lg:block">
                         <InputGroup className="bg-primary py-5 pl-1">
                             <InputGroupInput
-                                className="mr-1 h-8 rounded-sm bg-primary-foreground"
+                                className="mr-1 h-8 w-28 rounded-sm bg-primary-foreground xl:w-3xs 2xl:w-xs"
                                 placeholder="Cari Berita"
                                 name="search"
                             />
@@ -319,7 +332,7 @@ export function Header2() {
                 <div className="flex flex-row items-center justify-between pt-1.5">
                     <img src="/logo.png" alt="Logo" className="h-8" />
                     {/* Desktop Navigation */}
-                    <nav className="hidden md:block">
+                    <nav className="hidden lg:block">
                         <NavigationMenu>
                             <NavigationMenuList className="flex-wrap">
                                 {navigationItems.map((item, idx) =>
@@ -342,7 +355,7 @@ export function Header2() {
                     </nav>
                     {/* Mobile Hamburger */}
                     <button
-                        className="block p-2 md:hidden"
+                        className="block p-2 lg:hidden"
                         onClick={() => setMobileOpen(true)}
                         aria-label="Open menu"
                     >
