@@ -18,6 +18,7 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Spinner } from '@/components/ui/spinner';
 import { createSlug, getRubrikOrKategori } from '@/lib/utils';
 import { BeritaRed, BeritaVid } from '@/types/entities';
@@ -27,10 +28,10 @@ import parse from 'html-react-parser';
 import { Eye, LucideTriangle, Timer, User, UserCircle } from 'lucide-react';
 import {
     FaFacebookSquare,
-    FaInstagramSquare,
     FaLinkedin,
+    FaTelegram,
     FaTwitterSquare,
-    FaYoutubeSquare,
+    FaWhatsapp,
 } from 'react-icons/fa';
 import ReactPlayer from 'react-player';
 
@@ -51,6 +52,34 @@ export default function ReadNews({
     latest_news_video,
     latest_news,
 }: PageProps) {
+    const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
+    const shareText = news?.judul || '';
+
+    function handleShare(platform: string) {
+        const url = encodeURIComponent(shareUrl);
+        const text = encodeURIComponent(shareText);
+        let shareLink = '';
+        switch (platform) {
+            case 'facebook':
+                shareLink = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                break;
+            case 'twitter':
+                shareLink = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
+                break;
+            case 'linkedin':
+                shareLink = `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${text}`;
+                break;
+            case 'whatsapp':
+                shareLink = `https://wa.me/?text=${text}%20${url}`;
+                break;
+            case 'telegram':
+                shareLink = `https://t.me/share/url?url=${url}&text=${text}`;
+                break;
+            default:
+                shareLink = url;
+        }
+        window.open(shareLink, '_blank', 'noopener,noreferrer');
+    }
     return (
         <>
             <Header />
@@ -92,7 +121,12 @@ export default function ReadNews({
             </section>
             <section className="p-4">
                 <div className="container mx-auto grid grid-cols-6 gap-4">
-                    <div className="col-span-1">iklan</div>
+                    <div className="sticky top-4 col-span-1 self-start">
+                        <Skeleton className="mb-2 h-100 w-full rounded-lg" />
+                        <p className="text-center text-sm text-muted-foreground">
+                            Space Iklan
+                        </p>
+                    </div>
                     <div className="col-span-3 prose gap-2 prose-h1:mb-0">
                         <div className="not-prose mb-4 aspect-video w-full rounded-2xl bg-muted">
                             <img
@@ -295,11 +329,26 @@ export default function ReadNews({
                         <div className="flex justify-between rounded-md bg-muted px-2 py-2">
                             <p className="font-bold">Share</p>
                             <div className="flex gap-2">
-                                <FaFacebookSquare className="size-6 text-blue-600" />
-                                <FaInstagramSquare className="size-6 text-pink-600" />
-                                <FaTwitterSquare className="size-6 text-blue-400" />
-                                <FaYoutubeSquare className="size-6 text-red-600" />
-                                <FaLinkedin className="size-6 text-blue-700" />
+                                <FaFacebookSquare
+                                    onClick={() => handleShare('facebook')}
+                                    className="size-6 text-blue-600"
+                                />
+                                <FaWhatsapp
+                                    onClick={() => handleShare('whatsapp')}
+                                    className="size-6 text-green-500"
+                                />
+                                <FaTwitterSquare
+                                    onClick={() => handleShare('twitter')}
+                                    className="size-6 text-blue-400"
+                                />
+                                <FaTelegram
+                                    onClick={() => handleShare('telegram')}
+                                    className="size-6 text-blue-500"
+                                />
+                                <FaLinkedin
+                                    onClick={() => handleShare('linkedin')}
+                                    className="size-6 text-blue-700"
+                                />
                             </div>
                         </div>
                         <div className="mt-4">
@@ -365,14 +414,15 @@ export default function ReadNews({
                                     'Olahraga',
                                     'Teknologi',
                                     'Health',
-                                    'Lifestyle',
-                                ].map((tag) => (
-                                    <Badge
-                                        key={tag}
-                                        className="cursor-pointer px-3 py-1"
-                                    >
-                                        {tag}
-                                    </Badge>
+                                ].map((tag, index) => (
+                                    <Link href={'/search?q=' + tag} key={index}>
+                                        <Badge
+                                            key={tag}
+                                            className="cursor-pointer px-3 py-1"
+                                        >
+                                            {tag}
+                                        </Badge>
+                                    </Link>
                                 ))}
                             </div>
                         </div>

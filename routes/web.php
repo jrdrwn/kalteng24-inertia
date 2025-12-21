@@ -39,7 +39,7 @@ Route::get('/search', function (Request $request) {
             if ($kategori === 'null' || $kategori === 'unknown') {
                 $kategori = '';
             }
-            $query->where('kategori', $kategori);
+            $query->where('kategori', 'like',  $kategori);
         })
         ->when($jenis_rubrik, function ($query, $jenis_rubrik) {
             if ($jenis_rubrik === 'null' || $jenis_rubrik === 'unknown') {

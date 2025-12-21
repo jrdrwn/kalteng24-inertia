@@ -22,6 +22,7 @@ import {
     DialogTrigger,
 } from '../ui/dialog';
 import { Separator } from '../ui/separator';
+import { Skeleton } from '../ui/skeleton';
 import { Spinner } from '../ui/spinner';
 
 interface ComponentProps {
@@ -360,6 +361,10 @@ export default function News({
                                 </Link>
                             ))}
                         </div>
+                        <Skeleton className="mt-8 mb-2 h-30 w-full rounded-lg" />
+                        <p className="text-center text-sm text-muted-foreground">
+                            Space Iklan
+                        </p>
                     </div>
                 </div>
             </div>

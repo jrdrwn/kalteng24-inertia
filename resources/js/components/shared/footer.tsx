@@ -83,15 +83,25 @@ export default function Footer({ popular_news }: FooterProps) {
                             kategori
                         </h1>
                         <div className="flex flex-wrap gap-2">
-                            <Badge variant={'secondary'}>Politik</Badge>
-                            <Badge variant={'secondary'}>Ekonomi</Badge>
-                            <Badge variant={'secondary'}>Kalteng</Badge>
-                            <Badge variant={'secondary'}>Nasional</Badge>
-                            <Badge variant={'secondary'}>Internasional</Badge>
-                            <Badge variant={'secondary'}>Olahraga</Badge>
-                            <Badge variant={'secondary'}>Hiburan</Badge>
-                            <Badge variant={'secondary'}>Teknologi</Badge>
-                            <Badge variant={'secondary'}>Lifestyle</Badge>
+                            {[
+                                'Kalteng',
+                                'Palangka Raya',
+                                'Berita',
+                                'Nasional',
+                                'Olahraga',
+                                'Teknologi',
+                                'Health',
+                            ].map((tag, index) => (
+                                <Link href={'/search?q=' + tag} key={index}>
+                                    <Badge
+                                        key={tag}
+                                        variant={'secondary'}
+                                        className="cursor-pointer"
+                                    >
+                                        {tag}
+                                    </Badge>
+                                </Link>
+                            ))}
                         </div>
                     </div>
                     <div className="col-span-1">
