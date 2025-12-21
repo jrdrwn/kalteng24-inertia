@@ -99,6 +99,10 @@ export default function ReadNews({
                                 src={`/foto_berita/${news.foto_berita}`}
                                 alt={news.judul}
                                 className="h-full w-full rounded-2xl object-cover"
+                                onError={(e) => {
+                                    (e.currentTarget as HTMLImageElement).src =
+                                        '/no-image.png';
+                                }}
                             />
                             <p className="py-1 text-center text-xs text-muted-foreground italic">
                                 {news.text_foto}
@@ -163,7 +167,7 @@ export default function ReadNews({
                                         >
                                             <Dialog>
                                                 <DialogTrigger asChild>
-                                                    <div className="relative flex h-28 flex-col justify-end rounded-lg bg-primary/35 p-2">
+                                                    <div className="group relative flex h-28 cursor-pointer flex-col justify-end rounded-lg bg-primary/35 p-2">
                                                         <div className="absolute inset-0 z-1"></div>
                                                         <ReactPlayer
                                                             src={
@@ -180,7 +184,7 @@ export default function ReadNews({
                                                         <div className="absolute inset-x-0 top-1/2 z-1 mx-auto mb-2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-secondary p-2">
                                                             <LucideTriangle className="inline-block size-5 rotate-90 text-primary" />
                                                         </div>
-                                                        <p className="z-1 line-clamp-2 text-xs font-medium tracking-wide text-white">
+                                                        <p className="z-1 line-clamp-2 text-xs font-medium tracking-wide text-white group-hover:underline">
                                                             {item.judul_vid}
                                                         </p>
                                                     </div>
@@ -232,15 +236,22 @@ export default function ReadNews({
                                 onlyNext
                             >
                                 {latest_news.data.map((item, index) => (
-                                    <div
+                                    <Link
+                                        as={'div'}
+                                        href={`/read-news/${createSlug(item.id_ber, item.judul)}`}
                                         key={index}
-                                        className="relative flex flex-col gap-4 rounded-xl"
+                                        className="group relative flex cursor-pointer flex-col gap-4 rounded-xl"
                                     >
                                         <div className="relative h-60 w-full rounded-xl bg-primary/40">
                                             <img
                                                 src={`/foto_berita/${item.foto_berita}`}
                                                 alt={item.judul}
                                                 className="h-full w-full rounded-xl object-cover"
+                                                onError={(e) => {
+                                                    (
+                                                        e.currentTarget as HTMLImageElement
+                                                    ).src = '/no-image.png';
+                                                }}
                                             />
                                             <div className="absolute right-2 bottom-2 flex items-center gap-1 rounded-full bg-black/40 px-2 py-1">
                                                 <Eye className="inline-block size-4 text-white" />
@@ -253,7 +264,7 @@ export default function ReadNews({
                                             {getRubrikOrKategori(item, true)}
                                         </Badge>
                                         <div className="overflow-hidden rounded-xl p-2">
-                                            <h1 className="line-clamp-2 text-xl leading-relaxed font-semibold tracking-wide">
+                                            <h1 className="line-clamp-2 text-xl leading-relaxed font-semibold tracking-wide group-hover:underline">
                                                 {item.judul}
                                             </h1>
                                             <div className="mb-4 flex flex-row items-center gap-1.5 pt-2 text-sm text-primary">
@@ -275,7 +286,7 @@ export default function ReadNews({
                                                 {parse(item.isi_berita)}
                                             </div>
                                         </div>
-                                    </div>
+                                    </Link>
                                 ))}
                             </InfiniteScroll>
                         </Card>
@@ -306,6 +317,11 @@ export default function ReadNews({
                                                     src={`/foto_berita/${item.foto_berita}`}
                                                     alt={item.judul}
                                                     className="h-full w-full rounded-md object-cover"
+                                                    onError={(e) => {
+                                                        (
+                                                            e.currentTarget as HTMLImageElement
+                                                        ).src = '/no-image.png';
+                                                    }}
                                                 />
                                             </div>
                                             <div className="flex flex-1 flex-col justify-center gap-0.5">

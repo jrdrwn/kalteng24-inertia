@@ -31,6 +31,7 @@ import { TPagination } from '@/types/pagination';
 import { Link } from '@inertiajs/react';
 import parse from 'html-react-parser';
 import {
+    ArrowLeft,
     ArrowRight,
     Eye,
     RefreshCcw,
@@ -243,6 +244,29 @@ export default function SearchResult({
                         <div className="grid grid-cols-3 gap-4">
                             <div className="col-span-2 row-span-1">
                                 <Card className="p-4">
+                                    {/* jika tidak ada berita */}
+                                    {search_results.data.length === 0 ? (
+                                        <div className="flex flex-col items-center justify-center py-10">
+                                            <h2 className="mb-4 text-xl font-semibold">
+                                                Tidak ada hasil ditemukan
+                                            </h2>
+                                            <p className="mb-6 text-center text-sm text-muted-foreground">
+                                                Coba periksa ejaan kata
+                                                pencarian atau gunakan kata
+                                                kunci yang berbeda.
+                                            </p>
+                                            <Button
+                                                variant={'outline'}
+                                                onClick={() =>
+                                                    window.history.back()
+                                                }
+                                                size={'sm'}
+                                            >
+                                                <ArrowLeft />
+                                                Kembali
+                                            </Button>
+                                        </div>
+                                    ) : null}
                                     {search_results.data.map((item, index) => (
                                         <Link
                                             as={'div'}
@@ -255,6 +279,11 @@ export default function SearchResult({
                                                     src={`/foto_berita/${item.foto_berita}`}
                                                     alt={item.judul}
                                                     className="h-full w-full rounded-xl object-cover object-center"
+                                                    onError={(e) => {
+                                                        (
+                                                            e.currentTarget as HTMLImageElement
+                                                        ).src = '/no-image.png';
+                                                    }}
                                                 />
                                                 <div className="absolute bottom-2 left-2 flex items-center gap-1 rounded-full bg-black/40 px-2 py-1">
                                                     <Eye className="inline-block size-4 text-white" />
@@ -401,6 +430,11 @@ export default function SearchResult({
                                                     src={`/foto_berita/${item.foto_berita}`}
                                                     alt={item.judul}
                                                     className="h-full w-full rounded-md object-cover object-center"
+                                                    onError={(e) => {
+                                                        (
+                                                            e.currentTarget as HTMLImageElement
+                                                        ).src = '/no-image.png';
+                                                    }}
                                                 />
                                             </div>
                                             <div className="flex-1">

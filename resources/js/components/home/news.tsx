@@ -64,6 +64,11 @@ export default function News({
                                     src={`/foto_berita/${latest_news_single[0].foto_berita}`}
                                     alt={latest_news_single[0].judul}
                                     className="absolute inset-0 h-full w-full rounded-l-xl object-cover object-center brightness-75"
+                                    onError={(e) => {
+                                        (
+                                            e.currentTarget as HTMLImageElement
+                                        ).src = '/no-image.png';
+                                    }}
                                 />
                                 <div className="absolute bottom-2 left-2 flex items-center gap-1 rounded-full bg-black/40 px-2 py-1">
                                     <Eye className="inline-block size-4 text-white" />
@@ -206,6 +211,11 @@ export default function News({
                                             src={`/foto_berita/${item.foto_berita}`}
                                             alt={item.judul}
                                             className="absolute inset-0 h-full w-full rounded-xl object-cover object-center brightness-75"
+                                            onError={(e) => {
+                                                (
+                                                    e.currentTarget as HTMLImageElement
+                                                ).src = '/no-image.png';
+                                            }}
                                         />
                                         <div className="absolute right-2 bottom-2 flex items-center gap-1 rounded-full bg-black/40 px-2 py-1">
                                             <Eye className="inline-block size-4 text-white" />
@@ -270,6 +280,11 @@ export default function News({
                                     src={`/foto_berita/${perspektif[0].foto_berita}`}
                                     alt={perspektif[0].judul}
                                     className="absolute inset-0 h-full w-full rounded-xl object-cover object-top brightness-75"
+                                    onError={(e) => {
+                                        (
+                                            e.currentTarget as HTMLImageElement
+                                        ).src = '/no-image.png';
+                                    }}
                                 />
                                 <div className="absolute right-2 bottom-2 flex items-center gap-1 rounded-full bg-black/40 px-2 py-1">
                                     <Eye className="inline-block size-4 text-white" />
@@ -313,6 +328,11 @@ export default function News({
                                         src={`/foto_berita/${item.foto_berita}`}
                                         alt={item.judul}
                                         className="size-24 rounded-md bg-primary/40 object-cover"
+                                        onError={(e) => {
+                                            (
+                                                e.currentTarget as HTMLImageElement
+                                            ).src = '/no-image.png';
+                                        }}
                                     />
                                     <div className="flex flex-1 flex-col gap-2">
                                         <Badge>

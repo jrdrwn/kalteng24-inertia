@@ -41,6 +41,11 @@ export default function BreakingNews({ breaking_news }: ComponentProps) {
                                         src={`/foto_berita/${item.foto_berita}`}
                                         alt={item.judul}
                                         className="size-26 rounded-md bg-primary/40 object-cover shadow-md"
+                                        onError={(e) => {
+                                            (
+                                                e.currentTarget as HTMLImageElement
+                                            ).src = '/no-image.png';
+                                        }}
                                     />
                                     <div className="flex flex-1 flex-col gap-2">
                                         <p className="text-sm text-muted-foreground">

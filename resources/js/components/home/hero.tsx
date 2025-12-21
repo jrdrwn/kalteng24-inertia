@@ -22,6 +22,10 @@ export default function Hero({ hero_berita }: ComponentProps) {
                         src={`/foto_berita/${hero_berita[0].foto_berita}`}
                         alt={hero_berita[0].judul}
                         className="absolute inset-0 h-full w-full rounded-2xl object-cover object-center blur-[0px] brightness-75 transition-all group-hover:blur"
+                        onError={(e) => {
+                            (e.currentTarget as HTMLImageElement).src =
+                                '/no-image.png';
+                        }}
                     />
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-transparent to-neutral-900"></div>
                     <Badge
@@ -68,6 +72,10 @@ export default function Hero({ hero_berita }: ComponentProps) {
                         src={`/foto_berita/${hero_berita[1].foto_berita}`}
                         alt={hero_berita[1].judul}
                         className="absolute inset-0 h-full w-full rounded-2xl object-cover object-center blur-[0px] brightness-75 transition-all group-hover:blur"
+                        onError={(e) => {
+                            (e.currentTarget as HTMLImageElement).src =
+                                '/no-image.png';
+                        }}
                     />
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-transparent to-neutral-900"></div>
                     <Badge
@@ -111,6 +119,10 @@ export default function Hero({ hero_berita }: ComponentProps) {
                         src={`/foto_berita/${hero_berita[2].foto_berita}`}
                         alt={hero_berita[2].judul}
                         className="absolute inset-0 h-full w-full rounded-2xl object-cover object-center blur-[0px] brightness-75 transition-all group-hover:blur"
+                        onError={(e) => {
+                            (e.currentTarget as HTMLImageElement).src =
+                                '/no-image.png';
+                        }}
                     />
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-transparent to-neutral-900"></div>
                     <Badge
@@ -145,6 +157,10 @@ export default function Hero({ hero_berita }: ComponentProps) {
                         src={`/foto_berita/${hero_berita[3].foto_berita}`}
                         alt={hero_berita[3].judul}
                         className="absolute inset-0 h-full w-full rounded-2xl object-cover object-center blur-[0px] brightness-75 transition-all group-hover:blur"
+                        onError={(e) => {
+                            (e.currentTarget as HTMLImageElement).src =
+                                '/no-image.png';
+                        }}
                     />
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-transparent to-neutral-900"></div>
                     <Badge
