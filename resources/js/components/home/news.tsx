@@ -1,6 +1,7 @@
 import { createSlug, getRubrikOrKategori } from '@/lib/utils';
+import { SharedData } from '@/types';
 import { BeritaRed, BeritaVid } from '@/types/entities';
-import { InfiniteScroll, Link } from '@inertiajs/react';
+import { InfiniteScroll, Link, usePage } from '@inertiajs/react';
 import parse from 'html-react-parser';
 import { Eye, LucideTriangle, UserCircle } from 'lucide-react';
 import ReactPlayer from 'react-player';
@@ -42,6 +43,7 @@ export default function News({
     perspektif,
     popular_news,
 }: ComponentProps) {
+    const { imageUrl } = usePage<SharedData>().props;
     return (
         <section className="px-4 py-2">
             <div className="container mx-auto grid grid-cols-3 gap-8">
@@ -62,7 +64,7 @@ export default function News({
                         >
                             <div className="relative w-2/3 rounded-l-xl bg-primary/40">
                                 <img
-                                    src={`/foto_berita/${latest_news_single[0].foto_berita}`}
+                                    src={`${imageUrl}/${latest_news_single[0].foto_berita}`}
                                     alt={latest_news_single[0].judul}
                                     className="absolute inset-0 h-full w-full rounded-l-xl object-cover object-center brightness-75"
                                     onError={(e) => {
@@ -209,7 +211,7 @@ export default function News({
                                 >
                                     <div className="relative h-60 w-full rounded-xl bg-primary/40">
                                         <img
-                                            src={`/foto_berita/${item.foto_berita}`}
+                                            src={`${imageUrl}/${item.foto_berita}`}
                                             alt={item.judul}
                                             className="absolute inset-0 h-full w-full rounded-xl object-cover object-center brightness-75"
                                             onError={(e) => {
@@ -278,7 +280,7 @@ export default function News({
                         >
                             <div className="relative w-2/3 rounded-xl bg-primary/40">
                                 <img
-                                    src={`/foto_berita/${perspektif[0].foto_berita}`}
+                                    src={`${imageUrl}/${perspektif[0].foto_berita}`}
                                     alt={perspektif[0].judul}
                                     className="absolute inset-0 h-full w-full rounded-xl object-cover object-top brightness-75"
                                     onError={(e) => {
@@ -326,7 +328,7 @@ export default function News({
                                     className="group flex cursor-pointer flex-row items-center gap-4"
                                 >
                                     <img
-                                        src={`/foto_berita/${item.foto_berita}`}
+                                        src={`${imageUrl}/${item.foto_berita}`}
                                         alt={item.judul}
                                         className="size-24 rounded-md bg-primary/40 object-cover"
                                         onError={(e) => {

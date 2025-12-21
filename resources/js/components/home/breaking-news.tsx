@@ -1,6 +1,7 @@
 import { createSlug } from '@/lib/utils';
+import { SharedData } from '@/types';
 import { BeritaRed } from '@/types/entities';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import Autoplay from 'embla-carousel-autoplay';
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
 
@@ -9,6 +10,7 @@ interface ComponentProps {
 }
 
 export default function BreakingNews({ breaking_news }: ComponentProps) {
+    const { imageUrl } = usePage<SharedData>().props;
     return (
         <section className="px-4 py-2">
             <div className="container">
@@ -38,7 +40,7 @@ export default function BreakingNews({ breaking_news }: ComponentProps) {
                                     className="group flex cursor-pointer flex-row items-center gap-4 p-4"
                                 >
                                     <img
-                                        src={`/foto_berita/${item.foto_berita}`}
+                                        src={`${imageUrl}/${item.foto_berita}`}
                                         alt={item.judul}
                                         className="size-26 rounded-md bg-primary/40 object-cover shadow-md"
                                         onError={(e) => {

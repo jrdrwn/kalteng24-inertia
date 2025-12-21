@@ -21,8 +21,9 @@ import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Spinner } from '@/components/ui/spinner';
 import { createSlug, getRubrikOrKategori } from '@/lib/utils';
+import { SharedData } from '@/types';
 import { BeritaRed, BeritaVid } from '@/types/entities';
-import { InfiniteScroll, Link } from '@inertiajs/react';
+import { InfiniteScroll, Link, usePage } from '@inertiajs/react';
 import Autoplay from 'embla-carousel-autoplay';
 import parse from 'html-react-parser';
 import { Eye, LucideTriangle, Timer, User, UserCircle } from 'lucide-react';
@@ -52,6 +53,7 @@ export default function ReadNews({
     latest_news_video,
     latest_news,
 }: PageProps) {
+    const { imageUrl } = usePage<SharedData>().props;
     const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
     const shareText = news?.judul || '';
 
@@ -130,7 +132,7 @@ export default function ReadNews({
                     <div className="col-span-3 prose gap-2 prose-h1:mb-0">
                         <div className="not-prose mb-4 aspect-video w-full rounded-2xl bg-muted">
                             <img
-                                src={`/foto_berita/${news.foto_berita}`}
+                                src={`${imageUrl}/${news.foto_berita}`}
                                 alt={news.judul}
                                 className="h-full w-full rounded-2xl object-cover"
                                 onError={(e) => {
@@ -278,7 +280,7 @@ export default function ReadNews({
                                     >
                                         <div className="relative h-60 w-full rounded-xl bg-primary/40">
                                             <img
-                                                src={`/foto_berita/${item.foto_berita}`}
+                                                src={`${imageUrl}/${item.foto_berita}`}
                                                 alt={item.judul}
                                                 className="h-full w-full rounded-xl object-cover"
                                                 onError={(e) => {
@@ -363,7 +365,7 @@ export default function ReadNews({
                                         <div className="flex gap-2">
                                             <div className="aspect-square w-20 rounded-md bg-primary/40">
                                                 <img
-                                                    src={`/foto_berita/${item.foto_berita}`}
+                                                    src={`${imageUrl}/${item.foto_berita}`}
                                                     alt={item.judul}
                                                     className="h-full w-full rounded-md object-cover"
                                                     onError={(e) => {

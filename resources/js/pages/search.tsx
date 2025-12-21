@@ -26,9 +26,10 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { createSlug, getRubrikOrKategori } from '@/lib/utils';
+import { SharedData } from '@/types';
 import { BeritaRed } from '@/types/entities';
 import { TPagination } from '@/types/pagination';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import parse from 'html-react-parser';
 import {
     ArrowLeft,
@@ -54,6 +55,7 @@ export default function SearchResult({
     kategori_list,
     jenis_rubrik_list,
 }: PageProps) {
+    const { imageUrl } = usePage<SharedData>().props;
     const urlParams = new URLSearchParams(window.location.search);
     const sort = urlParams.get('sort') || 'latest';
 
@@ -276,7 +278,7 @@ export default function SearchResult({
                                         >
                                             <div className="relative mr-2 w-60 rounded-xl bg-primary/40">
                                                 <img
-                                                    src={`/foto_berita/${item.foto_berita}`}
+                                                    src={`${imageUrl}/${item.foto_berita}`}
                                                     alt={item.judul}
                                                     className="h-full w-full rounded-xl object-cover object-center"
                                                     onError={(e) => {
@@ -427,7 +429,7 @@ export default function SearchResult({
                                         >
                                             <div className="w-16 rounded-md bg-primary/40">
                                                 <img
-                                                    src={`/foto_berita/${item.foto_berita}`}
+                                                    src={`${imageUrl}/${item.foto_berita}`}
                                                     alt={item.judul}
                                                     className="h-full w-full rounded-md object-cover object-center"
                                                     onError={(e) => {

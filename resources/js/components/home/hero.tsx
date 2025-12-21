@@ -1,6 +1,7 @@
 import { createSlug, getRubrikOrKategori } from '@/lib/utils';
+import { SharedData } from '@/types';
 import { BeritaRed } from '@/types/entities';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import parse from 'html-react-parser';
 import { UserCircle } from 'lucide-react';
 import { Badge } from '../ui/badge';
@@ -10,6 +11,8 @@ interface ComponentProps {
 }
 
 export default function Hero({ hero_berita }: ComponentProps) {
+    const { imageUrl } = usePage<SharedData>().props;
+
     return (
         <section className="px-4 py-2">
             <div className="container mx-auto grid h-[400px] grid-cols-4 grid-rows-2 items-center justify-items-center gap-6 [&>div]:flex [&>div]:flex-col [&>div]:items-start [&>div]:justify-end [&>div]:gap-y-2 [&>div]:rounded-2xl [&>div]:p-4 [&>div]:text-white">
@@ -19,7 +22,7 @@ export default function Hero({ hero_berita }: ComponentProps) {
                     className="group relative col-span-2 row-span-2 h-full w-full cursor-pointer bg-primary/80"
                 >
                     <img
-                        src={`/foto_berita/${hero_berita[0].foto_berita}`}
+                        src={`${imageUrl}/${hero_berita[0].foto_berita}`}
                         alt={hero_berita[0].judul}
                         className="absolute inset-0 h-full w-full rounded-2xl object-cover object-center blur-[0px] brightness-75 transition-all group-hover:blur"
                         onError={(e) => {
@@ -69,7 +72,7 @@ export default function Hero({ hero_berita }: ComponentProps) {
                     className="group relative col-span-2 row-span-1 h-full w-full cursor-pointer bg-primary/70"
                 >
                     <img
-                        src={`/foto_berita/${hero_berita[1].foto_berita}`}
+                        src={`${imageUrl}/${hero_berita[1].foto_berita}`}
                         alt={hero_berita[1].judul}
                         className="absolute inset-0 h-full w-full rounded-2xl object-cover object-center blur-[0px] brightness-75 transition-all group-hover:blur"
                         onError={(e) => {
@@ -116,7 +119,7 @@ export default function Hero({ hero_berita }: ComponentProps) {
                     className="group relative col-span-1 row-span-1 h-full w-full cursor-pointer bg-primary/50"
                 >
                     <img
-                        src={`/foto_berita/${hero_berita[2].foto_berita}`}
+                        src={`${imageUrl}/${hero_berita[2].foto_berita}`}
                         alt={hero_berita[2].judul}
                         className="absolute inset-0 h-full w-full rounded-2xl object-cover object-center blur-[0px] brightness-75 transition-all group-hover:blur"
                         onError={(e) => {
@@ -154,7 +157,7 @@ export default function Hero({ hero_berita }: ComponentProps) {
                     className="group relative col-span-1 row-span-1 h-full w-full cursor-pointer bg-primary/30"
                 >
                     <img
-                        src={`/foto_berita/${hero_berita[3].foto_berita}`}
+                        src={`${imageUrl}/${hero_berita[3].foto_berita}`}
                         alt={hero_berita[3].judul}
                         className="absolute inset-0 h-full w-full rounded-2xl object-cover object-center blur-[0px] brightness-75 transition-all group-hover:blur"
                         onError={(e) => {
