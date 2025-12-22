@@ -32,13 +32,19 @@ jobs:
       - name: Build Assets
         run: npm run build
 
-      - name: Zip Project (exclude node_modules)
+      - name: Zip public/build (include vendor, exclude node_modules)
         run: |
-          zip -r release.zip . -x "node_modules/*" "vendor/*" ".git/*" "*.zip"
+          zip -r build_with_vendor.zip public/build vendor -x "node_modules/*" ".git/*" "*.zip"
 
-      - name: Upload Release Asset
+      - name: Zip public/build (exclude vendor and node_modules)
+        run: |
+          zip -r build_no_vendor.zip public/build -x "vendor/*" "node_modules/*" ".git/*" "*.zip"
+
+      - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
         with:
-          files: release.zip
+          files: |
+            build_with_vendor.zip
+            build_no_vendor.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
