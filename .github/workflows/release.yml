@@ -32,13 +32,13 @@ jobs:
       - name: Build Assets
         run: npm run build
 
-      - name: Zip public/build (include vendor, exclude node_modules)
+      - name: Zip project (include vendor, exclude node_modules)
         run: |
-          zip -r build_with_vendor.zip public/build vendor -x "node_modules/*" ".git/*" "*.zip"
+          zip -r build_with_vendor.zip . -x "node_modules/*" ".git/*" "*.zip"
 
-      - name: Zip public/build (exclude vendor and node_modules)
+      - name: Zip project (exclude vendor and node_modules)
         run: |
-          zip -r build_no_vendor.zip public/build -x "vendor/*" "node_modules/*" ".git/*" "*.zip"
+          zip -r build_no_vendor.zip . -x "vendor/*" "node_modules/*" ".git/*" "*.zip"
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
