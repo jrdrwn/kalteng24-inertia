@@ -102,7 +102,7 @@ export default function SearchResult({
     return (
         <>
             <Header2 />
-            <section className="px-4 pt-8 pb-4">
+            <section className="px-2 pt-4 pb-4 md:px-4">
                 <div className="container mx-auto grid grid-cols-4 gap-4">
                     <div className="hidden md:col-span-1 md:block">
                         <div className="sticky top-10">
@@ -454,7 +454,7 @@ export default function SearchResult({
                                             key={index}
                                             className="group relative mb-2 flex cursor-pointer flex-col gap-2 rounded-xl sm:h-54 sm:flex-row xl:h-74"
                                         >
-                                            <div className="relative mr-2 w-full rounded-xl bg-primary/40 sm:w-50 xl:w-60">
+                                            <div className="relative mr-2 h-54 w-full rounded-xl bg-primary/40 sm:h-auto sm:w-50 xl:w-60">
                                                 <img
                                                     src={`${imageUrl}/${item.foto_berita}`}
                                                     alt={item.judul}
@@ -479,7 +479,7 @@ export default function SearchResult({
                                                 )}
                                             </Badge>
                                             <div className="flex-1 overflow-hidden rounded-xl py-4 pr-4">
-                                                <h1 className="line-clamp-2 text-xl leading-relaxed font-semibold tracking-wide group-hover:underline">
+                                                <h1 className="line-clamp-2 text-lg leading-relaxed font-semibold tracking-wide group-hover:underline md:text-xl">
                                                     {item.judul}
                                                 </h1>
                                                 <div className="mb-4 flex flex-row items-center gap-1.5 pt-2 text-sm text-primary">

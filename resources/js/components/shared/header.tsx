@@ -47,7 +47,7 @@ type NavItem = {
 };
 
 const navigationItems: NavItem[] = [
-    { label: 'Home', href: '/home' },
+    { label: 'BERANDA', href: '/' },
     { label: 'HITWAY', href: '/read-news/69_tengadah-sang-tingang' },
     {
         label: 'NASIONAL',
@@ -173,7 +173,7 @@ const navigationItems: NavItem[] = [
             },
         ],
     },
-    { label: 'Olahraga', href: '/search?q=Olahraga' },
+    { label: 'OLAHRAGA', href: '/search?q=Olahraga' },
 ];
 
 export default function Header() {

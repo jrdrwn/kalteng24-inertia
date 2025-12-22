@@ -45,7 +45,7 @@ export default function News({
 }: ComponentProps) {
     const { imageUrl } = usePage<SharedData>().props;
     return (
-        <section className="px-4 py-2">
+        <section className="px-2 py-2 md:px-4">
             <div className="container mx-auto grid grid-cols-3 gap-8">
                 <div className="order-2 col-span-3 lg:order-1 lg:col-span-2">
                     <div className="w-max pb-4">
@@ -216,7 +216,7 @@ export default function News({
                                     as={'div'}
                                     href={`/read-news/${createSlug(item.id_ber, item.judul)}`}
                                     key={index}
-                                    className="group relative flex cursor-pointer flex-col gap-4 rounded-xl"
+                                    className="group relative col-span-2 flex cursor-pointer flex-col gap-4 rounded-xl md:col-span-1"
                                 >
                                     <div className="relative h-50 w-full rounded-xl bg-primary/40 xl:h-60">
                                         <img
@@ -240,7 +240,7 @@ export default function News({
                                         {getRubrikOrKategori(item, true)}
                                     </Badge>
                                     <div className="overflow-hidden rounded-xl p-2">
-                                        <h1 className="line-clamp-2 text-xl leading-relaxed font-semibold tracking-wide group-hover:underline xl:line-clamp-3">
+                                        <h1 className="line-clamp-2 text-lg leading-relaxed font-semibold tracking-wide group-hover:underline md:text-xl xl:line-clamp-3">
                                             {item.judul}
                                         </h1>
                                         <div className="mb-4 flex flex-row items-center gap-1.5 pt-2 text-sm text-primary">

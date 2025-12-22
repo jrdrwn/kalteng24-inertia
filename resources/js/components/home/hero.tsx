@@ -14,7 +14,7 @@ export default function Hero({ hero_berita }: ComponentProps) {
     const { imageUrl } = usePage<SharedData>().props;
 
     return (
-        <section className="px-4 py-2">
+        <section className="px-2 py-2 md:px-4">
             <div className="container mx-auto grid h-[400px] grid-cols-4 grid-rows-2 items-center justify-items-center gap-6 [&>div]:flex [&>div]:flex-col [&>div]:items-start [&>div]:justify-end [&>div]:gap-y-2 [&>div]:rounded-2xl [&>div]:p-4 [&>div]:text-white">
                 <Link
                     href={`/read-news/${createSlug(hero_berita[0].id_ber, hero_berita[0].judul)}`}
@@ -37,7 +37,7 @@ export default function Hero({ hero_berita }: ComponentProps) {
                     >
                         {getRubrikOrKategori(hero_berita[0], true)}
                     </Badge>
-                    <h1 className="z-1 line-clamp-2 text-2xl font-semibold group-hover:underline">
+                    <h1 className="z-1 line-clamp-2 text-lg font-semibold group-hover:underline md:text-2xl">
                         {hero_berita[0].judul}
                     </h1>
                     <div className="z-1 line-clamp-2 text-sm">
@@ -47,22 +47,23 @@ export default function Hero({ hero_berita }: ComponentProps) {
                         <UserCircle className="inline-block size-4" />
                         <span>{hero_berita[0].user}</span>
                         <span className="size-1.5 rounded-full bg-white"></span>
-                        <span>
+                        <span className="flex gap-2">
                             {new Date(hero_berita[0].tgl).toLocaleDateString(
                                 'id-ID',
                                 {
                                     dateStyle: 'full',
                                 },
                             )}
-                            <span> jam </span>
-                            {new Date(hero_berita[0].jam).toLocaleTimeString(
-                                'id-ID',
-                                {
+                            <span className="hidden sm:block">
+                                <span> jam </span>
+                                {new Date(
+                                    hero_berita[0].jam,
+                                ).toLocaleTimeString('id-ID', {
                                     hour: '2-digit',
                                     minute: '2-digit',
                                     timeZoneName: 'short',
-                                },
-                            )}
+                                })}
+                            </span>
                         </span>
                     </div>
                 </Link>

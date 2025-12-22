@@ -85,7 +85,7 @@ export default function ReadNews({
     return (
         <>
             <Header />
-            <section className="p-4">
+            <section className="px-2 pt-4 pb-2 md:px-4">
                 <div className="container mx-auto">
                     <Carousel
                         opts={{
@@ -102,7 +102,9 @@ export default function ReadNews({
                         className="flex gap-4"
                     >
                         <div className="flex w-full justify-between gap-4 overflow-hidden rounded-full bg-primary px-4 py-2 font-medium text-primary-foreground">
-                            <p className="whitespace-nowrap">Trending Topics</p>
+                            <p className="hidden whitespace-nowrap md:inline-block">
+                                Trending
+                            </p>
                             <CarouselContent className=" ">
                                 {trending_news.map((item, index) => (
                                     <CarouselItem
@@ -121,7 +123,7 @@ export default function ReadNews({
                     </Carousel>
                 </div>
             </section>
-            <section className="p-4">
+            <section className="px-2 py-4 md:px-4">
                 <div className="container mx-auto grid grid-cols-6 gap-4">
                     <div className="sticky top-4 col-span-1 hidden self-start xl:block">
                         <Skeleton className="mb-2 h-100 w-full rounded-lg" />
@@ -129,7 +131,7 @@ export default function ReadNews({
                             Space Iklan
                         </p>
                     </div>
-                    <div className="col-span-6 mx-auto prose prose-sm w-full gap-2 md:col-span-4 lg:prose-base xl:col-span-3 prose-h1:mb-0 prose-h1:text-center sm:prose-h1:text-left">
+                    <div className="col-span-6 mx-auto prose prose-sm w-full gap-2 md:col-span-4 lg:prose-base xl:col-span-3 prose-h1:mt-4 prose-h1:mb-0 prose-h1:text-center prose-h1:text-2xl prose-h1:leading-relaxed sm:prose-h1:text-left lg:prose-h1:text-3xl prose-p:text-justify">
                         <div className="not-prose mb-4 aspect-video w-full rounded-2xl bg-muted">
                             <img
                                 src={`${imageUrl}/${news.foto_berita}`}
@@ -175,6 +177,11 @@ export default function ReadNews({
                                 </span>
                             </div>
                             <h1 className="mt-4 mb-2">{news.judul}</h1>
+                            {news.sub_judul && (
+                                <p className="!mb-0 text-muted-foreground">
+                                    {news.sub_judul}
+                                </p>
+                            )}
                             <div>{parse(news.isi_berita)}</div>
                         </Card>
                         <div className="block xl:hidden">
@@ -390,7 +397,7 @@ export default function ReadNews({
                                         as={'div'}
                                         href={`/read-news/${createSlug(item.id_ber, item.judul)}`}
                                         key={index}
-                                        className="group relative flex cursor-pointer flex-col gap-4 rounded-xl"
+                                        className="group relative col-span-2 flex cursor-pointer flex-col gap-4 rounded-xl md:col-span-1"
                                     >
                                         <div className="relative h-40 w-full rounded-xl bg-primary/40 lg:h-60">
                                             <img
@@ -414,7 +421,7 @@ export default function ReadNews({
                                             {getRubrikOrKategori(item, true)}
                                         </Badge>
                                         <div className="overflow-hidden rounded-xl p-2">
-                                            <h1 className="line-clamp-2 text-xl leading-relaxed font-semibold tracking-wide group-hover:underline">
+                                            <h1 className="line-clamp-2 text-lg leading-relaxed font-semibold tracking-wide group-hover:underline md:text-xl">
                                                 {item.judul}
                                             </h1>
                                             <div className="mb-4 flex flex-row items-center gap-1.5 pt-2 text-sm text-primary">
