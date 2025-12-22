@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/home', function () {
-
+Route::get('/', function () {
     return Inertia::render('home', [
         'hero_berita' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->take(4)->get(),
         'breaking_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->take(16)->offset(4)->get(),
@@ -21,6 +20,10 @@ Route::get('/home', function () {
         'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('hits', 'desc')->take(5)->get(),
     ]);
 })->name('home');
+
+Route::get('/home', function () {
+    return redirect()->route('home');
+});
 
 Route::get('/search', function (Request $request) {
     $order_by = $request->input('sort', 'latest');
