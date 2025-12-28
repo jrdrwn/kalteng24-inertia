@@ -10,14 +10,14 @@ Route::get('/', function () {
     return Inertia::render('home', [
         'hero_berita' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->take(4)->get(),
         'breaking_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->take(16)->offset(4)->get(),
-        'latest_news_single' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->take(1)->get(),
+        'latest_news_single' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->take(1)->offset(20)->get(),
         'latest_news' => Inertia::scroll(
             fn() =>
             BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->paginate(8)
         ),
         'latest_news_video' => BeritaVid::orderBy('tgl', 'desc')->take(5)->get(),
         'perspektif' => BeritaRed::where('id_ber', '=', 69)->get(),
-        'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('hits', 'desc')->take(5)->get(),
+        'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->inRandomOrder()->orderBy('hits', 'desc')->take(5)->get(),
     ]);
 })->name('home');
 
@@ -63,7 +63,7 @@ Route::get('/search', function (Request $request) {
         ->paginate(10)
         ->withQueryString();
     return Inertia::render('search', [
-        'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('hits', 'desc')->take(5)->get(),
+        'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->inRandomOrder()->orderBy('hits', 'desc')->take(5)->get(),
         'kategori_list' => BeritaRed::select('kategori')->distinct()->get(),
         'jenis_rubrik_list' => BeritaRed::select('jenis_rubrik')->distinct()->get(),
         'search_results' => $search_results,
@@ -101,7 +101,7 @@ Route::get('/read-news/{slug}', function (Request $request, $slug) {
 
     return Inertia::render('read-news', [
         'news' => $news,
-        'popular_news' => BeritaRed::whereNot('id_ber', '=', $id_ber)->orderBy('hits', 'desc')->take(5)->get(),
+        'popular_news' => BeritaRed::whereNot('id_ber', '=', $id_ber)->inRandomOrder()->orderBy('hits', 'desc')->take(5)->get(),
         'trending_news' => BeritaRed::whereNot('id_ber', '=', $id_ber)->orderBy('hits', 'desc')->take(10)->get(),
         'latest_news_video' => BeritaVid::orderBy('tgl', 'desc')->take(5)->get(),
         'latest_news' => Inertia::scroll(

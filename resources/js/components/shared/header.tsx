@@ -14,6 +14,7 @@ import {
     FaTwitterSquare,
     FaYoutubeSquare,
 } from 'react-icons/fa';
+import { ModeToggle } from '../custom/mode-toggle';
 import { Button } from '../ui/button';
 import { Drawer, DrawerClose, DrawerContent, DrawerHeader } from '../ui/drawer';
 import {
@@ -211,7 +212,9 @@ export default function Header() {
                 </div>
                 <Separator className="rounded-full border-1" />
                 <div className="flex flex-row items-center justify-between pt-1.5">
-                    <img src="/logo.png" alt="Logo" className="h-8" />
+                    <Link href="/">
+                        <img src="/logo.png" alt="Logo" className="h-8" />
+                    </Link>
                     {/* Desktop Navigation */}
                     <nav className="hidden lg:block">
                         <NavigationMenu>
@@ -243,6 +246,7 @@ export default function Header() {
                                 <SearchIcon />
                             </Button>
                         </Link>
+                        <ModeToggle />
 
                         {/* Mobile Hamburger */}
                         <Button
@@ -330,7 +334,9 @@ export function Header2() {
                 </div>
                 <Separator className="rounded-full border-1" />
                 <div className="flex flex-row items-center justify-between pt-1.5">
-                    <img src="/logo.png" alt="Logo" className="h-8" />
+                    <Link href="/">
+                        <img src="/logo.png" alt="Logo" className="h-8" />
+                    </Link>
                     {/* Desktop Navigation */}
                     <nav className="hidden lg:block">
                         <NavigationMenu>

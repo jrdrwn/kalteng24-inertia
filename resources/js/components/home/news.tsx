@@ -87,7 +87,7 @@ export default function News({
                                 )}
                             </Badge>
                             <div className="overflow-hidden rounded-xl p-2 lg:w-1/2">
-                                <h1 className="line-clamp-3 text-xl leading-relaxed font-semibold tracking-wide group-hover:underline">
+                                <h1 className="line-clamp-3 text-xl leading-relaxed font-semibold tracking-wide group-hover:underline group-active:underline">
                                     {latest_news_single[0].judul}
                                 </h1>
                                 <div className="mb-4 flex flex-row items-center gap-1.5 pt-2 text-sm">
@@ -164,7 +164,7 @@ export default function News({
                                                     <div className="absolute inset-x-0 top-1/2 z-1 mx-auto mb-2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-secondary p-2">
                                                         <LucideTriangle className="inline-block size-5 rotate-90 text-primary" />
                                                     </div>
-                                                    <p className="z-1 line-clamp-2 text-sm font-medium tracking-wide text-white group-hover:underline lg:text-base">
+                                                    <p className="z-1 line-clamp-2 text-sm font-medium tracking-wide text-white group-hover:underline group-active:underline lg:text-base">
                                                         {item.judul_vid}
                                                     </p>
                                                 </div>
@@ -240,7 +240,7 @@ export default function News({
                                         {getRubrikOrKategori(item, true)}
                                     </Badge>
                                     <div className="overflow-hidden rounded-xl p-2">
-                                        <h1 className="line-clamp-2 text-lg leading-relaxed font-semibold tracking-wide group-hover:underline md:text-xl xl:line-clamp-3">
+                                        <h1 className="line-clamp-2 text-lg leading-relaxed font-semibold tracking-wide group-hover:underline group-active:underline md:text-xl xl:line-clamp-3">
                                             {item.judul}
                                         </h1>
                                         <div className="mb-4 flex flex-row items-center gap-1.5 pt-2 text-sm text-primary">
@@ -322,7 +322,7 @@ export default function News({
                                 </Badge>
                             </div>
                             <div className="w-full overflow-hidden rounded-xl p-2 md:xl:w-2/3">
-                                <h1 className="text-xl leading-relaxed font-semibold tracking-wide group-hover:underline">
+                                <h1 className="text-xl leading-relaxed font-semibold tracking-wide group-hover:underline group-active:underline">
                                     {perspektif[0].judul}
                                 </h1>
                                 <div className="mb-4 flex flex-row items-center gap-1.5 pt-2 text-sm text-primary">
@@ -360,7 +360,7 @@ export default function News({
                                         }}
                                     />
                                     <div className="flex flex-1 flex-col gap-2">
-                                        <Badge>
+                                        <Badge className="uppercase">
                                             {getRubrikOrKategori(item, true)}
                                         </Badge>
                                         <p className="flex gap-2 text-sm text-muted-foreground">
@@ -380,7 +380,7 @@ export default function News({
                                                 })}
                                             </span>
                                         </p>
-                                        <p className="line-clamp-2 font-medium group-hover:underline">
+                                        <p className="line-clamp-2 font-medium group-hover:underline group-active:underline">
                                             {item.judul}
                                         </p>
                                     </div>

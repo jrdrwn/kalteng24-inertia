@@ -1,6 +1,7 @@
 import Footer from '@/components/shared/footer';
 import Header from '@/components/shared/header';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
     Carousel,
@@ -17,6 +18,11 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Spinner } from '@/components/ui/spinner';
@@ -26,7 +32,15 @@ import { BeritaRed, BeritaVid } from '@/types/entities';
 import { InfiniteScroll, Link, usePage } from '@inertiajs/react';
 import Autoplay from 'embla-carousel-autoplay';
 import parse from 'html-react-parser';
-import { Eye, LucideTriangle, Timer, User, UserCircle } from 'lucide-react';
+import {
+    Accessibility,
+    Eye,
+    LucideTriangle,
+    Timer,
+    User,
+    UserCircle,
+} from 'lucide-react';
+import { useState } from 'react';
 import {
     FaFacebookSquare,
     FaLinkedin,
@@ -57,6 +71,14 @@ export default function ReadNews({
     const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
     const shareText = news?.judul || '';
 
+    // Accessibility states
+
+    const [fontSize, setFontSize] = useState(1); // em unit
+
+    function handleFontSize(change: number) {
+        setFontSize((prev) => Math.max(0.8, Math.min(2, prev + change)));
+    }
+
     function handleShare(platform: string) {
         const url = encodeURIComponent(shareUrl);
         const text = encodeURIComponent(shareText);
@@ -85,6 +107,47 @@ export default function ReadNews({
     return (
         <>
             <Header />
+            {/* Accessibility Toolbar: Font Size Only, Popover */}
+            <div className="fixed right-6 bottom-16 z-50 flex flex-col items-end gap-2">
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <Button
+                            aria-label="Tampilkan pengaturan font"
+                            variant="outline"
+                            size="icon"
+                            className="mb-1 rounded-full"
+                        >
+                            <span className="font-bold">
+                                <Accessibility />
+                            </span>
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent
+                        align="end"
+                        className="flex w-36 flex-col gap-2 p-3"
+                    >
+                        <span className="mb-1 text-xs text-muted-foreground">
+                            Ukuran Font
+                        </span>
+                        <Button
+                            aria-label="Perbesar font"
+                            variant="outline"
+                            className="font-bold"
+                            onClick={() => handleFontSize(0.1)}
+                        >
+                            A+
+                        </Button>
+                        <Button
+                            aria-label="Perkecil font"
+                            variant="outline"
+                            className="font-bold"
+                            onClick={() => handleFontSize(-0.1)}
+                        >
+                            A-
+                        </Button>
+                    </PopoverContent>
+                </Popover>
+            </div>
             <section className="px-2 pt-4 pb-2 md:px-4">
                 <div className="container mx-auto">
                     <Carousel
@@ -111,7 +174,12 @@ export default function ReadNews({
                                         key={index}
                                         className="line-clamp-1 text-end"
                                     >
-                                        {item.judul}
+                                        <Link
+                                            href={`/read-news/${createSlug(item.id_ber, item.judul)}`}
+                                            className="hover:underline"
+                                        >
+                                            {item.judul}
+                                        </Link>
                                     </CarouselItem>
                                 ))}
                             </CarouselContent>
@@ -131,7 +199,9 @@ export default function ReadNews({
                             Space Iklan
                         </p>
                     </div>
-                    <div className="col-span-6 mx-auto prose prose-sm w-full gap-2 md:col-span-4 lg:prose-base xl:col-span-3 prose-h1:mt-4 prose-h1:mb-0 prose-h1:text-center prose-h1:text-2xl prose-h1:leading-relaxed sm:prose-h1:text-left lg:prose-h1:text-3xl prose-p:text-justify">
+                    <div
+                        className={`col-span-6 mx-auto prose prose-sm w-full gap-2 md:col-span-4 lg:prose-base xl:col-span-3 dark:prose-invert prose-h1:mt-4 prose-h1:mb-0 prose-h1:text-center prose-h1:text-2xl prose-h1:leading-relaxed sm:prose-h1:text-left lg:prose-h1:text-3xl prose-p:text-justify`}
+                    >
                         <div className="not-prose mb-4 aspect-video w-full rounded-2xl bg-muted">
                             <img
                                 src={`${imageUrl}/${news.foto_berita}`}
@@ -182,7 +252,9 @@ export default function ReadNews({
                                     {news.sub_judul}
                                 </p>
                             )}
-                            <div>{parse(news.isi_berita)}</div>
+                            <div style={{ fontSize: fontSize + 'em' }}>
+                                {parse(news.isi_berita)}
+                            </div>
                         </Card>
                         <div className="block xl:hidden">
                             <Skeleton className="mb-2 h-50 w-full rounded-lg" />
@@ -246,7 +318,7 @@ export default function ReadNews({
                                                             true,
                                                         )}
                                                     </Badge>
-                                                    <p className="line-clamp-1 font-medium group-hover:underline">
+                                                    <p className="line-clamp-1 font-medium group-hover:underline group-active:underline">
                                                         {item.judul}
                                                     </p>
                                                     <span className="text-sm">
@@ -341,7 +413,7 @@ export default function ReadNews({
                                                         <div className="absolute inset-x-0 top-1/2 z-1 mx-auto mb-2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-secondary p-2">
                                                             <LucideTriangle className="inline-block size-5 rotate-90 text-primary" />
                                                         </div>
-                                                        <p className="z-1 line-clamp-2 text-xs font-medium tracking-wide text-white group-hover:underline">
+                                                        <p className="z-1 line-clamp-2 text-xs font-medium tracking-wide text-white group-hover:underline group-active:underline">
                                                             {item.judul_vid}
                                                         </p>
                                                     </div>
@@ -421,7 +493,7 @@ export default function ReadNews({
                                             {getRubrikOrKategori(item, true)}
                                         </Badge>
                                         <div className="overflow-hidden rounded-xl p-2">
-                                            <h1 className="line-clamp-2 text-lg leading-relaxed font-semibold tracking-wide group-hover:underline md:text-xl">
+                                            <h1 className="line-clamp-2 text-lg leading-relaxed font-semibold tracking-wide group-hover:underline group-active:underline md:text-xl">
                                                 {item.judul}
                                             </h1>
                                             <div className="mb-4 flex flex-row items-center gap-1.5 pt-2 text-sm text-primary">
@@ -503,7 +575,7 @@ export default function ReadNews({
                                                         true,
                                                     )}
                                                 </Badge>
-                                                <p className="line-clamp-1 font-medium group-hover:underline">
+                                                <p className="line-clamp-1 font-medium group-hover:underline group-active:underline">
                                                     {item.judul}
                                                 </p>
                                                 <span className="text-sm">
