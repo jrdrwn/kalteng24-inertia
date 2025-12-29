@@ -71,7 +71,7 @@ export default function Footer({ popular_news }: FooterProps) {
                                             })}
                                         </span>
                                     </div>
-                                    <p className="mt-1 line-clamp-1 text-sm font-medium group-hover:underline">
+                                    <p className="mt-1 line-clamp-1 text-sm font-medium group-hover:underline group-active:underline">
                                         {item.judul}
                                     </p>
                                 </Link>

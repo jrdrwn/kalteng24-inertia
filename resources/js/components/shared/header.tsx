@@ -14,6 +14,7 @@ import {
     FaTwitterSquare,
     FaYoutubeSquare,
 } from 'react-icons/fa';
+import { ModeToggle } from '../custom/mode-toggle';
 import { Button } from '../ui/button';
 import { Drawer, DrawerClose, DrawerContent, DrawerHeader } from '../ui/drawer';
 import {
@@ -211,7 +212,9 @@ export default function Header() {
                 </div>
                 <Separator className="rounded-full border-1" />
                 <div className="flex flex-row items-center justify-between pt-1.5">
-                    <img src="/logo.png" alt="Logo" className="h-8" />
+                    <Link href="/">
+                        <img src="/logo.png" alt="Logo" className="h-8" />
+                    </Link>
                     {/* Desktop Navigation */}
                     <nav className="hidden lg:block">
                         <NavigationMenu>
@@ -234,20 +237,17 @@ export default function Header() {
                             </NavigationMenuList>
                         </NavigationMenu>
                     </nav>
-                    <div className="flex items-center justify-end gap-2">
+                    <div className="flex items-center justify-end gap-2 lg:hidden">
                         <Link href="/search" className="block lg:hidden">
-                            <Button
-                                className="flex lg:hidden"
-                                variant={'ghost'}
-                            >
+                            <Button variant={'ghost'}>
                                 <SearchIcon />
                             </Button>
                         </Link>
+                        <ModeToggle />
 
                         {/* Mobile Hamburger */}
                         <Button
                             size={'icon'}
-                            className="flex lg:hidden"
                             onClick={() => setMobileOpen(true)}
                             aria-label="Open menu"
                             variant={'outline'}
@@ -255,10 +255,14 @@ export default function Header() {
                             <MenuIcon />
                         </Button>
                     </div>
-                    <form onSubmit={handleSearch} className="hidden lg:block">
+                    <form
+                        onSubmit={handleSearch}
+                        className="hidden lg:flex lg:flex-row lg:items-center lg:justify-end lg:gap-2"
+                    >
+                        <ModeToggle />
                         <InputGroup className="bg-primary py-5 pl-1">
                             <InputGroupInput
-                                className="mr-1 h-8 w-28 rounded-sm bg-primary-foreground xl:w-3xs 2xl:w-xs"
+                                className="mr-1 h-8 w-23 rounded-sm bg-primary-foreground xl:w-3xs 2xl:w-xs"
                                 placeholder="Cari Berita"
                                 name="search"
                             />
@@ -287,9 +291,12 @@ export default function Header() {
                     <DrawerHeader className="flex flex-row items-center justify-between border-b px-4 py-3">
                         <img src="/logo.png" alt="Logo" className="h-8" />
                         <DrawerClose asChild>
-                            <button aria-label="Close menu">
+                            <Button
+                                variant={'destructive'}
+                                aria-label="Close menu"
+                            >
                                 <CloseIcon />
-                            </button>
+                            </Button>
                         </DrawerClose>
                     </DrawerHeader>
                     <nav className="flex-1 overflow-y-auto py-2">
@@ -330,9 +337,11 @@ export function Header2() {
                 </div>
                 <Separator className="rounded-full border-1" />
                 <div className="flex flex-row items-center justify-between pt-1.5">
-                    <img src="/logo.png" alt="Logo" className="h-8" />
+                    <Link href="/">
+                        <img src="/logo.png" alt="Logo" className="h-8" />
+                    </Link>
                     {/* Desktop Navigation */}
-                    <nav className="hidden lg:block">
+                    <nav className="hidden lg:flex lg:flex-row lg:items-center lg:justify-center lg:gap-4">
                         <NavigationMenu>
                             <NavigationMenuList className="flex-wrap">
                                 {navigationItems.map((item, idx) =>
@@ -352,15 +361,20 @@ export function Header2() {
                                 )}
                             </NavigationMenuList>
                         </NavigationMenu>
+                        <ModeToggle />
                     </nav>
-                    {/* Mobile Hamburger */}
-                    <button
-                        className="block p-2 lg:hidden"
-                        onClick={() => setMobileOpen(true)}
-                        aria-label="Open menu"
-                    >
-                        <MenuIcon />
-                    </button>
+                    <div className="flex items-center justify-end gap-2 lg:hidden">
+                        <ModeToggle />
+                        {/* Mobile Hamburger */}
+
+                        <Button
+                            variant={'outline'}
+                            onClick={() => setMobileOpen(true)}
+                            aria-label="Open menu"
+                        >
+                            <MenuIcon />
+                        </Button>
+                    </div>
                 </div>
             </div>
             {/* Mobile Navigation Drawer using Drawer component */}
@@ -373,9 +387,12 @@ export function Header2() {
                     <DrawerHeader className="flex flex-row items-center justify-between border-b px-4 py-3">
                         <img src="/logo.png" alt="Logo" className="h-8" />
                         <DrawerClose asChild>
-                            <button aria-label="Close menu">
+                            <Button
+                                variant={'destructive'}
+                                aria-label="Close menu"
+                            >
                                 <CloseIcon />
-                            </button>
+                            </Button>
                         </DrawerClose>
                     </DrawerHeader>
                     <nav className="flex-1 overflow-y-auto py-2">

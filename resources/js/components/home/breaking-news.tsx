@@ -67,7 +67,7 @@ export default function BreakingNews({ breaking_news }: ComponentProps) {
                                                 dateStyle: 'medium',
                                             })}
                                         </p>
-                                        <p className="line-clamp-2 font-medium group-hover:underline">
+                                        <p className="line-clamp-2 font-medium group-hover:underline group-active:underline">
                                             {item.judul}
                                         </p>
                                     </div>

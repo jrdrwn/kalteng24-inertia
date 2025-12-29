@@ -24,7 +24,7 @@ export default function Hero({ hero_berita }: ComponentProps) {
                     <img
                         src={`${imageUrl}/${hero_berita[0].foto_berita}`}
                         alt={hero_berita[0].judul}
-                        className="absolute inset-0 h-full w-full rounded-2xl object-cover object-center blur-[0px] brightness-75 transition-all group-hover:blur"
+                        className="absolute inset-0 h-full w-full rounded-2xl object-cover object-center blur-[0px] brightness-75 transition-all group-hover:blur group-active:blur"
                         onError={(e) => {
                             (e.currentTarget as HTMLImageElement).src =
                                 '/no-image.png';
@@ -37,7 +37,7 @@ export default function Hero({ hero_berita }: ComponentProps) {
                     >
                         {getRubrikOrKategori(hero_berita[0], true)}
                     </Badge>
-                    <h1 className="z-1 line-clamp-2 text-lg font-semibold group-hover:underline md:text-2xl">
+                    <h1 className="z-1 line-clamp-2 text-lg font-semibold group-hover:underline group-active:underline md:text-2xl">
                         {hero_berita[0].judul}
                     </h1>
                     <div className="z-1 line-clamp-2 text-sm">
@@ -88,7 +88,7 @@ export default function Hero({ hero_berita }: ComponentProps) {
                     >
                         {getRubrikOrKategori(hero_berita[1], true)}
                     </Badge>
-                    <h1 className="z-1 line-clamp-2 font-semibold group-hover:underline lg:text-xl 2xl:text-2xl">
+                    <h1 className="z-1 line-clamp-2 font-semibold group-hover:underline group-active:underline lg:text-xl 2xl:text-2xl">
                         {hero_berita[1].judul}
                     </h1>
                     <div className="z-1 flex flex-row items-center gap-1 text-sm">
@@ -135,7 +135,7 @@ export default function Hero({ hero_berita }: ComponentProps) {
                     >
                         {getRubrikOrKategori(hero_berita[2], true)}
                     </Badge>
-                    <h1 className="z-1 line-clamp-2 text-2xl font-semibold group-hover:underline lg:text-lg">
+                    <h1 className="z-1 line-clamp-2 text-2xl font-semibold group-hover:underline group-active:underline lg:text-lg">
                         {hero_berita[2].judul}
                     </h1>
                     <div className="z-1 flex flex-row items-center gap-1 text-sm">
@@ -181,7 +181,7 @@ export default function Hero({ hero_berita }: ComponentProps) {
                     >
                         {getRubrikOrKategori(hero_berita[3], true)}
                     </Badge>
-                    <h1 className="z-1 line-clamp-2 text-2xl font-semibold group-hover:underline lg:text-lg">
+                    <h1 className="z-1 line-clamp-2 text-2xl font-semibold group-hover:underline group-active:underline lg:text-lg">
                         {hero_berita[3].judul}
                     </h1>
                     <div className="z-1 flex flex-row items-center gap-1 text-sm">

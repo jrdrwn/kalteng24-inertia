@@ -479,7 +479,7 @@ export default function SearchResult({
                                                 )}
                                             </Badge>
                                             <div className="flex-1 overflow-hidden rounded-xl py-4 pr-4">
-                                                <h1 className="line-clamp-2 text-lg leading-relaxed font-semibold tracking-wide group-hover:underline md:text-xl">
+                                                <h1 className="line-clamp-2 text-lg leading-relaxed font-semibold tracking-wide group-hover:underline group-active:underline md:text-xl">
                                                     {item.judul}
                                                 </h1>
                                                 <div className="mb-4 flex flex-row items-center gap-1.5 pt-2 text-sm text-primary">
@@ -631,7 +631,7 @@ export default function SearchResult({
                                                 />
                                             </div>
                                             <div className="flex-1">
-                                                <h2 className="line-clamp-2 text-sm leading-relaxed font-semibold group-hover:underline">
+                                                <h2 className="line-clamp-2 text-sm leading-relaxed font-semibold group-hover:underline group-active:underline">
                                                     {item.judul}
                                                 </h2>
                                                 <div className="mt-1 flex flex-row items-center gap-1.5 text-xs text-primary">
