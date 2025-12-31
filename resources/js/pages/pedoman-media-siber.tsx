@@ -13,7 +13,7 @@ export default function PedomanMediaCyber({ popular_news }: PageProps) {
             <Header />
             <section className="px-2 py-10 md:px-4">
                 <div className="container mx-auto">
-                    <Card className="mx-auto prose max-w-6xl gap-0 px-4">
+                    <Card className="mx-auto prose max-w-6xl gap-0 px-4 dark:prose-invert">
                         <h2>PEDOMAN PEMBERITAAN MEDIA SIBER</h2>
                         <p>
                             Kemerdekaan berpendapat, kemerdekaan berekspresi,
