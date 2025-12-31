@@ -25,6 +25,10 @@ Route::get('/home', function () {
     return redirect()->route('home');
 });
 
+Route::get('/admin_k24', function () {
+    return redirect()->away(env('ADMIN_URL', 'http://kalteng24.test/admin_k24'));
+})->name('admin_k24');
+
 Route::get('/search', function (Request $request) {
     $order_by = $request->input('sort', 'latest');
 
