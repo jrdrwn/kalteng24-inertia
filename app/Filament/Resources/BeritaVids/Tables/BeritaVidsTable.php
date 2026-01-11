@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\Beritas\Tables;
+namespace App\Filament\Resources\BeritaVids\Tables;
 
+use Dom\Text;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -10,37 +11,25 @@ use Filament\Tables\Table;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ImageColumn;
+use App\Filament\Tables\Columns\YoutubePlayerColumn;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\DatePicker;
 
-class BeritasTable
+class BeritaVidsTable
 {
     public static function configure(Table $table): Table
     {
-        // dd(base_path('old.kalteng24.com/foto_berita'));
         return $table
             ->columns([
-                ImageColumn::make('foto_berita')
-                    ->label('Foto')
-                    ->imageHeight(64)
-                    ->disk('public')
-                    ->defaultImageUrl('https://kalteng24.com/no-image.png')
-                    ->square(),
-                TextColumn::make('judul')
-                    ->label('Judul')
+                YoutubePlayerColumn::make('link')
+                    ->label('Video'),
+                TextColumn::make('judul_vid')
+                    ->label('Judul Video')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('user')
-                    ->label('Penulis')
-                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('kategori')
                     ->label('Kategori')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->sortable(),
-                TextColumn::make('jenis_rubrik')
-                    ->label('Rubrik')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 TextColumn::make('tgl')
@@ -51,18 +40,17 @@ class BeritasTable
                     ->label('Jam')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
-                TextColumn::make('hits')
-                    ->label('Views')
-                    ->badge()
-                    ->color('primary')
+                TextColumn::make('admin')
+                    ->label('Penulis')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 IconColumn::make('status')
                     ->label('Status')
                     ->boolean()
-                    ->trueIcon(Heroicon::OutlinedXCircle)
-                    ->falseIcon(Heroicon::OutlinedCheckCircle)
-                    ->falseColor('success')
                     ->trueColor('danger')
+                    ->falseColor('success')
+                    ->falseIcon(Heroicon::OutlinedCheckCircle)
+                    ->trueIcon(Heroicon::OutlinedXCircle)
             ])
             ->filters([
                 Filter::make('tgl')

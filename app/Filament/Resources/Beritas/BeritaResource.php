@@ -24,10 +24,17 @@ class BeritaResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedNewspaper;
 
     protected static ?string $navigationLabel = 'Berita Redaksi';
-    
+
     protected static ?string $label = 'Berita Redaksi';
 
+    protected static ?int $navigationSort = 1;
+    
     protected static ?string $recordTitleAttribute = 'judul';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 
     public static function form(Schema $schema): Schema
     {
