@@ -7,6 +7,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
+
 
 /**
  * Class User
@@ -28,9 +34,17 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class User extends Model
+class User extends Authenticatable implements HasName
 {
-	protected $table = 'users';
+	use HasFactory;
+	use Notifiable;
+
+	public function getFilamentName(): string
+	{
+		return $this->nama ?: ('User ' . $this->getKey());
+	}
+
+	protected $table = 'users_new';	
 	protected $primaryKey = 'id_user';
 	public $timestamps = false;
 
@@ -47,10 +61,17 @@ class User extends Model
 		'alamat',
 		'pendaftaran',
 		'username',
+		'role',
 		'password',
 		'level',
 		'admin_type',
 		'foto_user',
-		'status'
+		'status',
+		'timestamp'
+	];
+
+	protected $casts = [
+		'timestamp' => 'datetime',
+		'status' => 'boolean',
 	];
 }
