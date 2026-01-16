@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Beritas\Schemas;
 
-use Dom\Text;
 use Filament\Schemas\Schema;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;

@@ -26,7 +26,7 @@ class BeritasTable
                     ->label('Foto')
                     ->imageHeight(64)
                     ->disk('public')
-                    ->defaultImageUrl('https://kalteng24.com/no-image.png')
+                    ->defaultImageUrl(env('DEFAULT_COVER'))
                     ->square(),
                 TextColumn::make('judul')
                     ->label('Judul')
