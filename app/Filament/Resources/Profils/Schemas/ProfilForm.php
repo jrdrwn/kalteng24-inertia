@@ -9,9 +9,10 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Flex;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Fieldset;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\FileUpload;
+use Filament\Schemas\Components\Grid;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TimePicker;
 use Illuminate\Support\Facades\Date;
@@ -25,6 +26,34 @@ class ProfilForm
     {
         return $schema
             ->components([
+                Grid::make([
+                    'sm' => 3,
+                    'xl' => 6,
+                    '2xl' => 8,
+                ])->schema([
+                    FileUpload::make('foto_user')
+                        ->label('Foto User')
+                        ->required()
+                        ->image()
+                        ->imageEditor()
+                        ->circleCropper()
+                        ->disk('public')
+                        ->columnStart([
+                            'sm' => 2,
+                            'xl' => 3,
+                            '2xl' => 4,
+                        ])
+                        ->columnSpan([
+                            'sm' => 1,
+                            'xl' => 2,
+                            '2xl' => 2,
+                        ])
+                        ->visibility('public')
+                        ->imageCropAspectRatio('1:1')
+                        ->directory('avatar')
+                        ->maxSize(2048)
+                        ->helperText('Maksimal ukuran file 2 MB.'),
+                ])->columnSpanFull(),
                 Group::make([
                     Section::make()->schema([
                         Fieldset::make('Nama User')->schema([
@@ -58,18 +87,6 @@ class ProfilForm
                             ->required(),
                     ])->columns(1)->columnSpan(2),
                     Group::make([
-                        FileUpload::make('foto_user')
-                            ->label('Foto User')
-                            ->required()
-                            ->image()
-                            ->imageEditor()
-                            ->circleCropper()
-                            ->disk('public')
-                            ->visibility('public')
-                            ->imageCropAspectRatio('1:1')
-                            ->directory('avatar')
-                            ->maxSize(2048)
-                            ->helperText('Maksimal ukuran file 2 MB.'),
                         Section::make('Password')->schema([
                             TextInput::make('password')
                                 ->password()

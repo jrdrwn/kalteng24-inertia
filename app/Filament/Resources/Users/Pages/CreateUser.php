@@ -13,6 +13,17 @@ class CreateUser extends CreateRecord
 {
     protected static string $resource = UserResource::class;
 
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        // Remove confirmation field before save
+        unset($data['konfirmasi_password']);
+
+        //Hash new password
+        $data['password'] = Hash::make($data['password']);
+
+        return $data;
+    }
+
     protected function beforeCreate(): void
     {
         $data = $this->data;
@@ -37,11 +48,5 @@ class CreateUser extends CreateRecord
 
             $this->halt();
         }
-
-        // Remove confirmation field before save
-        unset($data['konfirmasi_password']);
-
-        //Hash new password
-        $data['password'] = Hash::make($data['password']);
     }
 }

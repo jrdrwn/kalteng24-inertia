@@ -27,7 +27,16 @@ class EditUser extends EditRecord
         // If password not filled, remove both fields
         if (empty($data['password'])) {
             unset($data['password'], $data['konfirmasi_password']);
+
+            return $data;
         }
+
+        // Remove confirmation field before save
+        unset($data['konfirmasi_password']);
+
+        //Hash new password
+        $data['password'] = Hash::make($data['password']);
+
 
         return $data;
     }
@@ -45,15 +54,7 @@ class EditUser extends EditRecord
             $this->halt();
         }
 
-        if ($data['password']) {
-            // Remove confirmation field before save
-            unset($data['konfirmasi_password']);
-
-            //Hash new password
-            $data['password'] = Hash::make($data['password']);
-        }
-
-        $userId = Auth::user()->id_user;
+        $userId = $data['id_user'];
         $userEmail = $data['email'];
 
         $existingEmail = User::query()->where('email', $userEmail)->first();
