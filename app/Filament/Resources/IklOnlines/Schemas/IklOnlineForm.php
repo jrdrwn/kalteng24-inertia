@@ -58,7 +58,7 @@ class IklOnlineForm
                                     'BERITA' => [
                                         'KIRI BERITA - VERTIKAL' => 'KIRI BERITA - VERTIKAL',
                                         'KANAN BERITA - LANDSCAPE' => 'KANAN BERITA - LANDSCAPE',
-                                        'KANAN BERITA - VERTIKAL' => 'KANAN BERITA - VERTIKAL',
+                                        'DIBAWAH BERITA - LANDSCAPE' => 'DIBAWAH BERITA - LANDSCAPE',
                                     ],
 
                                     'INDEX' => [
