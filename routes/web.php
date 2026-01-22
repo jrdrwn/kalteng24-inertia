@@ -15,7 +15,7 @@ Route::get('/', function () {
             fn() =>
             BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->paginate(8)
         ),
-        'latest_news_video' => BeritaVid::orderBy('tgl', 'desc')->take(5)->get(),
+        'latest_news_video' => BeritaVid::orderBy('tgl', 'desc')->take(6)->get(),
         'perspektif' => BeritaRed::where('id_ber', '=', 69)->get(),
         'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->inRandomOrder()->orderBy('hits', 'desc')->take(5)->get(),
     ]);

@@ -47,8 +47,7 @@ class BeritaRed extends Model
 		'like_view' => 'int',
 		'unlike_viuew' => 'int',
 		'hits' => 'int',
-		'tgl' => 'datetime',
-		'jam' => 'datetime'
+		'tgl' => 'date',
 	];
 
 	protected $fillable = [
