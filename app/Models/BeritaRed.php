@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class BeritaRed
- * 
+ *
  * @property int $id_ber
  * @property string $judul
  * @property string $sub_up
@@ -47,8 +47,8 @@ class BeritaRed extends Model
 		'like_view' => 'int',
 		'unlike_viuew' => 'int',
 		'hits' => 'int',
-		'tgl' => 'datetime',
-		'jam' => 'datetime'
+		'tgl' => 'date',
+        'jam' => 'datetime'
 	];
 
 	protected $fillable = [

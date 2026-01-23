@@ -34,7 +34,6 @@ class IklOnline extends Model
 	public $timestamps = false;
 
 	protected $casts = [
-		'tgl' => 'datetime',
 		'jam' => 'datetime'
 	];
 
