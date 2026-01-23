@@ -5,8 +5,9 @@
     # If not already in /public directory
     RewriteCond %{REQUEST_URI} !^/public/
 
-    # Don't redirect if accessing certain files
-    RewriteCond %{REQUEST_URI} !^/storage/
+    # Redirect storage requests
+    RewriteCond %{REQUEST_URI} ^/storage/
+    RewriteRule ^storage/(.*)$ public/storage/$1 [L]
 
     # Redirect to /public
     RewriteRule ^(.*)$ public/$1 [L]
