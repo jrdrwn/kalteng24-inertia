@@ -1,6 +1,6 @@
 import { createSlug, getRubrikOrKategori } from '@/lib/utils';
 import { SharedData } from '@/types';
-import { BeritaRed, BeritaVid } from '@/types/entities';
+import { BeritaRed, BeritaVid, IklOnline } from '@/types/entities';
 import { InfiniteScroll, Link, usePage } from '@inertiajs/react';
 import parse from 'html-react-parser';
 import { Eye, LucideTriangle, UserCircle } from 'lucide-react';
@@ -23,7 +23,6 @@ import {
     DialogTrigger,
 } from '../ui/dialog';
 import { Separator } from '../ui/separator';
-import { Skeleton } from '../ui/skeleton';
 import { Spinner } from '../ui/spinner';
 
 interface ComponentProps {
@@ -34,6 +33,9 @@ interface ComponentProps {
     latest_news_video: BeritaVid[];
     perspektif: BeritaRed[];
     popular_news: BeritaRed[];
+    sponsors?: {
+        utama: IklOnline[];
+    };
 }
 
 export default function News({
@@ -42,6 +44,7 @@ export default function News({
     latest_news_video,
     perspektif,
     popular_news,
+    sponsors,
 }: ComponentProps) {
     const { imageUrl } = usePage<SharedData>().props;
     return (
@@ -387,9 +390,34 @@ export default function News({
                                 </Link>
                             ))}
                         </div>
-                        <Skeleton className="mt-8 mb-2 h-30 w-full rounded-lg" />
+                        <div className="mt-8 mb-2 h-30 w-full rounded-lg">
+                            {sponsors && sponsors.utama.length > 0 ? (
+                                <Link
+                                    href={sponsors.utama[0].link}
+                                >
+                                    <img
+                                        src={`${imageUrl}/${sponsors.utama[0].img_ikl}`}
+                                        alt="Iklan Utama"
+                                        className="h-30 w-full rounded-lg object-cover"
+                                        onError={(e) => {
+                                            (
+                                                e.currentTarget as HTMLImageElement
+                                            ).src = '/no-image.png';
+                                        }}
+                                    />
+                                </Link>
+                            ) : (
+                                <div className="flex h-30 w-full items-center justify-center rounded-lg bg-muted">
+                                    <p className="text-center text-sm text-muted-foreground">
+                                        Space Iklan Utama
+                                    </p>
+                                </div>
+                            )}
+                        </div>
                         <p className="text-center text-sm text-muted-foreground">
-                            Space Iklan
+                            {sponsors && sponsors.utama.length > 0
+                                ? sponsors.utama[0].title_ikl
+                                : 'Pasang Iklan Anda di sini'}
                         </p>
                     </div>
                 </div>
