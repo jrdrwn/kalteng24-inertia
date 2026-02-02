@@ -47,7 +47,7 @@ class IklOnline extends Model
 		'admin',
 		'pemasang',
 		'tgl',
-		'jam',
+		'exp_tgl',
 		'ket'
 	];
 }

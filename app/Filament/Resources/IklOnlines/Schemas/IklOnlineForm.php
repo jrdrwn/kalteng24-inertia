@@ -12,7 +12,7 @@ use Filament\Schemas\Components\Fieldset;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TimePicker;
 use Illuminate\Support\Facades\Date;
 use Filament\Forms\Components\Hidden;
@@ -40,7 +40,7 @@ class IklOnlineForm
                                 'UTAMA' => 'UTAMA',
                                 'BERITA' => 'BERITA',
                                 'HEADLINE' => 'HEADLINE',
-                                'INDEX' => 'INDEX',
+                                'INSIDENTAL' => 'INSIDENTAL',
                                 'FOOTER' => 'FOOTER',
                             ])
                             ->reactive()
@@ -52,23 +52,21 @@ class IklOnlineForm
                             ->options(function (Get $get) {
                                 return match ($get('ktg_ikl')) {
                                     'UTAMA', 'HEADLINE' => [
-                                        'UTAMA & HEADLINE - LANDSCAPE' => 'UTAMA & HEADLINE - LANDSCAPE',
+                                        'UTAMA & HEADLINE - 3:1' => 'UTAMA & HEADLINE - 3:1',
                                     ],
 
                                     'BERITA' => [
-                                        'KIRI BERITA - VERTIKAL' => 'KIRI BERITA - VERTIKAL',
-                                        'KANAN BERITA - LANDSCAPE' => 'KANAN BERITA - LANDSCAPE',
-                                        'DIBAWAH BERITA - LANDSCAPE' => 'DIBAWAH BERITA - LANDSCAPE',
+                                        'KIRI BERITA - 1:3' => 'KIRI BERITA - 1:3',
+                                        'KANAN BERITA - 16:9' => 'KANAN BERITA - 16:9',
+                                        'DIBAWAH BERITA - 3:1' => 'DIBAWAH BERITA - 3:1',
                                     ],
 
-                                    'INDEX' => [
-                                        'INDEX KIRI - VERTIKAL' => 'INDEX KIRI - VERTIKAL',
-                                        'INDEX KANAN - VERTIKAL' => 'INDEX KANAN - VERTIKAL',
-                                        'INDEX KANAN - LANDSCAPE' => 'INDEX KANAN - LANDSCAPE',
+                                    'INSIDENTAL' => [
+                                        'INSIDENTAL - 16:9' => 'INSIDENTAL - 16:9',
                                     ],
 
                                     'FOOTER' => [
-                                        'FOOTER' => 'FOOTER',
+                                        'FOOTER - 3:1' => 'FOOTER - 3:1',
                                     ],
 
                                     default => [],
@@ -87,9 +85,9 @@ class IklOnlineForm
                             ->required(),
                         Hidden::make('tgl')
                             ->default(Date::now()),
-                        Hidden::make('jam')
-                            ->default(Date::now())
-                            ->hidden(true)
+                        DateTimePicker::make('exp_tgl')
+                            ->label('Tanggal Expired')
+                            ->required(),
                     ]),
                     Group::make([
                         Section::make('Foto Iklan')->schema([
@@ -103,11 +101,11 @@ class IklOnlineForm
                                 ->directory('ikl_online')
                                 ->imageEditorAspectRatios([
                                     '3:1',
-                                    '9:16',
+                                    '16:9',
                                     '1:3',
                                 ])
                                 ->required(),
-                        ])->description('Jika iklan potrait gunakan ratio 1:3 atau 9:16, jika landscape gunakan ratio 3:1. Untuk hasil terbaik gunakan gambar resolusi minimal 600px x 200px.'),
+                        ])->description('Gunakan Rasio yang Sesuai dengan Posisi Iklan'),
                         Textarea::make('ket')
                             ->label('Keterangan Iklan')
                             ->required()
