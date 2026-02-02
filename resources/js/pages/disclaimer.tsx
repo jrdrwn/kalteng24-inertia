@@ -12,7 +12,7 @@ export default function Disclaimer({ popular_news }: PageProps) {
             <Header />
             <section className="px-2 py-10 md:px-4">
                 <div className="container mx-auto">
-                    <Card className="mx-auto prose max-w-6xl gap-0 px-4">
+                    <Card className="mx-auto prose max-w-6xl gap-0 px-4 dark:prose-invert">
                         <h2>DISCLAIMER</h2>
                         <p>
                             Seluruh layanan dalam situs ini mengikuti aturan

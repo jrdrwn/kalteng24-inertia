@@ -12,7 +12,7 @@ export default function AboutUs({ popular_news }: PageProps) {
             <Header />
             <section className="px-2 py-10 md:px-4">
                 <div className="container mx-auto">
-                    <Card className="mx-auto prose max-w-6xl gap-0 px-4">
+                    <Card className="mx-auto prose max-w-6xl gap-0 px-4 dark:prose-invert">
                         <h2>TENTANG KAMI</h2>
                         <p>
                             <b>KALTENG24.COM</b> merupakan portal berita yang

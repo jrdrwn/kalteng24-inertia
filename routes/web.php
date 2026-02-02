@@ -15,7 +15,7 @@ Route::get('/', function () {
             fn() =>
             BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->paginate(8)
         ),
-        'latest_news_video' => BeritaVid::orderBy('tgl', 'desc')->take(6)->get(),
+        'latest_news_video' => BeritaVid::orderBy('tgl', 'desc')->inRandomOrder()->take(5)->get(),
         'perspektif' => BeritaRed::where('id_ber', '=', 69)->get(),
         'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->inRandomOrder()->orderBy('hits', 'desc')->take(5)->get(),
     ]);
@@ -24,6 +24,10 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return redirect()->route('home');
 });
+
+Route::get('/admin_k24', function () {
+    return redirect()->away(env('ADMIN_URL', 'http://kalteng24.test/admin_k24'));
+})->name('admin_k24');
 
 Route::get('/search', function (Request $request) {
     $order_by = $request->input('sort', 'latest');
@@ -103,7 +107,7 @@ Route::get('/read-news/{slug}', function (Request $request, $slug) {
         'news' => $news,
         'popular_news' => BeritaRed::whereNot('id_ber', '=', $id_ber)->inRandomOrder()->orderBy('hits', 'desc')->take(5)->get(),
         'trending_news' => BeritaRed::whereNot('id_ber', '=', $id_ber)->orderBy('hits', 'desc')->take(10)->get(),
-        'latest_news_video' => BeritaVid::orderBy('tgl', 'desc')->take(5)->get(),
+        'latest_news_video' => BeritaVid::orderBy('tgl', 'desc')->inRandomOrder()->take(5)->get(),
         'latest_news' => Inertia::scroll(
             fn() => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->paginate(8)
         ),
