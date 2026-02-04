@@ -94,6 +94,9 @@ class BeritaVidsTable
                     DeleteBulkAction::make(),
                 ]),
             ])
+            ->modifyQueryUsing(
+                fn (Builder $query) => $query->orderBy('tgl', 'DESC')
+            )
             ->striped();
     }
 }

@@ -51,8 +51,12 @@ class IklOnlineForm
                             ->required()
                             ->options(function (Get $get) {
                                 return match ($get('ktg_ikl')) {
-                                    'UTAMA', 'HEADLINE' => [
-                                        'UTAMA & HEADLINE - 3:1' => 'UTAMA & HEADLINE - 3:1',
+                                    'UTAMA' => [
+                                        'UTAMA - 5:1' => 'UTAMA - 5:1',
+                                    ],
+
+                                    'HEADLINE' => [
+                                        'HEADLINE - 5:1' => 'HEADLINE - 5:1',
                                     ],
 
                                     'BERITA' => [
@@ -66,7 +70,7 @@ class IklOnlineForm
                                     ],
 
                                     'FOOTER' => [
-                                        'FOOTER - 3:1' => 'FOOTER - 3:1',
+                                        'FOOTER - 5:1' => 'FOOTER - 5:1',
                                     ],
 
                                     default => [],
@@ -100,6 +104,7 @@ class IklOnlineForm
                                 ->visibility('public')
                                 ->directory('ikl_online')
                                 ->imageEditorAspectRatios([
+                                    '5:1',
                                     '3:1',
                                     '16:9',
                                     '1:3',

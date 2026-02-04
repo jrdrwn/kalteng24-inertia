@@ -24,7 +24,7 @@ class BeritaVidForm
                         TextInput::make('judul_vid')
                             ->label('Judul Video')
                             ->required()
-                            ->maxLength(255),
+                            ->maxLength(50),
                         Select::make('kategori')
                             ->label('Kategori')
                             ->options([
@@ -48,6 +48,7 @@ class BeritaVidForm
                         Select::make('admin')
                             ->label('Penulis')
                             ->options(User::query()->pluck('nama', 'nama'))
+                            ->default('Admin')
                             ->native(false)
                             ->searchable()
                             ->required(),
