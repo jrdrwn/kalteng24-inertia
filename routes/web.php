@@ -2,6 +2,7 @@
 
 use App\Models\BeritaRed;
 use App\Models\BeritaVid;
+use App\Models\IklOnline;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,6 +19,9 @@ Route::get('/', function () {
         'latest_news_video' => BeritaVid::orderBy('tgl', 'desc')->inRandomOrder()->take(5)->get(),
         'perspektif' => BeritaRed::where('id_ber', '=', 69)->get(),
         'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->inRandomOrder()->orderBy('hits', 'desc')->take(5)->get(),
+        'sponsors' => [
+            "utama" => IklOnline::where('ktg_ikl', 'UTAMA')->get()
+        ]
     ]);
 })->name('home');
 

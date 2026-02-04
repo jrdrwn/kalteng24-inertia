@@ -3,7 +3,7 @@ import Hero from '@/components/home/hero';
 import News from '@/components/home/news';
 import Footer from '@/components/shared/footer';
 import Header from '@/components/shared/header';
-import { BeritaRed, BeritaVid } from '@/types/entities';
+import { BeritaRed, BeritaVid, IklOnline } from '@/types/entities';
 
 interface PageProps {
     hero_berita: BeritaRed[];
@@ -15,6 +15,10 @@ interface PageProps {
     latest_news_video: BeritaVid[];
     perspektif: BeritaRed[];
     popular_news: BeritaRed[];
+
+    sponsors?: {
+        utama: IklOnline[];
+    };
 }
 
 export default function Home({
@@ -25,6 +29,7 @@ export default function Home({
     latest_news_video,
     perspektif,
     popular_news,
+    sponsors,
 }: PageProps) {
     return (
         <>
@@ -37,6 +42,7 @@ export default function Home({
                 latest_news_video={latest_news_video}
                 perspektif={perspektif}
                 popular_news={popular_news}
+                sponsors={sponsors}
             />
             <Footer popular_news={popular_news} />
         </>

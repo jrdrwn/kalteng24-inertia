@@ -12,11 +12,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
-
+use Filament\Panel;
 
 /**
  * Class User
- * 
+ *
  * @property int $id_user
  * @property string $nama
  * @property string $nm_blg
@@ -34,7 +34,7 @@ use Filament\Models\Contracts\HasName;
  *
  * @package App\Models
  */
-class User extends Authenticatable implements HasName
+class User extends Authenticatable implements HasName, FilamentUser
 {
 	use HasFactory;
 	use Notifiable;
@@ -44,7 +44,7 @@ class User extends Authenticatable implements HasName
 		return $this->nama ?: ('User ' . $this->getKey());
 	}
 
-	protected $table = 'users_new';	
+	protected $table = 'users_new';
 	protected $primaryKey = 'id_user';
 	public $timestamps = false;
 
@@ -74,4 +74,9 @@ class User extends Authenticatable implements HasName
 		'timestamp' => 'datetime',
 		'status' => 'boolean',
 	];
+
+	public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->role;
+    }
 }
