@@ -3,6 +3,8 @@ import Hero from '@/components/home/hero';
 import News from '@/components/home/news';
 import Footer from '@/components/shared/footer';
 import Header from '@/components/shared/header';
+import SponsorFooter from '@/components/sponsor/footer';
+import SponsorUtama from '@/components/sponsor/utama';
 import { BeritaRed, BeritaVid, IklOnline } from '@/types/entities';
 
 interface PageProps {
@@ -18,6 +20,9 @@ interface PageProps {
 
     sponsors?: {
         utama: IklOnline[];
+        headline: IklOnline[];
+        insidental: IklOnline[];
+        footer: IklOnline[];
     };
 }
 
@@ -33,6 +38,7 @@ export default function Home({
 }: PageProps) {
     return (
         <>
+            <SponsorUtama data={sponsors?.utama || []} />
             <Header />
             <Hero hero_berita={hero_berita} />
             <BreakingNews breaking_news={breaking_news} />
@@ -44,6 +50,7 @@ export default function Home({
                 popular_news={popular_news}
                 sponsors={sponsors}
             />
+            <SponsorFooter data={sponsors?.footer || []} />
             <Footer popular_news={popular_news} />
         </>
     );

@@ -30,7 +30,7 @@
             }
         </style> --}}
 
-        <title inertia>{{ config('app.name', 'Berita Kalteng24') }}</title>
+        <title inertia>{{ config('app.name', 'Kalteng24') }}</title>
 
         {{-- <link rel="icon" href="/favicon.ico" sizes="any">
         <link rel="icon" href="/favicon.svg" type="image/svg+xml"> --}}

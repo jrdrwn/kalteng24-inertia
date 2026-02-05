@@ -1,5 +1,9 @@
 import Footer from '@/components/shared/footer';
 import { Header2 } from '@/components/shared/header';
+import SponsorFooter from '@/components/sponsor/footer';
+import SponsorInsidental from '@/components/sponsor/insidental';
+import SponsorInsidentalStack from '@/components/sponsor/insidental-stack';
+import SponsorUtama from '@/components/sponsor/utama';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -32,9 +36,10 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { useStickyScroll } from '@/hooks/use-sticky-scroll';
 import { createSlug, getRubrikOrKategori } from '@/lib/utils';
 import { SharedData } from '@/types';
-import { BeritaRed } from '@/types/entities';
+import { BeritaRed, IklOnline } from '@/types/entities';
 import { TPagination } from '@/types/pagination';
 import { Link, usePage } from '@inertiajs/react';
 import parse from 'html-react-parser';
@@ -54,6 +59,11 @@ interface PageProps {
     search_query: string;
     kategori_list: { kategori: string }[];
     jenis_rubrik_list: { jenis_rubrik: string }[];
+    sponsors: {
+        utama: IklOnline[];
+        insidental: IklOnline[];
+        footer: IklOnline[];
+    };
 }
 
 export default function SearchResult({
@@ -62,10 +72,13 @@ export default function SearchResult({
     search_query,
     kategori_list,
     jenis_rubrik_list,
+    sponsors,
 }: PageProps) {
     const { imageUrl } = usePage<SharedData>().props;
     const urlParams = new URLSearchParams(window.location.search);
     const sort = urlParams.get('sort') || 'latest';
+
+    const stickyRef = useStickyScroll();
 
     function handleSearch(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -101,11 +114,12 @@ export default function SearchResult({
 
     return (
         <>
+            <SponsorUtama data={sponsors.utama} />
             <Header2 />
             <section className="px-2 pt-4 pb-4 md:px-4">
                 <div className="container mx-auto grid grid-cols-4 gap-4">
                     <div className="hidden md:col-span-1 md:block">
-                        <div className="sticky top-10">
+                        <div className="no-scrollbar no-scrollbar sticky top-10 max-h-screen overflow-y-auto">
                             <div className="flex h-[41.6px] items-center justify-between">
                                 <h1 className="font-bold">Filter</h1>
                                 <Button
@@ -225,6 +239,9 @@ export default function SearchResult({
                                     </SelectContent>
                                 </Select>
                             </div>
+                            <SponsorInsidentalStack
+                                data={sponsors.insidental || []}
+                            />
                         </div>
                     </div>
                     <div className="col-span-4 gap-4 md:col-span-3">
@@ -245,7 +262,7 @@ export default function SearchResult({
                                         </InputGroupAddon>
                                     </DrawerTrigger>
                                     <DrawerContent>
-                                        <div className="p-4">
+                                        <div className="overflow-y-auto p-4">
                                             <div className="flex h-[41.6px] items-center justify-between">
                                                 <h1 className="font-bold">
                                                     Filter
@@ -392,6 +409,9 @@ export default function SearchResult({
                                                     </SelectContent>
                                                 </Select>
                                             </div>
+                                            <SponsorInsidentalStack
+                                                data={sponsors.insidental || []}
+                                            />
                                         </div>
                                         <DrawerFooter className="pt-2">
                                             <DrawerClose asChild>
@@ -607,69 +627,79 @@ export default function SearchResult({
                                 </Card>
                             </div>
                             <div className="col-span-3 lg:col-span-1">
-                                <Card className="top-4 gap-0 p-4 lg:sticky">
-                                    <h1 className="mb-4 text-lg font-semibold">
-                                        Popular Posts
-                                    </h1>
-                                    {popular_news.map((item, index) => (
-                                        <Link
-                                            as={'div'}
-                                            href={`/read-news/${createSlug(item.id_ber, item.judul)}`}
-                                            key={index}
-                                            className="group mb-4 flex cursor-pointer flex-row gap-2"
-                                        >
-                                            <div className="hidden w-16 rounded-md bg-primary/40 xl:block">
-                                                <img
-                                                    src={`${imageUrl}/${item.foto_berita}`}
-                                                    alt={item.judul}
-                                                    className="h-full w-full rounded-md object-cover object-center"
-                                                    onError={(e) => {
-                                                        (
-                                                            e.currentTarget as HTMLImageElement
-                                                        ).src = '/no-image.png';
-                                                    }}
-                                                />
-                                            </div>
-                                            <div className="flex-1">
-                                                <h2 className="line-clamp-2 text-sm leading-relaxed font-semibold group-hover:underline group-active:underline">
-                                                    {item.judul}
-                                                </h2>
-                                                <div className="mt-1 flex flex-row items-center gap-1.5 text-xs text-primary">
-                                                    <UserCircle className="inline-block size-3" />
-                                                    <span>{item.user}</span>
-                                                    <span className="size-1.5 rounded-full bg-primary"></span>
-                                                    <span className="hidden 2xl:block">
-                                                        {new Date(
-                                                            item.tgl,
-                                                        ).toLocaleDateString(
-                                                            'id-ID',
-                                                            {
-                                                                dateStyle:
-                                                                    'full',
-                                                            },
-                                                        )}
-                                                    </span>
-                                                    <span className="block 2xl:hidden">
-                                                        {new Date(
-                                                            item.tgl,
-                                                        ).toLocaleDateString(
-                                                            'id-ID',
-                                                            {
-                                                                dateStyle:
-                                                                    'medium',
-                                                            },
-                                                        )}
-                                                    </span>
+                                <div
+                                    ref={stickyRef}
+                                    className="no-scrollbar top-4 gap-0 lg:sticky lg:max-h-screen lg:overflow-y-auto"
+                                >
+                                    <Card className="mb-8 p-4">
+                                        <h1 className="mb-4 text-lg font-semibold">
+                                            Popular Posts
+                                        </h1>
+                                        {popular_news.map((item, index) => (
+                                            <Link
+                                                as={'div'}
+                                                href={`/read-news/${createSlug(item.id_ber, item.judul)}`}
+                                                key={index}
+                                                className="group mb-4 flex cursor-pointer flex-row gap-2"
+                                            >
+                                                <div className="hidden w-16 rounded-md bg-primary/40 xl:block">
+                                                    <img
+                                                        src={`${imageUrl}/${item.foto_berita}`}
+                                                        alt={item.judul}
+                                                        className="h-full w-full rounded-md object-cover object-center"
+                                                        onError={(e) => {
+                                                            (
+                                                                e.currentTarget as HTMLImageElement
+                                                            ).src =
+                                                                '/no-image.png';
+                                                        }}
+                                                    />
                                                 </div>
-                                            </div>
-                                        </Link>
-                                    ))}
-                                </Card>
+                                                <div className="flex-1">
+                                                    <h2 className="line-clamp-2 text-sm leading-relaxed font-semibold group-hover:underline group-active:underline">
+                                                        {item.judul}
+                                                    </h2>
+                                                    <div className="mt-1 flex flex-row items-center gap-1.5 text-xs text-primary">
+                                                        <UserCircle className="inline-block size-3" />
+                                                        <span>{item.user}</span>
+                                                        <span className="size-1.5 rounded-full bg-primary"></span>
+                                                        <span className="hidden 2xl:block">
+                                                            {new Date(
+                                                                item.tgl,
+                                                            ).toLocaleDateString(
+                                                                'id-ID',
+                                                                {
+                                                                    dateStyle:
+                                                                        'full',
+                                                                },
+                                                            )}
+                                                        </span>
+                                                        <span className="block 2xl:hidden">
+                                                            {new Date(
+                                                                item.tgl,
+                                                            ).toLocaleDateString(
+                                                                'id-ID',
+                                                                {
+                                                                    dateStyle:
+                                                                        'medium',
+                                                                },
+                                                            )}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        ))}
+                                    </Card>
+                                    <SponsorInsidental
+                                        data={sponsors.insidental}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
+            <SponsorFooter data={sponsors?.footer || []} />
             <Footer popular_news={popular_news} />
         </>
     );

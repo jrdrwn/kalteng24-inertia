@@ -1,5 +1,8 @@
 import Footer from '@/components/shared/footer';
 import Header from '@/components/shared/header';
+import SponsorBerita, { Posisi } from '@/components/sponsor/berita';
+import SponsorFooter from '@/components/sponsor/footer';
+import SponsorUtama from '@/components/sponsor/utama';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -24,11 +27,11 @@ import {
     PopoverTrigger,
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Spinner } from '@/components/ui/spinner';
+import { useStickyScroll } from '@/hooks/use-sticky-scroll';
 import { createSlug, getRubrikOrKategori } from '@/lib/utils';
 import { SharedData } from '@/types';
-import { BeritaRed, BeritaVid } from '@/types/entities';
+import { BeritaRed, BeritaVid, IklOnline } from '@/types/entities';
 import { InfiniteScroll, Link, usePage } from '@inertiajs/react';
 import Autoplay from 'embla-carousel-autoplay';
 import parse from 'html-react-parser';
@@ -58,6 +61,13 @@ interface PageProps {
     latest_news: {
         data: BeritaRed[];
     };
+    sponsors?: {
+        utama: IklOnline[];
+        berita_kiri: IklOnline[];
+        berita_kanan: IklOnline[];
+        berita_bawah: IklOnline[];
+        footer: IklOnline[];
+    };
 }
 
 export default function ReadNews({
@@ -66,10 +76,13 @@ export default function ReadNews({
     trending_news,
     latest_news_video,
     latest_news,
+    sponsors,
 }: PageProps) {
     const { imageUrl } = usePage<SharedData>().props;
     const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
     const shareText = news?.judul || '';
+    const stickyRef = useStickyScroll();
+    console.log(news);
 
     // Accessibility states
 
@@ -106,6 +119,7 @@ export default function ReadNews({
     }
     return (
         <>
+            <SponsorUtama data={sponsors?.utama || []} />
             <Header />
             {/* Accessibility Toolbar: Font Size Only, Popover */}
             <div className="fixed right-6 bottom-16 z-50 flex flex-col items-end gap-2">
@@ -194,10 +208,10 @@ export default function ReadNews({
             <section className="px-2 py-4 md:px-4">
                 <div className="container mx-auto grid grid-cols-6 gap-4">
                     <div className="sticky top-4 col-span-1 hidden self-start xl:block">
-                        <Skeleton className="mb-2 h-100 w-full rounded-lg" />
-                        <p className="text-center text-sm text-muted-foreground">
-                            Space Iklan
-                        </p>
+                        <SponsorBerita
+                            data={sponsors?.berita_kiri || []}
+                            posisi={Posisi.KIRI_BERITA}
+                        />
                     </div>
                     <div
                         className={`col-span-6 mx-auto prose prose-sm w-full gap-2 md:col-span-4 lg:prose-base xl:col-span-3 dark:prose-invert prose-h1:mt-4 prose-h1:mb-0 prose-h1:text-center prose-h1:text-2xl prose-h1:leading-relaxed sm:prose-h1:text-left lg:prose-h1:text-3xl prose-p:text-justify`}
@@ -246,6 +260,11 @@ export default function ReadNews({
                                     )}
                                 </span>
                             </div>
+                            {news.sub_up && (
+                                <p className="!mb-0 text-muted-foreground">
+                                    {news.sub_up}
+                                </p>
+                            )}
                             <h1 className="mt-4 mb-2">{news.judul}</h1>
                             {news.sub_judul && (
                                 <p className="!mb-0 text-muted-foreground">
@@ -256,12 +275,11 @@ export default function ReadNews({
                                 {parse(news.isi_berita)}
                             </div>
                         </Card>
-                        <div className="block xl:hidden">
-                            <Skeleton className="mb-2 h-50 w-full rounded-lg" />
-                            <p className="text-center text-sm text-muted-foreground">
-                                Space Iklan
-                            </p>
-                        </div>
+                        <div></div>
+                        <SponsorBerita
+                            data={sponsors?.berita_kanan || []}
+                            posisi={Posisi.DIBAWAH_BERITA}
+                        />
                         <div className="not-prose mb-8 block md:hidden">
                             <div className="flex items-center justify-between rounded-md bg-muted px-2 py-2">
                                 <p className="font-bold">Share</p>
@@ -368,6 +386,10 @@ export default function ReadNews({
                                     ))}
                                 </div>
                             </div>
+                            <SponsorBerita
+                                data={sponsors?.berita_kanan || []}
+                                posisi={Posisi.KANAN_BERITA}
+                            />
                         </div>
                         <Card className="not-prose p-4">
                             <Carousel
@@ -461,8 +483,39 @@ export default function ReadNews({
                             <InfiniteScroll
                                 data={'latest_news'}
                                 loading={<Spinner className="mx-auto" />}
-                                className="grid grid-cols-2 gap-8 pt-4"
+                                className="grid grid-cols-2 gap-8 pt-4 [&+div]:mx-auto"
                                 onlyNext
+                                manual
+                                previous={({ loading, fetch, hasMore }) =>
+                                    hasMore && (
+                                        <Button
+                                            onClick={fetch}
+                                            disabled={loading}
+                                            className="mx-auto"
+                                        >
+                                            {loading ? (
+                                                <Spinner />
+                                            ) : (
+                                                'Load previous'
+                                            )}
+                                        </Button>
+                                    )
+                                }
+                                next={({ loading, fetch, hasMore }) =>
+                                    hasMore && (
+                                        <Button
+                                            onClick={fetch}
+                                            disabled={loading}
+                                            className="mx-auto"
+                                        >
+                                            {loading ? (
+                                                <Spinner />
+                                            ) : (
+                                                'Load more'
+                                            )}
+                                        </Button>
+                                    )
+                                }
                             >
                                 {latest_news.data.map((item, index) => (
                                     <Link
@@ -520,7 +573,10 @@ export default function ReadNews({
                             </InfiniteScroll>
                         </Card>
                     </div>
-                    <div className="sticky top-4 col-span-6 hidden space-y-4 self-start md:col-span-2 md:block">
+                    <div
+                        ref={stickyRef}
+                        className="no-scrollbar sticky top-4 col-span-6 hidden max-h-screen space-y-4 self-start overflow-y-auto md:col-span-2 md:block"
+                    >
                         <div className="flex justify-between rounded-md bg-muted px-2 py-2">
                             <p className="font-bold">Share</p>
                             <div className="flex gap-2">
@@ -621,9 +677,14 @@ export default function ReadNews({
                                 ))}
                             </div>
                         </div>
+                        <SponsorBerita
+                            data={sponsors?.berita_kanan || []}
+                            posisi={Posisi.KANAN_BERITA}
+                        />
                     </div>
                 </div>
             </section>
+            <SponsorFooter data={sponsors?.footer || []} />
             <Footer popular_news={popular_news} />
         </>
     );

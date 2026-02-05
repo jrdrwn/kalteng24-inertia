@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class IklOnline
- * 
+ *
  * @property int $id_ikl
  * @property string $title_ikl
  * @property string $link
@@ -50,4 +50,9 @@ class IklOnline extends Model
 		'exp_tgl',
 		'ket'
 	];
+
+    public function scopeAktif($query)
+    {
+        return $query->whereDate('exp_tgl', '>=', now());
+    }
 }

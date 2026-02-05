@@ -6,6 +6,7 @@ import { ChevronUp } from 'lucide-react';
 import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ThemeProvider } from './components/custom/theme-provider';
+import { BreakpointDisplay } from './components/ui/breakpoint-display';
 import { Button } from './components/ui/button';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
@@ -51,6 +52,7 @@ createInertiaApp({
             <StrictMode>
                 <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
                     <>
+                        <BreakpointDisplay />
                         <App {...props} />
                         <ScrollToTopButton />
                     </>

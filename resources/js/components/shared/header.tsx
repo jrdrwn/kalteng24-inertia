@@ -213,7 +213,16 @@ export default function Header() {
                 <Separator className="rounded-full border-1" />
                 <div className="flex flex-row items-center justify-between pt-1.5">
                     <Link href="/">
-                        <img src="/logo.png" alt="Logo" className="h-8" />
+                        <img
+                            src="/logo.png"
+                            alt="Logo"
+                            className="h-8 dark:hidden"
+                        />
+                        <img
+                            src="/logo-dark.png"
+                            alt="Logo"
+                            className="hidden h-8 dark:block"
+                        />
                     </Link>
                     {/* Desktop Navigation */}
                     <nav className="hidden lg:block">
@@ -338,7 +347,16 @@ export function Header2() {
                 <Separator className="rounded-full border-1" />
                 <div className="flex flex-row items-center justify-between pt-1.5">
                     <Link href="/">
-                        <img src="/logo.png" alt="Logo" className="h-8" />
+                        <img
+                            src="/logo.png"
+                            alt="Logo"
+                            className="h-8 dark:hidden"
+                        />
+                        <img
+                            src="/logo-dark.png"
+                            alt="Logo"
+                            className="hidden h-8 dark:block"
+                        />
                     </Link>
                     {/* Desktop Navigation */}
                     <nav className="hidden lg:flex lg:flex-row lg:items-center lg:justify-center lg:gap-4">

@@ -3,6 +3,7 @@
 use App\Models\BeritaRed;
 use App\Models\BeritaVid;
 use App\Models\IklOnline;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -20,7 +21,10 @@ Route::get('/', function () {
         'perspektif' => BeritaRed::where('id_ber', '=', 69)->get(),
         'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->inRandomOrder()->orderBy('hits', 'desc')->take(5)->get(),
         'sponsors' => [
-            "utama" => IklOnline::where('ktg_ikl', 'UTAMA')->get()
+            "utama" => IklOnline::where('ktg_ikl', 'UTAMA')->aktif()->get(),
+            "footer" => IklOnline::where('ktg_ikl', 'FOOTER')->aktif()->get(),
+            "headline" => IklOnline::where('ktg_ikl', 'HEADLINE')->aktif()->get(),
+            "insidental" => IklOnline::where('ktg_ikl', 'INSIDENTAL')->aktif()->get(),
         ]
     ]);
 })->name('home');
@@ -76,6 +80,11 @@ Route::get('/search', function (Request $request) {
         'jenis_rubrik_list' => BeritaRed::select('jenis_rubrik')->distinct()->get(),
         'search_results' => $search_results,
         'search_query' => $search_query,
+        'sponsors' => [
+            "utama" => IklOnline::where('ktg_ikl', 'UTAMA')->aktif()->get(),
+            "insidental" => IklOnline::where('ktg_ikl', 'INSIDENTAL')->aktif()->get(),
+            "footer" => IklOnline::where('ktg_ikl', 'FOOTER')->aktif()->get(),
+        ]
     ]);
 })->name('search');
 
@@ -115,6 +124,14 @@ Route::get('/read-news/{slug}', function (Request $request, $slug) {
         'latest_news' => Inertia::scroll(
             fn() => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->paginate(8)
         ),
+        'sponsors' => [
+            "utama" => IklOnline::where('ktg_ikl', 'UTAMA')->aktif()->get(),
+            "berita_kiri" => IklOnline::where('posisi', 'KIRI BERITA - 1:3')->aktif()->get(),
+            "berita_kanan" => IklOnline::where('posisi', 'KANAN BERITA - 16:9')->aktif()->get(),
+            'berita_bawah' => IklOnline::where('posisi', 'DIBAWAH BERITA - 3:1')->aktif()->get(),
+            "footer" => IklOnline::where('ktg_ikl', 'FOOTER')->aktif()->get(),
+        ],
+        // TODO: author by id_user
     ]);
 })->name('read-news');
 
