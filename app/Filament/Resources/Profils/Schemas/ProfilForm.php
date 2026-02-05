@@ -88,6 +88,11 @@ class ProfilForm
                     ])->columns(1)->columnSpan(2),
                     Group::make([
                         Section::make('Password')->schema([
+                            TextInput::make('password_lama')
+                                ->label('Password Lama')
+                                ->password()
+                                ->columnSpanFull()
+                                ->revealable(),
                             TextInput::make('password')
                                 ->password()
                                 ->columnSpanFull()
