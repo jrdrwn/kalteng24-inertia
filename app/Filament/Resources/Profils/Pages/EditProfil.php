@@ -25,8 +25,19 @@ class EditProfil extends EditRecord
     {
         // If password not filled, remove both fields
         if (empty($data['password'])) {
-            unset($data['password'], $data['konfirmasi_password']);
+            unset($data['password'], $data['konfirmasi_password'], $data['password_lama']);
+
+            return $data;
         }
+
+        // Remove old password field before save
+        unset($data['password_lama']);
+
+        // Remove confirmation field before save
+        unset($data['konfirmasi_password']);
+
+        //Hash new password
+        $data['password'] = Hash::make($data['password']);
 
         return $data;
     }
@@ -44,12 +55,13 @@ class EditProfil extends EditRecord
             $this->halt();
         }
 
-        if ($data['password']) {
-            // Remove confirmation field before save
-            unset($data['konfirmasi_password']);
+        if ($data['password'] && !Hash::check($data['password_lama'], Auth::user()->password)) {
+            Notification::make()
+                ->title('Password lama tidak sesuai.')
+                ->danger()
+                ->send();
 
-            //Hash new password
-            $data['password'] = Hash::make($data['password']);
+            $this->halt();
         }
 
         $userId = Auth::user()->id_user;

@@ -32,8 +32,9 @@ class ListIklOnlines extends ListRecords
         return [
             'Semua' => Tab::make(),
             'UTAMA' => Tab::make()->query(fn(Builder $query) => $query->where('ktg_ikl', 'UTAMA')),
+            'HEADLINE' => Tab::make()->query(fn(Builder $query) => $query->where('ktg_ikl', 'HEADLINE')),
             'BERITA' => Tab::make()->query(fn(Builder $query) => $query->where('ktg_ikl', 'BERITA')),
-            'INDEX' => Tab::make()->query(fn(Builder $query) => $query->where('ktg_ikl', 'INDEX')),
+            'INSIDENTAL' => Tab::make()->query(fn(Builder $query) => $query->where('ktg_ikl', 'INSIDENTAL')),
             'FOOTER' => Tab::make()->query(fn(Builder $query) => $query->where('ktg_ikl', 'FOOTER')),
         ];
     }
