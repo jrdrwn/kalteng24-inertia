@@ -2,6 +2,7 @@
 
 use App\Models\BeritaRed;
 use App\Models\BeritaVid;
+use App\Models\Config;
 use App\Models\IklOnline;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -138,6 +139,7 @@ Route::get('/read-news/{slug}', function (Request $request, $slug) {
 Route::get('/about-us', function () {
     return Inertia::render('about-us', [
         'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('hits', 'desc')->take(5)->get(),
+        'metadata' => Config::take(1)->get()->first(),
     ]);
 })->name('about-us');
 

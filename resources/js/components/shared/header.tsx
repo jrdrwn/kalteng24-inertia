@@ -1,3 +1,4 @@
+import { Config } from '@/types/entities';
 import { Link } from '@inertiajs/react';
 import {
     ChevronDown,
@@ -177,7 +178,11 @@ const navigationItems: NavItem[] = [
     { label: 'OLAHRAGA', href: '/search?q=Olahraga' },
 ];
 
-export default function Header() {
+interface ComponentProps {
+    metadata?: Config;
+}
+
+export default function Header({ metadata }: ComponentProps) {
     const [mobileOpen, setMobileOpen] = useState(false);
 
     function handleSearch(e: React.FormEvent<HTMLFormElement>) {
@@ -201,6 +206,9 @@ export default function Header() {
                         {new Date().toLocaleTimeString('id-ID', {
                             timeStyle: 'medium',
                         })}
+                    </p>
+                                        <p className='text-xs'>
+                        {metadata?.title} - {metadata?.motho}
                     </p>
                     <div className="flex gap-1">
                         <FaFacebookSquare className="size-4 text-blue-600" />
@@ -320,7 +328,7 @@ export default function Header() {
     );
 }
 
-export function Header2() {
+export function Header2({ metadata }: ComponentProps) {
     const [mobileOpen, setMobileOpen] = useState(false);
 
     return (
@@ -335,6 +343,9 @@ export function Header2() {
                         {new Date().toLocaleTimeString('id-ID', {
                             timeStyle: 'medium',
                         })}
+                    </p>
+                    <p className='text-xs'>
+                        {metadata?.title}
                     </p>
                     <div className="flex gap-1">
                         <FaFacebookSquare className="size-4 text-blue-600" />

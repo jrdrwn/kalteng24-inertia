@@ -1,15 +1,16 @@
 import Footer from '@/components/shared/footer';
 import Header from '@/components/shared/header';
 import { Card } from '@/components/ui/card';
-import { BeritaRed } from '@/types/entities';
+import { BeritaRed, Config } from '@/types/entities';
 
 interface PageProps {
     popular_news: BeritaRed[];
+    metadata: Config;
 }
-export default function AboutUs({ popular_news }: PageProps) {
+export default function AboutUs({ popular_news, metadata }: PageProps) {
     return (
         <>
-            <Header />
+            <Header metadata={metadata} />
             <section className="px-2 py-10 md:px-4">
                 <div className="container mx-auto">
                     <Card className="mx-auto prose max-w-6xl gap-0 px-4 dark:prose-invert">
@@ -24,8 +25,7 @@ export default function AboutUs({ popular_news }: PageProps) {
                             <b>NOMOR AHU-0264681.AH.01.11.TAHUN 2022 </b>{' '}
                             berkantor pusat di{' '}
                             <b>
-                                Jl. Sapan II A No. 36, Lantai III Palangka Raya,
-                                Kalimantan Tengah.
+                                {metadata.alamat}
                             </b>
                         </p>
                         <p>
@@ -75,7 +75,7 @@ export default function AboutUs({ popular_news }: PageProps) {
                     </Card>
                 </div>
             </section>
-            <Footer popular_news={popular_news} />
+            <Footer popular_news={popular_news} metadata={metadata} />
         </>
     );
 }

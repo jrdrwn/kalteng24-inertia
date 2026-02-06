@@ -1,11 +1,10 @@
 import { createSlug, getRubrikOrKategori } from '@/lib/utils';
-import { BeritaRed } from '@/types/entities';
+import { BeritaRed, Config } from '@/types/entities';
 import { Link } from '@inertiajs/react';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import {
     FaFacebookSquare,
     FaInstagramSquare,
-    FaLinkedin,
     FaTwitterSquare,
     FaYoutubeSquare,
 } from 'react-icons/fa';
@@ -14,9 +13,10 @@ import { Button } from '../ui/button';
 
 interface FooterProps {
     popular_news: BeritaRed[];
+    metadata?: Config;
 }
 
-export default function Footer({ popular_news }: FooterProps) {
+export default function Footer({ popular_news, metadata }: FooterProps) {
     return (
         <footer className="mt-10 border-t bg-muted/20 px-4">
             <div className="container mx-auto">
@@ -28,20 +28,15 @@ export default function Footer({ popular_news }: FooterProps) {
                         <div className="flex flex-col gap-4">
                             <span className="flex items-start">
                                 <MapPin className="mr-2 size-6" />
-                                <p className="flex-1">
-                                    Jl. Sapan II A No. 36, Lantai III Palangka
-                                    Raya, Kalimantan Tengah
-                                </p>
+                                <p className="flex-1">{metadata?.alamat}</p>
                             </span>
                             <span className="flex items-start">
                                 <Phone className="mr-2 size-6" />
-                                <p className="flex-1">+62 813-4921-9926</p>
+                                <p className="flex-1">{metadata?.wasupport}</p>
                             </span>
                             <span className="flex items-start">
                                 <Mail className="mr-2 size-6" />
-                                <p className="flex-1">
-                                    kaltengduaempat@gmail.com
-                                </p>
+                                <p className="flex-1">{metadata?.email}</p>
                             </span>
                         </div>
                     </div>
@@ -109,17 +104,24 @@ export default function Footer({ popular_news }: FooterProps) {
                             follow us
                         </h1>
                         <div className="flex flex-wrap gap-4">
-                            <FaFacebookSquare className="size-8 text-blue-600" />
-                            <FaInstagramSquare className="size-8 text-pink-600" />
-                            <FaTwitterSquare className="size-8 text-blue-400" />
-                            <FaYoutubeSquare className="size-8 text-red-600" />
-                            <FaLinkedin className="size-8 text-blue-700" />
+                            <Link href={metadata?.fb || '#'}>
+                                <FaFacebookSquare className="size-8 text-blue-600" />
+                            </Link>
+                            <Link href={metadata?.ig || '#'}>
+                                <FaInstagramSquare className="size-8 text-pink-600" />
+                            </Link>
+                            <Link href={metadata?.tw || '#'}>
+                                <FaTwitterSquare className="size-8 text-blue-400" />
+                            </Link>
+                            <Link href={metadata?.yt || '#'}>
+                                <FaYoutubeSquare className="size-8 text-red-600" />
+                            </Link>
                         </div>
                     </div>
                 </div>
                 <div className="flex flex-col-reverse items-center justify-between gap-4 border-t py-2 text-center lg:flex-row">
                     <p className="text-sm">
-                        Copyright © 2020 Berita Kalteng 24. All rights
+                        Copyright © 2020 <Link href={metadata?.link_coppy || '#'} className='hover:underline active:underline'>{metadata?.coppyright}</Link>. All rights
                         reserved.
                     </p>
                     <div>
