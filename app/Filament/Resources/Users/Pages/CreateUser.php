@@ -48,5 +48,16 @@ class CreateUser extends CreateRecord
 
             $this->halt();
         }
+
+        $existingUsers = User::where('username', $data['username'])->first();
+        
+        if ($existingUsers) {
+            Notification::make()
+                ->title('Username sudah terdaftar.')
+                ->danger()
+                ->send();
+
+            $this->halt();
+        }
     }
 }

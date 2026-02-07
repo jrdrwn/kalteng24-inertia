@@ -33,10 +33,6 @@ class IklOnline extends Model
 	protected $primaryKey = 'id_ikl';
 	public $timestamps = false;
 
-	protected $casts = [
-		'jam' => 'datetime'
-	];
-
 	protected $fillable = [
 		'title_ikl',
 		'link',

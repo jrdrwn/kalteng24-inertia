@@ -66,7 +66,7 @@ class ProfilForm
                         ])->columns(2),
                         Group::make([
                             TextInput::make('username')
-                                ->required(),
+                                ->disabled(),
                             Select::make('role')
                                 ->options([
                                     'Administrator' => 'Administrator',

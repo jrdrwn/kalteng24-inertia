@@ -6,6 +6,7 @@ use App\Filament\Resources\IklOnlines\IklOnlineResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Tabs;
 use App\Filament\Resources\IklOnlines\Widgets\SpaceIklan;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -30,12 +31,8 @@ class ListIklOnlines extends ListRecords
     public function getTabs(): array
     {
         return [
-            'Semua' => Tab::make(),
-            'UTAMA' => Tab::make()->query(fn(Builder $query) => $query->where('ktg_ikl', 'UTAMA')),
-            'HEADLINE' => Tab::make()->query(fn(Builder $query) => $query->where('ktg_ikl', 'HEADLINE')),
-            'BERITA' => Tab::make()->query(fn(Builder $query) => $query->where('ktg_ikl', 'BERITA')),
-            'INSIDENTAL' => Tab::make()->query(fn(Builder $query) => $query->where('ktg_ikl', 'INSIDENTAL')),
-            'FOOTER' => Tab::make()->query(fn(Builder $query) => $query->where('ktg_ikl', 'FOOTER')),
+            'Iklan Aktif' => Tab::make()->query(fn(Builder $query) => $query->where('exp_tgl', '>=', now()))->default(true),
+            'Iklan Expired' => Tab::make()->query(fn(Builder $query) => $query->where('exp_tgl', '<', now())),
         ];
     }
 }

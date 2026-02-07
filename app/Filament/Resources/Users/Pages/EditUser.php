@@ -34,6 +34,9 @@ class EditUser extends EditRecord
         // Remove confirmation field before save
         unset($data['konfirmasi_password']);
 
+        // Remove username field before save
+        unset($data['username']);
+
         //Hash new password
         $data['password'] = Hash::make($data['password']);
 
