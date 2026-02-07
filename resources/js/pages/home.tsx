@@ -5,7 +5,7 @@ import Footer from '@/components/shared/footer';
 import Header from '@/components/shared/header';
 import SponsorFooter from '@/components/sponsor/footer';
 import SponsorUtama from '@/components/sponsor/utama';
-import { BeritaRed, BeritaVid, IklOnline } from '@/types/entities';
+import { BeritaRed, BeritaVid, Config, IklOnline } from '@/types/entities';
 
 interface PageProps {
     hero_berita: BeritaRed[];
@@ -24,6 +24,7 @@ interface PageProps {
         insidental: IklOnline[];
         footer: IklOnline[];
     };
+    metadata: Config;
 }
 
 export default function Home({
@@ -35,11 +36,12 @@ export default function Home({
     perspektif,
     popular_news,
     sponsors,
+    metadata,
 }: PageProps) {
     return (
         <>
             <SponsorUtama data={sponsors?.utama || []} />
-            <Header />
+            <Header metadata={metadata} />
             <Hero hero_berita={hero_berita} />
             <BreakingNews breaking_news={breaking_news} />
             <News
@@ -51,7 +53,7 @@ export default function Home({
                 sponsors={sponsors}
             />
             <SponsorFooter data={sponsors?.footer || []} />
-            <Footer popular_news={popular_news} />
+            <Footer popular_news={popular_news} metadata={metadata} />
         </>
     );
 }

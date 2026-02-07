@@ -179,7 +179,7 @@ const navigationItems: NavItem[] = [
 ];
 
 interface ComponentProps {
-    metadata?: Config;
+    metadata: Config;
 }
 
 export default function Header({ metadata }: ComponentProps) {
@@ -207,7 +207,7 @@ export default function Header({ metadata }: ComponentProps) {
                             timeStyle: 'medium',
                         })}
                     </p>
-                                        <p className='text-xs'>
+                    <p className="hidden text-xs md:block">
                         {metadata?.title} - {metadata?.motho}
                     </p>
                     <div className="flex gap-1">
@@ -344,8 +344,8 @@ export function Header2({ metadata }: ComponentProps) {
                             timeStyle: 'medium',
                         })}
                     </p>
-                    <p className='text-xs'>
-                        {metadata?.title}
+                    <p className="hidden text-xs md:block">
+                        {metadata?.title} - {metadata?.motho}
                     </p>
                     <div className="flex gap-1">
                         <FaFacebookSquare className="size-4 text-blue-600" />

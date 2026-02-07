@@ -4,6 +4,7 @@ use App\Models\BeritaRed;
 use App\Models\BeritaVid;
 use App\Models\Config;
 use App\Models\IklOnline;
+use App\Models\KategoriRubrik;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -11,22 +12,23 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('home', [
-        'hero_berita' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->take(4)->get(),
-        'breaking_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->take(16)->offset(4)->get(),
-        'latest_news_single' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->take(1)->offset(20)->get(),
+        'hero_berita' => BeritaRed::excludeHitway()->orderBy('tgl', 'desc')->take(4)->get(),
+        'breaking_news' => BeritaRed::excludeHitway()->orderBy('tgl', 'desc')->take(16)->offset(4)->get(),
+        'latest_news_single' => BeritaRed::excludeHitway()->orderBy('tgl', 'desc')->take(1)->offset(20)->get(),
         'latest_news' => Inertia::scroll(
             fn() =>
-            BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->paginate(8)
+            BeritaRed::excludeHitway()->orderBy('tgl', 'desc')->paginate(8)
         ),
         'latest_news_video' => BeritaVid::orderBy('tgl', 'desc')->inRandomOrder()->take(5)->get(),
         'perspektif' => BeritaRed::where('id_ber', '=', 69)->get(),
-        'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->inRandomOrder()->orderBy('hits', 'desc')->take(5)->get(),
+        'popular_news' => BeritaRed::excludeHitway()->inRandomOrder()->orderBy('hits', 'desc')->take(5)->get(),
         'sponsors' => [
             "utama" => IklOnline::where('ktg_ikl', 'UTAMA')->aktif()->get(),
             "footer" => IklOnline::where('ktg_ikl', 'FOOTER')->aktif()->get(),
             "headline" => IklOnline::where('ktg_ikl', 'HEADLINE')->aktif()->get(),
             "insidental" => IklOnline::where('ktg_ikl', 'INSIDENTAL')->aktif()->get(),
-        ]
+        ],
+        'metadata' => Config::take(1)->get()->first(),
     ]);
 })->name('home');
 
@@ -44,6 +46,8 @@ Route::get('/search', function (Request $request) {
     $kategori = $request->input('kategori', null);
     $jenis_rubrik = $request->input('jenis_rubrik', null);
 
+    $date_from = $request->input('date_from', null);
+    $date_to = $request->input('date_to', null);
 
     $search_query = $request->input('q', '');
     $search_results = BeritaRed::when($search_query, function ($query, $search_query) {
@@ -73,21 +77,33 @@ Route::get('/search', function (Request $request) {
         ->when($order_by === 'oldest', function ($query) {
             $query->orderBy('tgl', 'asc');
         })
+        ->when($date_from, function ($query, $date_from) {
+            $query->whereDate('tgl', '>=', $date_from);
+        })
+        ->when($date_to, function ($query, $date_to) {
+            $query->whereDate('tgl', '<=', $date_to);
+        })
         ->paginate(10)
         ->withQueryString();
     return Inertia::render('search', [
-        'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->inRandomOrder()->orderBy('hits', 'desc')->take(5)->get(),
-        'kategori_list' => BeritaRed::select('kategori')->distinct()->get(),
-        'jenis_rubrik_list' => BeritaRed::select('jenis_rubrik')->distinct()->get(),
+        'popular_news' => BeritaRed::excludeHitway()->inRandomOrder()->orderBy('hits', 'desc')->take(5)->get(),
+        'kategori_list' => KategoriRubrik::select('kategori')->distinct()->get(),
+        'rubrik_list' => KategoriRubrik::select('rubrik')->where('kategori', $kategori ?? '')->get(),
         'search_results' => $search_results,
         'search_query' => $search_query,
         'sponsors' => [
             "utama" => IklOnline::where('ktg_ikl', 'UTAMA')->aktif()->get(),
             "insidental" => IklOnline::where('ktg_ikl', 'INSIDENTAL')->aktif()->get(),
             "footer" => IklOnline::where('ktg_ikl', 'FOOTER')->aktif()->get(),
-        ]
+        ],
+        'metadata' => Config::take(1)->get()->first(),
     ]);
 })->name('search');
+
+Route::get('/api/rubrik/{kategori}', function ($kategori) {
+    $rubriks = KategoriRubrik::where('kategori', $kategori)->get();
+    return response()->json($rubriks);
+})->name('api.rubrik');
 
 Route::get('/read-news/{slug}', function (Request $request, $slug) {
     // slug: id_judul-with-dashes
@@ -123,7 +139,7 @@ Route::get('/read-news/{slug}', function (Request $request, $slug) {
         'trending_news' => BeritaRed::whereNot('id_ber', '=', $id_ber)->orderBy('hits', 'desc')->take(10)->get(),
         'latest_news_video' => BeritaVid::orderBy('tgl', 'desc')->inRandomOrder()->take(5)->get(),
         'latest_news' => Inertia::scroll(
-            fn() => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('tgl', 'desc')->paginate(8)
+            fn() => BeritaRed::excludeHitway()->orderBy('tgl', 'desc')->paginate(8)
         ),
         'sponsors' => [
             "utama" => IklOnline::where('ktg_ikl', 'UTAMA')->aktif()->get(),
@@ -132,25 +148,40 @@ Route::get('/read-news/{slug}', function (Request $request, $slug) {
             'berita_bawah' => IklOnline::where('posisi', 'DIBAWAH BERITA - 3:1')->aktif()->get(),
             "footer" => IklOnline::where('ktg_ikl', 'FOOTER')->aktif()->get(),
         ],
+        'metadata' => Config::take(1)->get()->first(),
         // TODO: author by id_user
     ]);
 })->name('read-news');
 
 Route::get('/about-us', function () {
     return Inertia::render('about-us', [
-        'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('hits', 'desc')->take(5)->get(),
+        'popular_news' => BeritaRed::excludeHitway()->orderBy('hits', 'desc')->take(5)->get(),
         'metadata' => Config::take(1)->get()->first(),
+        'sponsors' => [
+            "utama" => IklOnline::where('ktg_ikl', 'UTAMA')->aktif()->get(),
+            "footer" => IklOnline::where('ktg_ikl', 'FOOTER')->aktif()->get(),
+        ],
     ]);
 })->name('about-us');
 
 Route::get('/pedoman-media-siber', function () {
     return Inertia::render('pedoman-media-siber', [
-        'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('hits', 'desc')->take(5)->get(),
+        'popular_news' => BeritaRed::excludeHitway()->orderBy('hits', 'desc')->take(5)->get(),
+        'metadata' => Config::take(1)->get()->first(),
+        'sponsors' => [
+            "utama" => IklOnline::where('ktg_ikl', 'UTAMA')->aktif()->get(),
+            "footer" => IklOnline::where('ktg_ikl', 'FOOTER')->aktif()->get(),
+        ],
     ]);
 })->name('pedoman-media-siber');
 
 Route::get('/disclaimer', function () {
     return Inertia::render('disclaimer', [
-        'popular_news' => BeritaRed::whereNot('id_ber', '=', 69)->orderBy('hits', 'desc')->take(5)->get(),
+        'popular_news' => BeritaRed::excludeHitway()->orderBy('hits', 'desc')->take(5)->get(),
+        'metadata' => Config::take(1)->get()->first(),
+        'sponsors' => [
+            "utama" => IklOnline::where('ktg_ikl', 'UTAMA')->aktif()->get(),
+            "footer" => IklOnline::where('ktg_ikl', 'FOOTER')->aktif()->get(),
+        ],
     ]);
 })->name('disclaimer');

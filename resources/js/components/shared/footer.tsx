@@ -13,7 +13,7 @@ import { Button } from '../ui/button';
 
 interface FooterProps {
     popular_news: BeritaRed[];
-    metadata?: Config;
+    metadata: Config;
 }
 
 export default function Footer({ popular_news, metadata }: FooterProps) {
@@ -121,8 +121,14 @@ export default function Footer({ popular_news, metadata }: FooterProps) {
                 </div>
                 <div className="flex flex-col-reverse items-center justify-between gap-4 border-t py-2 text-center lg:flex-row">
                     <p className="text-sm">
-                        Copyright © 2020 <Link href={metadata?.link_coppy || '#'} className='hover:underline active:underline'>{metadata?.coppyright}</Link>. All rights
-                        reserved.
+                        Copyright © 2020{' '}
+                        <Link
+                            href={metadata?.link_coppy || '#'}
+                            className="hover:underline active:underline"
+                        >
+                            {metadata?.coppyright}
+                        </Link>
+                        . All rights reserved.
                     </p>
                     <div>
                         <Link href="/about-us">

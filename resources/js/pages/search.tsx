@@ -6,6 +6,7 @@ import SponsorInsidentalStack from '@/components/sponsor/insidental-stack';
 import SponsorUtama from '@/components/sponsor/utama';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import { Card } from '@/components/ui/card';
 import {
     Drawer,
@@ -30,6 +31,11 @@ import {
     PaginationPrevious,
 } from '@/components/ui/pagination';
 import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/components/ui/popover';
+import {
     Select,
     SelectContent,
     SelectItem,
@@ -39,13 +45,14 @@ import {
 import { useStickyScroll } from '@/hooks/use-sticky-scroll';
 import { createSlug, getRubrikOrKategori } from '@/lib/utils';
 import { SharedData } from '@/types';
-import { BeritaRed, IklOnline } from '@/types/entities';
+import { BeritaRed, Config, IklOnline } from '@/types/entities';
 import { TPagination } from '@/types/pagination';
 import { Link, usePage } from '@inertiajs/react';
 import parse from 'html-react-parser';
 import {
     ArrowLeft,
     ArrowRight,
+    CalendarIcon,
     Eye,
     Filter,
     RefreshCcw,
@@ -58,12 +65,13 @@ interface PageProps {
     search_results: TPagination<BeritaRed>;
     search_query: string;
     kategori_list: { kategori: string }[];
-    jenis_rubrik_list: { jenis_rubrik: string }[];
+    rubrik_list: { rubrik: string }[];
     sponsors: {
         utama: IklOnline[];
         insidental: IklOnline[];
         footer: IklOnline[];
     };
+    metadata: Config;
 }
 
 export default function SearchResult({
@@ -71,8 +79,9 @@ export default function SearchResult({
     search_results,
     search_query,
     kategori_list,
-    jenis_rubrik_list,
+    rubrik_list,
     sponsors,
+    metadata,
 }: PageProps) {
     const { imageUrl } = usePage<SharedData>().props;
     const urlParams = new URLSearchParams(window.location.search);
@@ -108,6 +117,23 @@ export default function SearchResult({
         window.location.href = `/search?${currentParams.toString()}`;
     }
 
+    // untuk input range tanggal
+    function handleDateRangeChange(from: string, to: string) {
+        const currentParams = new URLSearchParams(window.location.search);
+        // set date_from dan date_to dan jangan ada yang null jika ada
+        if (from) {
+            currentParams.set('date_from', from);
+        } else {
+            currentParams.delete('date_from');
+        }
+        if (to) {
+            currentParams.set('date_to', to);
+        } else {
+            currentParams.delete('date_to');
+        }
+        window.location.href = `/search?${currentParams.toString()}`;
+    }
+
     function resetFilters() {
         window.location.href = `/search?`;
     }
@@ -115,7 +141,7 @@ export default function SearchResult({
     return (
         <>
             <SponsorUtama data={sponsors.utama} />
-            <Header2 />
+            <Header2 metadata={metadata} />
             <section className="px-2 pt-4 pb-4 md:px-4">
                 <div className="container mx-auto grid grid-cols-4 gap-4">
                     <div className="hidden md:col-span-1 md:block">
@@ -178,6 +204,107 @@ export default function SearchResult({
                             </div>
                             <div className="mt-4">
                                 <p className="mb-2 text-sm font-medium text-muted-foreground">
+                                    Rentang Tanggal
+                                </p>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                data-empty={
+                                                    !urlParams.get('date_from')
+                                                }
+                                                className="w-full justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
+                                            >
+                                                <CalendarIcon />
+                                                {urlParams.get('date_from') ||
+                                                    'Dari Tanggal'}
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-auto p-0">
+                                            <Calendar
+                                                mode="single"
+                                                selected={
+                                                    urlParams.get('date_from')
+                                                        ? new Date(
+                                                              urlParams.get(
+                                                                  'date_from',
+                                                              )!,
+                                                          )
+                                                        : undefined
+                                                }
+                                                onSelect={(date) => {
+                                                    if (date) {
+                                                        const formattedDate =
+                                                            date.toLocaleDateString(
+                                                                'en-US',
+                                                                {
+                                                                    calendar:
+                                                                        'iso8601',
+                                                                },
+                                                            );
+                                                        handleDateRangeChange(
+                                                            formattedDate,
+                                                            urlParams.get(
+                                                                'date_to',
+                                                            ) || '',
+                                                        );
+                                                    }
+                                                }}
+                                            />
+                                        </PopoverContent>
+                                    </Popover>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                data-empty={
+                                                    !urlParams.get('date_to')
+                                                }
+                                                className="w-full justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
+                                            >
+                                                <CalendarIcon />
+                                                {urlParams.get('date_to') ||
+                                                    'Sampai Tanggal'}
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-auto p-0">
+                                            <Calendar
+                                                mode="single"
+                                                selected={
+                                                    urlParams.get('date_to')
+                                                        ? new Date(
+                                                              urlParams.get(
+                                                                  'date_to',
+                                                              )!,
+                                                          )
+                                                        : undefined
+                                                }
+                                                onSelect={(date) => {
+                                                    if (date) {
+                                                        const formattedDate =
+                                                            date.toLocaleDateString(
+                                                                'en-US',
+                                                                {
+                                                                    calendar:
+                                                                        'iso8601',
+                                                                },
+                                                            );
+                                                        handleDateRangeChange(
+                                                            urlParams.get(
+                                                                'date_from',
+                                                            ) || '',
+                                                            formattedDate,
+                                                        );
+                                                    }
+                                                }}
+                                            />
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
+                            </div>
+                            <div className="mt-4">
+                                <p className="mb-2 text-sm font-medium text-muted-foreground">
                                     Kategori
                                 </p>
                                 <Select
@@ -220,22 +347,17 @@ export default function SearchResult({
                                         <SelectValue placeholder="Pilih Jenis Rubrik" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {jenis_rubrik_list.map(
-                                            (item, index) => (
-                                                <SelectItem
-                                                    key={index}
-                                                    value={
-                                                        item.jenis_rubrik ||
-                                                        'unknown'
-                                                    }
-                                                >
-                                                    {item.jenis_rubrik.replaceAll(
-                                                        '_',
-                                                        ' ',
-                                                    ) || 'Unknown'}
-                                                </SelectItem>
-                                            ),
-                                        )}
+                                        {rubrik_list.map((item, index) => (
+                                            <SelectItem
+                                                key={index}
+                                                value={item.rubrik || 'unknown'}
+                                            >
+                                                {item.rubrik.replaceAll(
+                                                    '_',
+                                                    ' ',
+                                                ) || 'Unknown'}
+                                            </SelectItem>
+                                        ))}
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -335,6 +457,123 @@ export default function SearchResult({
                                             </div>
                                             <div className="mt-4">
                                                 <p className="mb-2 text-sm font-medium text-muted-foreground">
+                                                    Rentang Tanggal
+                                                </p>
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    <Popover>
+                                                        <PopoverTrigger asChild>
+                                                            <Button
+                                                                variant="outline"
+                                                                data-empty={
+                                                                    !urlParams.get(
+                                                                        'date_from',
+                                                                    )
+                                                                }
+                                                                className="w-full justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
+                                                            >
+                                                                <CalendarIcon />
+                                                                {urlParams.get(
+                                                                    'date_from',
+                                                                ) || 'Dari'}
+                                                            </Button>
+                                                        </PopoverTrigger>
+                                                        <PopoverContent className="w-auto p-0">
+                                                            <Calendar
+                                                                mode="single"
+                                                                selected={
+                                                                    urlParams.get(
+                                                                        'date_from',
+                                                                    )
+                                                                        ? new Date(
+                                                                              urlParams.get(
+                                                                                  'date_from',
+                                                                              )!,
+                                                                          )
+                                                                        : undefined
+                                                                }
+                                                                onSelect={(
+                                                                    date,
+                                                                ) => {
+                                                                    if (date) {
+                                                                        const formattedDate =
+                                                                            date.toLocaleDateString(
+                                                                                'en-US',
+                                                                                {
+                                                                                    calendar:
+                                                                                        'iso8601',
+                                                                                },
+                                                                            );
+                                                                        handleDateRangeChange(
+                                                                            formattedDate,
+                                                                            urlParams.get(
+                                                                                'date_to',
+                                                                            ) ||
+                                                                                '',
+                                                                        );
+                                                                    }
+                                                                }}
+                                                            />
+                                                        </PopoverContent>
+                                                    </Popover>
+                                                    <Popover>
+                                                        <PopoverTrigger asChild>
+                                                            <Button
+                                                                variant="outline"
+                                                                data-empty={
+                                                                    !urlParams.get(
+                                                                        'date_to',
+                                                                    )
+                                                                }
+                                                                className="w-full justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
+                                                            >
+                                                                <CalendarIcon />
+                                                                {urlParams.get(
+                                                                    'date_to',
+                                                                ) || 'Sampai'}
+                                                            </Button>
+                                                        </PopoverTrigger>
+                                                        <PopoverContent className="w-auto p-0">
+                                                            <Calendar
+                                                                mode="single"
+                                                                selected={
+                                                                    urlParams.get(
+                                                                        'date_to',
+                                                                    )
+                                                                        ? new Date(
+                                                                              urlParams.get(
+                                                                                  'date_to',
+                                                                              )!,
+                                                                          )
+                                                                        : undefined
+                                                                }
+                                                                onSelect={(
+                                                                    date,
+                                                                ) => {
+                                                                    if (date) {
+                                                                        const formattedDate =
+                                                                            date.toLocaleDateString(
+                                                                                'en-US',
+                                                                                {
+                                                                                    calendar:
+                                                                                        'iso8601',
+                                                                                },
+                                                                            );
+                                                                        handleDateRangeChange(
+                                                                            urlParams.get(
+                                                                                'date_from',
+                                                                            ) ||
+                                                                                '',
+                                                                            formattedDate,
+                                                                        );
+                                                                    }
+                                                                }}
+                                                            />
+                                                        </PopoverContent>
+                                                    </Popover>
+                                                </div>
+                                            </div>
+                                            <div className="mt-4">
+                                                <p className="mb-2 text-sm font-medium text-muted-foreground">
                                                     Kategori
                                                 </p>
                                                 <Select
@@ -389,16 +628,16 @@ export default function SearchResult({
                                                         <SelectValue placeholder="Pilih Jenis Rubrik" />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        {jenis_rubrik_list.map(
+                                                        {rubrik_list.map(
                                                             (item, index) => (
                                                                 <SelectItem
                                                                     key={index}
                                                                     value={
-                                                                        item.jenis_rubrik ||
+                                                                        item.rubrik ||
                                                                         'unknown'
                                                                     }
                                                                 >
-                                                                    {item.jenis_rubrik.replaceAll(
+                                                                    {item.rubrik.replaceAll(
                                                                         '_',
                                                                         ' ',
                                                                     ) ||
@@ -700,7 +939,7 @@ export default function SearchResult({
                 </div>
             </section>
             <SponsorFooter data={sponsors?.footer || []} />
-            <Footer popular_news={popular_news} />
+            <Footer popular_news={popular_news} metadata={metadata} />
         </>
     );
 }

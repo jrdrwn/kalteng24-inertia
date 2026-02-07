@@ -1,15 +1,26 @@
 import Footer from '@/components/shared/footer';
 import Header from '@/components/shared/header';
+import SponsorFooter from '@/components/sponsor/footer';
+import SponsorUtama from '@/components/sponsor/utama';
 import { Card } from '@/components/ui/card';
-import { BeritaRed, Config } from '@/types/entities';
+import { BeritaRed, Config, IklOnline } from '@/types/entities';
 
 interface PageProps {
     popular_news: BeritaRed[];
     metadata: Config;
+    sponsors?: {
+        utama: IklOnline[];
+        footer: IklOnline[];
+    };
 }
-export default function AboutUs({ popular_news, metadata }: PageProps) {
+export default function AboutUs({
+    popular_news,
+    metadata,
+    sponsors,
+}: PageProps) {
     return (
         <>
+            <SponsorUtama data={sponsors?.utama || []} />
             <Header metadata={metadata} />
             <section className="px-2 py-10 md:px-4">
                 <div className="container mx-auto">
@@ -23,10 +34,7 @@ export default function AboutUs({ popular_news, metadata }: PageProps) {
                             disahkan oleh <b>Kemenkumham RI</b> dengan nomor
                             Keputusan:{' '}
                             <b>NOMOR AHU-0264681.AH.01.11.TAHUN 2022 </b>{' '}
-                            berkantor pusat di{' '}
-                            <b>
-                                {metadata.alamat}
-                            </b>
+                            berkantor pusat di <b>{metadata.alamat}</b>
                         </p>
                         <p>
                             <b>Our Team</b>
@@ -75,6 +83,7 @@ export default function AboutUs({ popular_news, metadata }: PageProps) {
                     </Card>
                 </div>
             </section>
+            <SponsorFooter data={sponsors?.footer || []} />
             <Footer popular_news={popular_news} metadata={metadata} />
         </>
     );

@@ -31,7 +31,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { useStickyScroll } from '@/hooks/use-sticky-scroll';
 import { createSlug, getRubrikOrKategori } from '@/lib/utils';
 import { SharedData } from '@/types';
-import { BeritaRed, BeritaVid, IklOnline } from '@/types/entities';
+import { BeritaRed, BeritaVid, Config, IklOnline } from '@/types/entities';
 import { InfiniteScroll, Link, usePage } from '@inertiajs/react';
 import Autoplay from 'embla-carousel-autoplay';
 import parse from 'html-react-parser';
@@ -68,6 +68,7 @@ interface PageProps {
         berita_bawah: IklOnline[];
         footer: IklOnline[];
     };
+    metadata: Config;
 }
 
 export default function ReadNews({
@@ -77,6 +78,7 @@ export default function ReadNews({
     latest_news_video,
     latest_news,
     sponsors,
+    metadata,
 }: PageProps) {
     const { imageUrl } = usePage<SharedData>().props;
     const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
@@ -120,7 +122,7 @@ export default function ReadNews({
     return (
         <>
             <SponsorUtama data={sponsors?.utama || []} />
-            <Header />
+            <Header metadata={metadata} />
             {/* Accessibility Toolbar: Font Size Only, Popover */}
             <div className="fixed right-6 bottom-16 z-50 flex flex-col items-end gap-2">
                 <Popover>
@@ -685,7 +687,7 @@ export default function ReadNews({
                 </div>
             </section>
             <SponsorFooter data={sponsors?.footer || []} />
-            <Footer popular_news={popular_news} />
+            <Footer popular_news={popular_news} metadata={metadata} />
         </>
     );
 }
