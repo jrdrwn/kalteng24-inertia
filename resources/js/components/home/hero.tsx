@@ -1,8 +1,7 @@
-import { createSlug, getRubrikOrKategori } from '@/lib/utils';
+import { createSlug, getRubrikOrKategori, parseHtmlToReact } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { BeritaRed } from '@/types/entities';
 import { Link, usePage } from '@inertiajs/react';
-import parse from 'html-react-parser';
 import { UserCircle } from 'lucide-react';
 import { Badge } from '../ui/badge';
 
@@ -41,7 +40,7 @@ export default function Hero({ hero_berita }: ComponentProps) {
                         {hero_berita[0].judul}
                     </h1>
                     <div className="z-1 line-clamp-2 text-sm">
-                        {parse(hero_berita[0].isi_berita)}
+                        {parseHtmlToReact(hero_berita[0].isi_berita)}
                     </div>
                     <div className="z-1 flex flex-row items-center gap-1 text-sm">
                         <UserCircle className="inline-block size-4" />

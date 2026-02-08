@@ -1,9 +1,8 @@
 import { useStickyScroll } from '@/hooks/use-sticky-scroll';
-import { createSlug, getRubrikOrKategori } from '@/lib/utils';
+import { createSlug, getRubrikOrKategori, parseHtmlToReact } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { BeritaRed, BeritaVid, IklOnline } from '@/types/entities';
 import { InfiniteScroll, Link, usePage } from '@inertiajs/react';
-import parse from 'html-react-parser';
 import { Eye, LucideTriangle, UserCircle } from 'lucide-react';
 import ReactPlayer from 'react-player';
 import SponsorHeadline from '../sponsor/headline';
@@ -132,7 +131,7 @@ export default function News({
                                     </span>
                                 </div>
                                 <div className="line-clamp-4 leading-relaxed tracking-wide text-muted-foreground xl:line-clamp-5">
-                                    {parse(latest_news_single[0].isi_berita)}
+                                    {parseHtmlToReact(latest_news_single[0].isi_berita)}
                                 </div>
                             </div>
                         </Link>
@@ -290,7 +289,7 @@ export default function News({
                                             </span>
                                         </div>
                                         <div className="line-clamp-3 leading-relaxed tracking-wide text-muted-foreground">
-                                            {parse(item.isi_berita)}
+                                            {parseHtmlToReact(item.isi_berita)}
                                         </div>
                                     </div>
                                 </Link>
@@ -346,7 +345,7 @@ export default function News({
                                     <span>{perspektif[0].user}</span>
                                 </div>
                                 <div className="line-clamp-4 leading-relaxed tracking-wide text-muted-foreground">
-                                    {parse(perspektif[0].isi_berita)}
+                                    {parseHtmlToReact(perspektif[0].isi_berita)}
                                 </div>
                             </div>
                         </Link>

@@ -1,5 +1,6 @@
 import { BeritaRed } from '@/types/entities';
 import { type ClassValue, clsx } from 'clsx';
+import parse from 'html-react-parser';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -27,4 +28,12 @@ export function createSlug(id: string | number, title: string): string {
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-+|-+$/g, '')}`;
+}
+
+export function parseHtmlToReact(html: string) {
+    const matches = html.match(/<p[\s\S]*?<\/p>/i);
+    if (matches && matches[0]) {
+        return parse(matches[0]);
+    }
+    return null;
 }

@@ -43,12 +43,11 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { useStickyScroll } from '@/hooks/use-sticky-scroll';
-import { createSlug, getRubrikOrKategori } from '@/lib/utils';
+import { createSlug, getRubrikOrKategori, parseHtmlToReact } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { BeritaRed, Config, IklOnline } from '@/types/entities';
 import { TPagination } from '@/types/pagination';
 import { Link, usePage } from '@inertiajs/react';
-import parse from 'html-react-parser';
 import {
     ArrowLeft,
     ArrowRight,
@@ -783,7 +782,9 @@ export default function SearchResult({
                                                     </span>
                                                 </div>
                                                 <div className="line-clamp-3 leading-relaxed tracking-wide text-muted-foreground xl:line-clamp-5">
-                                                    {parse(item.isi_berita)}
+                                                    {parseHtmlToReact(
+                                                        item.isi_berita || '',
+                                                    )}
                                                 </div>
                                             </div>
                                         </Link>

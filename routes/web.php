@@ -28,6 +28,7 @@ Route::get('/', function () {
             "headline" => IklOnline::where('ktg_ikl', 'HEADLINE')->aktif()->get(),
             "insidental" => IklOnline::where('ktg_ikl', 'INSIDENTAL')->aktif()->get(),
         ],
+        'random_tags' => KategoriRubrik::select('kategori')->distinct()->inRandomOrder()->take(10)->get(),
         'metadata' => Config::take(1)->get()->first(),
     ]);
 })->name('home');
@@ -104,6 +105,7 @@ Route::get('/api/rubrik/{kategori}', function ($kategori) {
     $rubriks = KategoriRubrik::where('kategori', $kategori)->get();
     return response()->json($rubriks);
 })->name('api.rubrik');
+
 
 Route::get('/read-news/{slug}', function (Request $request, $slug) {
     // slug: id_judul-with-dashes
