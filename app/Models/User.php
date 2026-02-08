@@ -84,9 +84,4 @@ class User extends Authenticatable implements HasName, FilamentUser, HasAvatar
 		'timestamp' => 'datetime',
 		'status' => 'boolean',
 	];
-
-	public function canAccessPanel(Panel $panel): bool
-    {
-        return $this->role;
-    }
 }
