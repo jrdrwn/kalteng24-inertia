@@ -12,8 +12,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
-
-
+use Filament\Models\Contracts\HasAvatar;
+use Filament\Panel;
 /**
  * Class User
  * 
@@ -34,7 +34,7 @@ use Filament\Models\Contracts\HasName;
  *
  * @package App\Models
  */
-class User extends Authenticatable implements HasName
+class User extends Authenticatable implements HasName, FilamentUser, HasAvatar
 {
 	use HasFactory;
 	use Notifiable;
@@ -51,6 +51,16 @@ class User extends Authenticatable implements HasName
 	protected $hidden = [
 		'password'
 	];
+
+	public function getFilamentAvatarUrl(): ?string
+	{
+		return asset('storage/' . $this->foto_user);
+	}
+
+	public function canAccessPanel(Panel $panel): bool
+	{
+		return in_array($this->role, ['Administrator', 'Wartawan']);
+	}
 
 	protected $fillable = [
 		'nama',

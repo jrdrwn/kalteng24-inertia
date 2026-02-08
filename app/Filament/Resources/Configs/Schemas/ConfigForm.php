@@ -14,6 +14,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TimePicker;
+use Filament\Forms\Components\TagsInput;
 use Illuminate\Support\Facades\Date;
 use App\Models\KategoriRubrik;
 use App\Models\User;
@@ -69,22 +70,22 @@ class ConfigForm
                                     ->required()
                                     ->columnSpanFull(),
                             ])->collapsible(),
-                        Section::make('Logo dan Icon')
+                        Section::make()
                             ->schema([
-                                FileUpload::make('logo')
-                                    ->disk('public')
-                                    ->visibility('public')
-                                    ->directory('logo')
-                                    ->image()
-                                    ->required(),
-                                FileUpload::make('ico')
-                                    ->label('Icon')
-                                    ->disk('public')
-                                    ->visibility('public')
-                                    ->directory('favicon')
-                                    ->image()
-                                    ->required(),
-                            ])->collapsible()->columns(2),
+                                TagsInput::make('tags')
+                                    ->splitKeys(['Tab', ','])
+                                    ->label('Tags Berita')
+                                    ->placeholder('Tambah tag')
+                                    ->rules([
+                                        'min:1',
+                                        'max:10',
+                                    ])
+                                    ->nestedRecursiveRules([
+                                        'min:2',
+                                        'max:20',
+                                    ])
+                                    ->columnSpanFull(),
+                            ])->columns(1),
                     ]),
                 ])->from('md')->columnSpanFull(),
             ]);

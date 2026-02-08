@@ -47,6 +47,7 @@ class Config extends Model
 		'fb',
 		'tw',
 		'ig',
-		'yt'
+		'yt',
+		'tags'
 	];
 }
