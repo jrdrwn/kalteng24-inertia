@@ -1,10 +1,12 @@
-import { createSlug, getRubrikOrKategori } from '@/lib/utils';
+import { useStickyScroll } from '@/hooks/use-sticky-scroll';
+import { createSlug, getRubrikOrKategori, parseHtmlToReact } from '@/lib/utils';
 import { SharedData } from '@/types';
-import { BeritaRed, BeritaVid } from '@/types/entities';
+import { BeritaRed, BeritaVid, IklOnline } from '@/types/entities';
 import { InfiniteScroll, Link, usePage } from '@inertiajs/react';
-import parse from 'html-react-parser';
 import { Eye, LucideTriangle, UserCircle } from 'lucide-react';
 import ReactPlayer from 'react-player';
+import SponsorHeadline from '../sponsor/headline';
+import SponsorInsidental from '../sponsor/insidental';
 import { Badge } from '../ui/badge';
 import { Card } from '../ui/card';
 import {
@@ -23,7 +25,6 @@ import {
     DialogTrigger,
 } from '../ui/dialog';
 import { Separator } from '../ui/separator';
-import { Skeleton } from '../ui/skeleton';
 import { Spinner } from '../ui/spinner';
 
 interface ComponentProps {
@@ -34,6 +35,11 @@ interface ComponentProps {
     latest_news_video: BeritaVid[];
     perspektif: BeritaRed[];
     popular_news: BeritaRed[];
+    sponsors?: {
+        utama: IklOnline[];
+        headline: IklOnline[];
+        insidental: IklOnline[];
+    };
 }
 
 export default function News({
@@ -42,12 +48,18 @@ export default function News({
     latest_news_video,
     perspektif,
     popular_news,
+    sponsors,
 }: ComponentProps) {
     const { imageUrl } = usePage<SharedData>().props;
+    const stickyRef = useStickyScroll();
+
     return (
         <section className="px-2 py-2 md:px-4">
             <div className="container mx-auto grid grid-cols-3 gap-8">
                 <div className="order-2 col-span-3 lg:order-1 lg:col-span-2">
+                    <div className="hidden md:block">
+                        <SponsorHeadline data={sponsors?.headline || []} />
+                    </div>
                     <div className="w-max pb-4">
                         <h1 className="text-xl font-semibold">Latest News</h1>
                         <div className="flex gap-1">
@@ -119,7 +131,7 @@ export default function News({
                                     </span>
                                 </div>
                                 <div className="line-clamp-4 leading-relaxed tracking-wide text-muted-foreground xl:line-clamp-5">
-                                    {parse(latest_news_single[0].isi_berita)}
+                                    {parseHtmlToReact(latest_news_single[0].isi_berita)}
                                 </div>
                             </div>
                         </Link>
@@ -277,7 +289,7 @@ export default function News({
                                             </span>
                                         </div>
                                         <div className="line-clamp-3 leading-relaxed tracking-wide text-muted-foreground">
-                                            {parse(item.isi_berita)}
+                                            {parseHtmlToReact(item.isi_berita)}
                                         </div>
                                     </div>
                                 </Link>
@@ -286,6 +298,9 @@ export default function News({
                     </Card>
                 </div>
                 <div className="order-1 col-span-3 lg:order-2 lg:col-span-1">
+                    <div className="block md:hidden">
+                        <SponsorHeadline data={sponsors?.headline || []} />
+                    </div>
                     <div className="w-max pb-4">
                         <h1 className="text-xl font-semibold">Perspektif</h1>
                         <div className="flex gap-1">
@@ -330,12 +345,15 @@ export default function News({
                                     <span>{perspektif[0].user}</span>
                                 </div>
                                 <div className="line-clamp-4 leading-relaxed tracking-wide text-muted-foreground">
-                                    {parse(perspektif[0].isi_berita)}
+                                    {parseHtmlToReact(perspektif[0].isi_berita)}
                                 </div>
                             </div>
                         </Link>
                     </Card>
-                    <div className="sticky top-0 py-4">
+                    <div
+                        ref={stickyRef}
+                        className="no-scrollbar sticky top-0 max-h-screen overflow-y-auto py-4"
+                    >
                         <div className="relative pb-1">
                             <h1 className="font-semibold">Berita Populer</h1>
                             <div className="absolute -bottom-[3px] left-0 h-1 w-16 rounded-full bg-primary"></div>
@@ -387,10 +405,7 @@ export default function News({
                                 </Link>
                             ))}
                         </div>
-                        <Skeleton className="mt-8 mb-2 h-30 w-full rounded-lg" />
-                        <p className="text-center text-sm text-muted-foreground">
-                            Space Iklan
-                        </p>
+                        <SponsorInsidental data={sponsors?.insidental || []} />
                     </div>
                 </div>
             </div>

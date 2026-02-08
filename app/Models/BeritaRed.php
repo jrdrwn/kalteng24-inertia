@@ -73,4 +73,9 @@ class BeritaRed extends Model
 		'tgl',
 		'jam'
 	];
+
+    public function scopeExcludeHitway($query)
+    {
+        return $query->where('id_ber', '!=', 69);
+    }
 }

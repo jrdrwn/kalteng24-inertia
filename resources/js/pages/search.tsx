@@ -1,7 +1,12 @@
 import Footer from '@/components/shared/footer';
 import { Header2 } from '@/components/shared/header';
+import SponsorFooter from '@/components/sponsor/footer';
+import SponsorInsidental from '@/components/sponsor/insidental';
+import SponsorInsidentalStack from '@/components/sponsor/insidental-stack';
+import SponsorUtama from '@/components/sponsor/utama';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import { Card } from '@/components/ui/card';
 import {
     Drawer,
@@ -26,21 +31,27 @@ import {
     PaginationPrevious,
 } from '@/components/ui/pagination';
 import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/components/ui/popover';
+import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { createSlug, getRubrikOrKategori } from '@/lib/utils';
+import { useStickyScroll } from '@/hooks/use-sticky-scroll';
+import { createSlug, getRubrikOrKategori, parseHtmlToReact } from '@/lib/utils';
 import { SharedData } from '@/types';
-import { BeritaRed } from '@/types/entities';
+import { BeritaRed, Config, IklOnline } from '@/types/entities';
 import { TPagination } from '@/types/pagination';
 import { Link, usePage } from '@inertiajs/react';
-import parse from 'html-react-parser';
 import {
     ArrowLeft,
     ArrowRight,
+    CalendarIcon,
     Eye,
     Filter,
     RefreshCcw,
@@ -53,7 +64,13 @@ interface PageProps {
     search_results: TPagination<BeritaRed>;
     search_query: string;
     kategori_list: { kategori: string }[];
-    jenis_rubrik_list: { jenis_rubrik: string }[];
+    rubrik_list: { rubrik: string }[];
+    sponsors: {
+        utama: IklOnline[];
+        insidental: IklOnline[];
+        footer: IklOnline[];
+    };
+    metadata: Config;
 }
 
 export default function SearchResult({
@@ -61,11 +78,15 @@ export default function SearchResult({
     search_results,
     search_query,
     kategori_list,
-    jenis_rubrik_list,
+    rubrik_list,
+    sponsors,
+    metadata,
 }: PageProps) {
     const { imageUrl } = usePage<SharedData>().props;
     const urlParams = new URLSearchParams(window.location.search);
     const sort = urlParams.get('sort') || 'latest';
+
+    const stickyRef = useStickyScroll();
 
     function handleSearch(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -95,17 +116,35 @@ export default function SearchResult({
         window.location.href = `/search?${currentParams.toString()}`;
     }
 
+    // untuk input range tanggal
+    function handleDateRangeChange(from: string, to: string) {
+        const currentParams = new URLSearchParams(window.location.search);
+        // set date_from dan date_to dan jangan ada yang null jika ada
+        if (from) {
+            currentParams.set('date_from', from);
+        } else {
+            currentParams.delete('date_from');
+        }
+        if (to) {
+            currentParams.set('date_to', to);
+        } else {
+            currentParams.delete('date_to');
+        }
+        window.location.href = `/search?${currentParams.toString()}`;
+    }
+
     function resetFilters() {
         window.location.href = `/search?`;
     }
 
     return (
         <>
-            <Header2 />
+            <SponsorUtama data={sponsors.utama} />
+            <Header2 metadata={metadata} />
             <section className="px-2 pt-4 pb-4 md:px-4">
                 <div className="container mx-auto grid grid-cols-4 gap-4">
                     <div className="hidden md:col-span-1 md:block">
-                        <div className="sticky top-10">
+                        <div className="no-scrollbar no-scrollbar sticky top-10 max-h-screen overflow-y-auto">
                             <div className="flex h-[41.6px] items-center justify-between">
                                 <h1 className="font-bold">Filter</h1>
                                 <Button
@@ -164,6 +203,107 @@ export default function SearchResult({
                             </div>
                             <div className="mt-4">
                                 <p className="mb-2 text-sm font-medium text-muted-foreground">
+                                    Rentang Tanggal
+                                </p>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                data-empty={
+                                                    !urlParams.get('date_from')
+                                                }
+                                                className="w-full justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
+                                            >
+                                                <CalendarIcon />
+                                                {urlParams.get('date_from') ||
+                                                    'Dari Tanggal'}
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-auto p-0">
+                                            <Calendar
+                                                mode="single"
+                                                selected={
+                                                    urlParams.get('date_from')
+                                                        ? new Date(
+                                                              urlParams.get(
+                                                                  'date_from',
+                                                              )!,
+                                                          )
+                                                        : undefined
+                                                }
+                                                onSelect={(date) => {
+                                                    if (date) {
+                                                        const formattedDate =
+                                                            date.toLocaleDateString(
+                                                                'en-US',
+                                                                {
+                                                                    calendar:
+                                                                        'iso8601',
+                                                                },
+                                                            );
+                                                        handleDateRangeChange(
+                                                            formattedDate,
+                                                            urlParams.get(
+                                                                'date_to',
+                                                            ) || '',
+                                                        );
+                                                    }
+                                                }}
+                                            />
+                                        </PopoverContent>
+                                    </Popover>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                data-empty={
+                                                    !urlParams.get('date_to')
+                                                }
+                                                className="w-full justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
+                                            >
+                                                <CalendarIcon />
+                                                {urlParams.get('date_to') ||
+                                                    'Sampai Tanggal'}
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-auto p-0">
+                                            <Calendar
+                                                mode="single"
+                                                selected={
+                                                    urlParams.get('date_to')
+                                                        ? new Date(
+                                                              urlParams.get(
+                                                                  'date_to',
+                                                              )!,
+                                                          )
+                                                        : undefined
+                                                }
+                                                onSelect={(date) => {
+                                                    if (date) {
+                                                        const formattedDate =
+                                                            date.toLocaleDateString(
+                                                                'en-US',
+                                                                {
+                                                                    calendar:
+                                                                        'iso8601',
+                                                                },
+                                                            );
+                                                        handleDateRangeChange(
+                                                            urlParams.get(
+                                                                'date_from',
+                                                            ) || '',
+                                                            formattedDate,
+                                                        );
+                                                    }
+                                                }}
+                                            />
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
+                            </div>
+                            <div className="mt-4">
+                                <p className="mb-2 text-sm font-medium text-muted-foreground">
                                     Kategori
                                 </p>
                                 <Select
@@ -206,25 +346,23 @@ export default function SearchResult({
                                         <SelectValue placeholder="Pilih Jenis Rubrik" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {jenis_rubrik_list.map(
-                                            (item, index) => (
-                                                <SelectItem
-                                                    key={index}
-                                                    value={
-                                                        item.jenis_rubrik ||
-                                                        'unknown'
-                                                    }
-                                                >
-                                                    {item.jenis_rubrik.replaceAll(
-                                                        '_',
-                                                        ' ',
-                                                    ) || 'Unknown'}
-                                                </SelectItem>
-                                            ),
-                                        )}
+                                        {rubrik_list.map((item, index) => (
+                                            <SelectItem
+                                                key={index}
+                                                value={item.rubrik || 'unknown'}
+                                            >
+                                                {item.rubrik.replaceAll(
+                                                    '_',
+                                                    ' ',
+                                                ) || 'Unknown'}
+                                            </SelectItem>
+                                        ))}
                                     </SelectContent>
                                 </Select>
                             </div>
+                            <SponsorInsidentalStack
+                                data={sponsors.insidental || []}
+                            />
                         </div>
                     </div>
                     <div className="col-span-4 gap-4 md:col-span-3">
@@ -245,7 +383,7 @@ export default function SearchResult({
                                         </InputGroupAddon>
                                     </DrawerTrigger>
                                     <DrawerContent>
-                                        <div className="p-4">
+                                        <div className="overflow-y-auto p-4">
                                             <div className="flex h-[41.6px] items-center justify-between">
                                                 <h1 className="font-bold">
                                                     Filter
@@ -318,6 +456,123 @@ export default function SearchResult({
                                             </div>
                                             <div className="mt-4">
                                                 <p className="mb-2 text-sm font-medium text-muted-foreground">
+                                                    Rentang Tanggal
+                                                </p>
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    <Popover>
+                                                        <PopoverTrigger asChild>
+                                                            <Button
+                                                                variant="outline"
+                                                                data-empty={
+                                                                    !urlParams.get(
+                                                                        'date_from',
+                                                                    )
+                                                                }
+                                                                className="w-full justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
+                                                            >
+                                                                <CalendarIcon />
+                                                                {urlParams.get(
+                                                                    'date_from',
+                                                                ) || 'Dari'}
+                                                            </Button>
+                                                        </PopoverTrigger>
+                                                        <PopoverContent className="w-auto p-0">
+                                                            <Calendar
+                                                                mode="single"
+                                                                selected={
+                                                                    urlParams.get(
+                                                                        'date_from',
+                                                                    )
+                                                                        ? new Date(
+                                                                              urlParams.get(
+                                                                                  'date_from',
+                                                                              )!,
+                                                                          )
+                                                                        : undefined
+                                                                }
+                                                                onSelect={(
+                                                                    date,
+                                                                ) => {
+                                                                    if (date) {
+                                                                        const formattedDate =
+                                                                            date.toLocaleDateString(
+                                                                                'en-US',
+                                                                                {
+                                                                                    calendar:
+                                                                                        'iso8601',
+                                                                                },
+                                                                            );
+                                                                        handleDateRangeChange(
+                                                                            formattedDate,
+                                                                            urlParams.get(
+                                                                                'date_to',
+                                                                            ) ||
+                                                                                '',
+                                                                        );
+                                                                    }
+                                                                }}
+                                                            />
+                                                        </PopoverContent>
+                                                    </Popover>
+                                                    <Popover>
+                                                        <PopoverTrigger asChild>
+                                                            <Button
+                                                                variant="outline"
+                                                                data-empty={
+                                                                    !urlParams.get(
+                                                                        'date_to',
+                                                                    )
+                                                                }
+                                                                className="w-full justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
+                                                            >
+                                                                <CalendarIcon />
+                                                                {urlParams.get(
+                                                                    'date_to',
+                                                                ) || 'Sampai'}
+                                                            </Button>
+                                                        </PopoverTrigger>
+                                                        <PopoverContent className="w-auto p-0">
+                                                            <Calendar
+                                                                mode="single"
+                                                                selected={
+                                                                    urlParams.get(
+                                                                        'date_to',
+                                                                    )
+                                                                        ? new Date(
+                                                                              urlParams.get(
+                                                                                  'date_to',
+                                                                              )!,
+                                                                          )
+                                                                        : undefined
+                                                                }
+                                                                onSelect={(
+                                                                    date,
+                                                                ) => {
+                                                                    if (date) {
+                                                                        const formattedDate =
+                                                                            date.toLocaleDateString(
+                                                                                'en-US',
+                                                                                {
+                                                                                    calendar:
+                                                                                        'iso8601',
+                                                                                },
+                                                                            );
+                                                                        handleDateRangeChange(
+                                                                            urlParams.get(
+                                                                                'date_from',
+                                                                            ) ||
+                                                                                '',
+                                                                            formattedDate,
+                                                                        );
+                                                                    }
+                                                                }}
+                                                            />
+                                                        </PopoverContent>
+                                                    </Popover>
+                                                </div>
+                                            </div>
+                                            <div className="mt-4">
+                                                <p className="mb-2 text-sm font-medium text-muted-foreground">
                                                     Kategori
                                                 </p>
                                                 <Select
@@ -372,16 +627,16 @@ export default function SearchResult({
                                                         <SelectValue placeholder="Pilih Jenis Rubrik" />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        {jenis_rubrik_list.map(
+                                                        {rubrik_list.map(
                                                             (item, index) => (
                                                                 <SelectItem
                                                                     key={index}
                                                                     value={
-                                                                        item.jenis_rubrik ||
+                                                                        item.rubrik ||
                                                                         'unknown'
                                                                     }
                                                                 >
-                                                                    {item.jenis_rubrik.replaceAll(
+                                                                    {item.rubrik.replaceAll(
                                                                         '_',
                                                                         ' ',
                                                                     ) ||
@@ -392,6 +647,9 @@ export default function SearchResult({
                                                     </SelectContent>
                                                 </Select>
                                             </div>
+                                            <SponsorInsidentalStack
+                                                data={sponsors.insidental || []}
+                                            />
                                         </div>
                                         <DrawerFooter className="pt-2">
                                             <DrawerClose asChild>
@@ -524,7 +782,9 @@ export default function SearchResult({
                                                     </span>
                                                 </div>
                                                 <div className="line-clamp-3 leading-relaxed tracking-wide text-muted-foreground xl:line-clamp-5">
-                                                    {parse(item.isi_berita)}
+                                                    {parseHtmlToReact(
+                                                        item.isi_berita || '',
+                                                    )}
                                                 </div>
                                             </div>
                                         </Link>
@@ -607,70 +867,80 @@ export default function SearchResult({
                                 </Card>
                             </div>
                             <div className="col-span-3 lg:col-span-1">
-                                <Card className="top-4 gap-0 p-4 lg:sticky">
-                                    <h1 className="mb-4 text-lg font-semibold">
-                                        Popular Posts
-                                    </h1>
-                                    {popular_news.map((item, index) => (
-                                        <Link
-                                            as={'div'}
-                                            href={`/read-news/${createSlug(item.id_ber, item.judul)}`}
-                                            key={index}
-                                            className="group mb-4 flex cursor-pointer flex-row gap-2"
-                                        >
-                                            <div className="hidden w-16 rounded-md bg-primary/40 xl:block">
-                                                <img
-                                                    src={`${imageUrl}/${item.foto_berita}`}
-                                                    alt={item.judul}
-                                                    className="h-full w-full rounded-md object-cover object-center"
-                                                    onError={(e) => {
-                                                        (
-                                                            e.currentTarget as HTMLImageElement
-                                                        ).src = '/no-image.png';
-                                                    }}
-                                                />
-                                            </div>
-                                            <div className="flex-1">
-                                                <h2 className="line-clamp-2 text-sm leading-relaxed font-semibold group-hover:underline group-active:underline">
-                                                    {item.judul}
-                                                </h2>
-                                                <div className="mt-1 flex flex-row items-center gap-1.5 text-xs text-primary">
-                                                    <UserCircle className="inline-block size-3" />
-                                                    <span>{item.user}</span>
-                                                    <span className="size-1.5 rounded-full bg-primary"></span>
-                                                    <span className="hidden 2xl:block">
-                                                        {new Date(
-                                                            item.tgl,
-                                                        ).toLocaleDateString(
-                                                            'id-ID',
-                                                            {
-                                                                dateStyle:
-                                                                    'full',
-                                                            },
-                                                        )}
-                                                    </span>
-                                                    <span className="block 2xl:hidden">
-                                                        {new Date(
-                                                            item.tgl,
-                                                        ).toLocaleDateString(
-                                                            'id-ID',
-                                                            {
-                                                                dateStyle:
-                                                                    'medium',
-                                                            },
-                                                        )}
-                                                    </span>
+                                <div
+                                    ref={stickyRef}
+                                    className="no-scrollbar top-4 gap-0 lg:sticky lg:max-h-screen lg:overflow-y-auto"
+                                >
+                                    <Card className="mb-8 p-4">
+                                        <h1 className="mb-4 text-lg font-semibold">
+                                            Popular Posts
+                                        </h1>
+                                        {popular_news.map((item, index) => (
+                                            <Link
+                                                as={'div'}
+                                                href={`/read-news/${createSlug(item.id_ber, item.judul)}`}
+                                                key={index}
+                                                className="group mb-4 flex cursor-pointer flex-row gap-2"
+                                            >
+                                                <div className="hidden w-16 rounded-md bg-primary/40 xl:block">
+                                                    <img
+                                                        src={`${imageUrl}/${item.foto_berita}`}
+                                                        alt={item.judul}
+                                                        className="h-full w-full rounded-md object-cover object-center"
+                                                        onError={(e) => {
+                                                            (
+                                                                e.currentTarget as HTMLImageElement
+                                                            ).src =
+                                                                '/no-image.png';
+                                                        }}
+                                                    />
                                                 </div>
-                                            </div>
-                                        </Link>
-                                    ))}
-                                </Card>
+                                                <div className="flex-1">
+                                                    <h2 className="line-clamp-2 text-sm leading-relaxed font-semibold group-hover:underline group-active:underline">
+                                                        {item.judul}
+                                                    </h2>
+                                                    <div className="mt-1 flex flex-row items-center gap-1.5 text-xs text-primary">
+                                                        <UserCircle className="inline-block size-3" />
+                                                        <span>{item.user}</span>
+                                                        <span className="size-1.5 rounded-full bg-primary"></span>
+                                                        <span className="hidden 2xl:block">
+                                                            {new Date(
+                                                                item.tgl,
+                                                            ).toLocaleDateString(
+                                                                'id-ID',
+                                                                {
+                                                                    dateStyle:
+                                                                        'full',
+                                                                },
+                                                            )}
+                                                        </span>
+                                                        <span className="block 2xl:hidden">
+                                                            {new Date(
+                                                                item.tgl,
+                                                            ).toLocaleDateString(
+                                                                'id-ID',
+                                                                {
+                                                                    dateStyle:
+                                                                        'medium',
+                                                                },
+                                                            )}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        ))}
+                                    </Card>
+                                    <SponsorInsidental
+                                        data={sponsors.insidental}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-            <Footer popular_news={popular_news} />
+            <SponsorFooter data={sponsors?.footer || []} />
+            <Footer popular_news={popular_news} metadata={metadata} />
         </>
     );
 }

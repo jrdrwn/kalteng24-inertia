@@ -1,22 +1,34 @@
 import Footer from '@/components/shared/footer';
 import Header from '@/components/shared/header';
+import SponsorFooter from '@/components/sponsor/footer';
+import SponsorUtama from '@/components/sponsor/utama';
 import { Card } from '@/components/ui/card';
-import { BeritaRed } from '@/types/entities';
+import { BeritaRed, Config, IklOnline } from '@/types/entities';
 
 interface PageProps {
     popular_news: BeritaRed[];
+    metadata: Config;
+    sponsors?: {
+        utama: IklOnline[];
+        footer: IklOnline[];
+    };
 }
-export default function Disclaimer({ popular_news }: PageProps) {
+export default function Disclaimer({
+    popular_news,
+    metadata,
+    sponsors,
+}: PageProps) {
     return (
         <>
-            <Header />
+            <SponsorUtama data={sponsors?.utama || []} />
+            <Header metadata={metadata} />
             <section className="px-2 py-10 md:px-4">
                 <div className="container mx-auto">
                     <Card className="mx-auto prose max-w-6xl gap-0 px-4 dark:prose-invert">
                         <h2>DISCLAIMER</h2>
                         <p>
                             Seluruh layanan dalam situs ini mengikuti aturan
-                            yang berlaku dan ditetapkan <b>KALTENG24.ID</b>.
+                            yang berlaku dan ditetapkan <b>KALTENG24.COM</b>.
                             <br />
                             Semua isi berupa teks, gambar, suara dan segala
                             bentuk grafis di situs ini hanya sebagai informasi,
@@ -25,7 +37,7 @@ export default function Disclaimer({ popular_news }: PageProps) {
                         </p>
                         <p>
                             Kami berupaya keras menampilkan isi seakurat
-                            mungkin, tetapi <b>KALTENG24.ID</b> dan semua mitra
+                            mungkin, tetapi <b>KALTENG24.COM</b> dan semua mitra
                             penyedia isi, termasuk pengelola konsultasi dan
                             pengembang isi dari pihak lain di situs ini, tidak
                             bertanggungjawab atas segala kesalahan dan
@@ -34,7 +46,7 @@ export default function Disclaimer({ popular_news }: PageProps) {
                             berkaitan penggunaan informasi yang disajikan.
                         </p>
                         <p>
-                            <b>KALTENG24.ID</b> tidak bertanggung jawab atas
+                            <b>KALTENG24.COM</b> tidak bertanggung jawab atas
                             akibat langsung ataupun tidak langsung dari semua
                             teks, gambar, suara dan segala bentuk grafis yang
                             dihasilkan dan disampaikan pembaca atau pengguna di
@@ -42,7 +54,7 @@ export default function Disclaimer({ popular_news }: PageProps) {
                             ini.
                         </p>
                         <p>
-                            Namun demikian, <b>KALTENG24.ID</b> berhak mengatur
+                            Namun demikian, <b>KALTENG24.COM</b> berhak mengatur
                             dan menyunting isi dari pembaca atau pengguna agar
                             tidak merugikan orang lain, lembaga, ataupun badan
                             tertentu serta menjauhi isi berbau pornografi atau
@@ -53,18 +65,19 @@ export default function Disclaimer({ popular_news }: PageProps) {
                             segala bentuk grafis yang disampaikan pembaca
                             ataupun pengguna adalah tanggung jawab setiap
                             individu, dan bukan tanggungjawab{' '}
-                            <b>KALTENG24.ID</b>.
+                            <b>KALTENG24.COM</b>.
                         </p>
                         <p>
-                            Semua hasil karya yang dimuat di <b>KALTENG24.ID</b>{' '}
-                            baik berupa teks, gambar dan suara serta segala
-                            bentuk grafis adalah menjadi hak cipta{' '}
-                            <b>KALTENG24.ID</b>.
+                            Semua hasil karya yang dimuat di{' '}
+                            <b>KALTENG24.COM</b> baik berupa teks, gambar dan
+                            suara serta segala bentuk grafis adalah menjadi hak
+                            cipta <b>KALTENG24.COM</b>.
                         </p>
                     </Card>
                 </div>
             </section>
-            <Footer popular_news={popular_news} />
+            <SponsorFooter data={sponsors?.footer || []} />
+            <Footer popular_news={popular_news} metadata={metadata} />
         </>
     );
 }

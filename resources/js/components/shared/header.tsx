@@ -1,3 +1,4 @@
+import { Config } from '@/types/entities';
 import { Link } from '@inertiajs/react';
 import {
     ChevronDown,
@@ -10,9 +11,8 @@ import { useState } from 'react';
 import {
     FaFacebookSquare,
     FaInstagramSquare,
-    FaLinkedin,
     FaTwitterSquare,
-    FaYoutubeSquare,
+    FaYoutubeSquare
 } from 'react-icons/fa';
 import { ModeToggle } from '../custom/mode-toggle';
 import { Button } from '../ui/button';
@@ -177,7 +177,11 @@ const navigationItems: NavItem[] = [
     { label: 'OLAHRAGA', href: '/search?q=Olahraga' },
 ];
 
-export default function Header() {
+interface ComponentProps {
+    metadata: Config;
+}
+
+export default function Header({ metadata }: ComponentProps) {
     const [mobileOpen, setMobileOpen] = useState(false);
 
     function handleSearch(e: React.FormEvent<HTMLFormElement>) {
@@ -202,18 +206,37 @@ export default function Header() {
                             timeStyle: 'medium',
                         })}
                     </p>
+                    <p className="hidden text-xs md:block">
+                        {metadata?.title} - {metadata?.motho}
+                    </p>
                     <div className="flex gap-1">
+                        <Link href={metadata?.fb || '#'}>
                         <FaFacebookSquare className="size-4 text-blue-600" />
+                        </Link>
+                        <Link href={metadata?.ig || '#'}>
                         <FaInstagramSquare className="size-4 text-pink-600" />
+                        </Link>
+                        <Link href={metadata?.tw || '#'}>
                         <FaTwitterSquare className="size-4 text-blue-400" />
+                        </Link>
+                        <Link href={metadata?.yt || '#'}>
                         <FaYoutubeSquare className="size-4 text-red-600" />
-                        <FaLinkedin className="size-4 text-blue-700" />
+                        </Link>
                     </div>
                 </div>
                 <Separator className="rounded-full border-1" />
                 <div className="flex flex-row items-center justify-between pt-1.5">
                     <Link href="/">
-                        <img src="/logo.png" alt="Logo" className="h-8" />
+                        <img
+                            src="/logo.png"
+                            alt="Logo"
+                            className="h-8 dark:hidden"
+                        />
+                        <img
+                            src="/logo-dark.png"
+                            alt="Logo"
+                            className="hidden h-8 dark:block"
+                        />
                     </Link>
                     {/* Desktop Navigation */}
                     <nav className="hidden lg:block">
@@ -311,7 +334,7 @@ export default function Header() {
     );
 }
 
-export function Header2() {
+export function Header2({ metadata }: ComponentProps) {
     const [mobileOpen, setMobileOpen] = useState(false);
 
     return (
@@ -327,18 +350,37 @@ export function Header2() {
                             timeStyle: 'medium',
                         })}
                     </p>
+                    <p className="hidden text-xs md:block">
+                        {metadata?.title} - {metadata?.motho}
+                    </p>
                     <div className="flex gap-1">
+                        <Link href={metadata?.fb || '#'}>
                         <FaFacebookSquare className="size-4 text-blue-600" />
+                        </Link>
+                        <Link href={metadata?.ig || '#'}>
                         <FaInstagramSquare className="size-4 text-pink-600" />
+                        </Link>
+                        <Link href={metadata?.tw || '#'}>
                         <FaTwitterSquare className="size-4 text-blue-400" />
+                        </Link>
+                        <Link href={metadata?.yt || '#'}>
                         <FaYoutubeSquare className="size-4 text-red-600" />
-                        <FaLinkedin className="size-4 text-blue-700" />
+                        </Link>
                     </div>
                 </div>
                 <Separator className="rounded-full border-1" />
                 <div className="flex flex-row items-center justify-between pt-1.5">
                     <Link href="/">
-                        <img src="/logo.png" alt="Logo" className="h-8" />
+                        <img
+                            src="/logo.png"
+                            alt="Logo"
+                            className="h-8 dark:hidden"
+                        />
+                        <img
+                            src="/logo-dark.png"
+                            alt="Logo"
+                            className="hidden h-8 dark:block"
+                        />
                     </Link>
                     {/* Desktop Navigation */}
                     <nav className="hidden lg:flex lg:flex-row lg:items-center lg:justify-center lg:gap-4">

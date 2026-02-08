@@ -3,7 +3,9 @@ import Hero from '@/components/home/hero';
 import News from '@/components/home/news';
 import Footer from '@/components/shared/footer';
 import Header from '@/components/shared/header';
-import { BeritaRed, BeritaVid } from '@/types/entities';
+import SponsorFooter from '@/components/sponsor/footer';
+import SponsorUtama from '@/components/sponsor/utama';
+import { BeritaRed, BeritaVid, Config, IklOnline } from '@/types/entities';
 
 interface PageProps {
     hero_berita: BeritaRed[];
@@ -15,6 +17,14 @@ interface PageProps {
     latest_news_video: BeritaVid[];
     perspektif: BeritaRed[];
     popular_news: BeritaRed[];
+
+    sponsors?: {
+        utama: IklOnline[];
+        headline: IklOnline[];
+        insidental: IklOnline[];
+        footer: IklOnline[];
+    };
+    metadata: Config;
 }
 
 export default function Home({
@@ -25,10 +35,13 @@ export default function Home({
     latest_news_video,
     perspektif,
     popular_news,
+    sponsors,
+    metadata,
 }: PageProps) {
     return (
         <>
-            <Header />
+            <SponsorUtama data={sponsors?.utama || []} />
+            <Header metadata={metadata} />
             <Hero hero_berita={hero_berita} />
             <BreakingNews breaking_news={breaking_news} />
             <News
@@ -37,8 +50,10 @@ export default function Home({
                 latest_news_video={latest_news_video}
                 perspektif={perspektif}
                 popular_news={popular_news}
+                sponsors={sponsors}
             />
-            <Footer popular_news={popular_news} />
+            <SponsorFooter data={sponsors?.footer || []} />
+            <Footer popular_news={popular_news} metadata={metadata} />
         </>
     );
 }

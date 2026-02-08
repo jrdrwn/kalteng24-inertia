@@ -16,7 +16,7 @@ use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
 /**
  * Class User
- * 
+ *
  * @property int $id_user
  * @property string $nama
  * @property string $nm_blg
@@ -44,7 +44,7 @@ class User extends Authenticatable implements HasName, FilamentUser, HasAvatar
 		return $this->nama ?: ('User ' . $this->getKey());
 	}
 
-	protected $table = 'users_new';	
+	protected $table = 'users_new';
 	protected $primaryKey = 'id_user';
 	public $timestamps = false;
 
@@ -84,4 +84,9 @@ class User extends Authenticatable implements HasName, FilamentUser, HasAvatar
 		'timestamp' => 'datetime',
 		'status' => 'boolean',
 	];
+
+	public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->role;
+    }
 }
