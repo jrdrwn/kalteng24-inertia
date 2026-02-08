@@ -34,6 +34,10 @@ class Config extends Model
 	protected $primaryKey = 'id_con';
 	public $timestamps = false;
 
+	protected $casts = [
+		'tags' => 'array'
+	];
+
 	protected $fillable = [
 		'title',
 		'coppyright',
