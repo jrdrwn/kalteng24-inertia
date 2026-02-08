@@ -37,6 +37,7 @@ class UserForm
                         ])->columns(2),
                         Group::make([
                             TextInput::make('username')
+                                ->disabled(fn(string $operation): bool => $operation === 'edit')
                                 ->required(),
                             Select::make('role')
                                 ->options([

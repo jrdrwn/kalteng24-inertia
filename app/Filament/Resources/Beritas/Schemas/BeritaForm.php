@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Beritas\Schemas;
 
 use Filament\Schemas\Schema;
 use Filament\Forms\Components\TextInput;
+use Illuminate\Database\Query\Expression;
 use Filament\Forms\Components\Select;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Flex;
@@ -15,6 +16,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TimePicker;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 use App\Models\KategoriRubrik;
 use App\Models\User;
 
@@ -67,8 +69,13 @@ class BeritaForm
                                 ->maxLength(255),
                             Select::make('user')
                                 ->label('Penulis')
-                                ->options(User::query()->pluck('nama', 'nama'))
-                                ->default('Admin')
+                                ->options(User::query()
+                                    ->select([
+                                        'username',
+                                        DB::raw("CONCAT(nama, ' ', nm_blg) as full_name")
+                                    ])
+                                    ->pluck('full_name', 'username'))
+                                ->default('admin')
                                 ->native(false)
                                 ->searchable()
                                 ->required(),

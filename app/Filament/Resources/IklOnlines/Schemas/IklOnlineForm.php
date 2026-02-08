@@ -17,6 +17,7 @@ use Filament\Forms\Components\TimePicker;
 use Illuminate\Support\Facades\Date;
 use Filament\Forms\Components\Hidden;
 use Filament\Schemas\Components\Utilities\Get;
+use App\Models\IklOnline;
 use App\Models\User;
 
 class IklOnlineForm
@@ -36,49 +37,103 @@ class IklOnlineForm
                         Select::make('ktg_ikl')
                             ->label('Kategori')
                             ->native(false)
-                            ->options([
-                                'UTAMA' => 'UTAMA',
-                                'BERITA' => 'BERITA',
-                                'HEADLINE' => 'HEADLINE',
-                                'INSIDENTAL' => 'INSIDENTAL',
-                                'FOOTER' => 'FOOTER',
-                            ])
                             ->reactive()
-                            ->required(),
+                            ->afterStateUpdated(function (callable $set) {
+                                $set('posisi', null);
+                            })
+                            ->required()
+                            ->options(function (?IklOnline $record) {
+
+                                $spaces = [
+                                    'UTAMA'      => env('SPACE_TOP', 5),
+                                    'BERITA'     => env('SPACE_BERITA', 3),
+                                    'HEADLINE'   => env('SPACE_HEADLINE', 5),
+                                    'INSIDENTAL' => env('SPACE_INDEX', 30),
+                                    'FOOTER'     => env('SPACE_FOOTER', 5),
+                                ];
+
+                                // 🔥 Single query
+                                $counts = IklOnline::where('exp_tgl', '>=', now())
+                                    ->selectRaw('ktg_ikl, COUNT(*) as total')
+                                    ->groupBy('ktg_ikl')
+                                    ->pluck('total', 'ktg_ikl')
+                                    ->toArray();
+
+                                $available = [];
+
+                                foreach ($spaces as $kategori => $limit) {
+                                    $current = $counts[$kategori] ?? 0;
+
+                                    // 🔥 If editing and this is the current category, allow it
+                                    if ($record && $record->ktg_ikl === $kategori) {
+                                        $available[$kategori] = $kategori;
+                                        continue;
+                                    }
+
+                                    if ($current < $limit) {
+                                        $available[$kategori] = $kategori;
+                                    }
+                                }
+
+                                return $available;
+                            }),
+
                         Select::make('posisi')
                             ->label('Posisi')
                             ->native(false)
                             ->required()
-                            ->options(function (Get $get) {
-                                return match ($get('ktg_ikl')) {
-                                    'UTAMA' => [
-                                        'UTAMA - 5:1' => 'UTAMA - 5:1',
-                                    ],
+                            ->disabled(fn(Get $get) => !$get('ktg_ikl'))
+                            ->options(function (Get $get,  ?IklOnline $record) {
+                                if ($get('ktg_ikl') !== 'BERITA') {
+                                    return match ($get('ktg_ikl')) {
+                                        'UTAMA' => [
+                                            'UTAMA - 5:1' => 'UTAMA - 5:1',
+                                        ],
+                                        'HEADLINE' => [
+                                            'HEADLINE - 5:1' => 'HEADLINE - 5:1',
+                                        ],
+                                        'INSIDENTAL' => [
+                                            'INSIDENTAL - 16:9' => 'INSIDENTAL - 16:9',
+                                        ],
+                                        'FOOTER' => [
+                                            'FOOTER - 5:1' => 'FOOTER - 5:1',
+                                        ],
+                                        default => [],
+                                    };
+                                }
 
-                                    'HEADLINE' => [
-                                        'HEADLINE - 5:1' => 'HEADLINE - 5:1',
-                                    ],
+                                $positions = [
+                                    'KIRI BERITA - 1:3',
+                                    'KANAN BERITA - 16:9',
+                                    'DIBAWAH BERITA - 3:1',
+                                ];
 
-                                    'BERITA' => [
-                                        'KIRI BERITA - 1:3' => 'KIRI BERITA - 1:3',
-                                        'KANAN BERITA - 16:9' => 'KANAN BERITA - 16:9',
-                                        'DIBAWAH BERITA - 3:1' => 'DIBAWAH BERITA - 3:1',
-                                    ],
+                                // 🔥 Single query for berita positions
+                                $counts = IklOnline::where('ktg_ikl', 'BERITA')
+                                    ->where('exp_tgl', '>=', now())
+                                    ->selectRaw('posisi, COUNT(*) as total')
+                                    ->groupBy('posisi')
+                                    ->pluck('total', 'posisi')
+                                    ->toArray();
 
-                                    'INSIDENTAL' => [
-                                        'INSIDENTAL - 16:9' => 'INSIDENTAL - 16:9',
-                                    ],
+                                $available = [];
 
-                                    'FOOTER' => [
-                                        'FOOTER - 5:1' => 'FOOTER - 5:1',
-                                    ],
+                                foreach ($positions as $posisi) {
+                                    $current = $counts[$posisi] ?? 0;
 
-                                    default => [],
-                                };
-                            })
-                            ->disabled(fn(Get $get) => blank($get('ktg_ikl')))
-                            ->reactive()
-                            ->required(),
+                                    // 🔥 Allow if this is the current record position
+                                    if ($record && $record->posisi === $posisi) {
+                                        $available[$posisi] = $posisi;
+                                        continue;
+                                    }
+
+                                    if ($current < 1) {
+                                        $available[$posisi] = $posisi;
+                                    }
+                                }
+
+                                return $available;
+                            }),
                         Select::make('admin')
                             ->label('User')
                             ->options(User::query()->pluck('nama', 'nama'))

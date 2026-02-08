@@ -12,12 +12,11 @@ class SpaceIklan extends StatsOverviewWidget
 
     protected function getStats(): array
     {
-        $berita = IklOnline::where('ktg_ikl', 'BERITA')->count() . '/' . env('SPACE_BERITA', 0);
-        $top = IklOnline::where('ktg_ikl', 'UTAMA')->count() . '/' . env('SPACE_TOP', 0);
-        $headline = IklOnline::where('ktg_ikl', 'HEADLINE')->count() . '/' . env('SPACE_HEADLINE', 0);
-        $insidental = IklOnline::where('ktg_ikl', 'INSIDENTAL')->count() . '/' . env('SPACE_INDEX', 0);
-        $footer = IklOnline::where('ktg_ikl', 'FOOTER')->count() . '/' . env('SPACE_FOOTER', 0);
-
+        $berita = IklOnline::where('ktg_ikl', 'BERITA')->where('exp_tgl', '>=', now())->count() . '/' . env('SPACE_BERITA', 0);
+        $top = IklOnline::where('ktg_ikl', 'UTAMA')->where('exp_tgl', '>=', now())->count() . '/' . env('SPACE_TOP', 0);
+        $headline = IklOnline::where('ktg_ikl', 'HEADLINE')->where('exp_tgl', '>=', now())->count() . '/' . env('SPACE_HEADLINE', 0);
+        $insidental = IklOnline::where('ktg_ikl', 'INSIDENTAL')->where('exp_tgl', '>=', now())->count() . '/' . env('SPACE_INDEX', 0);
+        $footer = IklOnline::where('ktg_ikl', 'FOOTER')->where('exp_tgl', '>=', now())->count() . '/' . env('SPACE_FOOTER', 0);
         return [
             
             Stat::make('Space Iklan Utama', $top)->chart([10, 5, 9, 3, 8, 4, 8])->color('warning'),
