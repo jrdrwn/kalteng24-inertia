@@ -9,7 +9,6 @@ import ScrollToTopButton from './components/shared/scroll-to-top-button';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Kalteng24';
 
-
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
     resolve: (name) =>

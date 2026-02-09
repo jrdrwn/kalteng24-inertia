@@ -1,3 +1,4 @@
+import { shuffleArray } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { IklOnline } from '@/types/entities';
 import { Link, usePage } from '@inertiajs/react';
@@ -39,7 +40,7 @@ export default function SponsorInsidentalStack({
                 onClick={() => setOpen(true)}
             >
                 <CarouselContent>
-                    {data.map((item, index) => (
+                    {shuffleArray(data).map((item, index) => (
                         <CarouselItem key={index} className="lg:basis-1/3">
                             <Link
                                 as={'div'}
@@ -69,7 +70,7 @@ export default function SponsorInsidentalStack({
                             Klik gambar untuk mengunjungi tautan sponsor
                         </DialogDescription>
                     </DialogHeader>
-                    {data.map((item, index) => (
+                    {shuffleArray(data).map((item, index) => (
                         <div key={index} className="mb-4">
                             <Link
                                 as={'div'}

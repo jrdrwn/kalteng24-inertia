@@ -12,7 +12,7 @@ import {
     FaFacebookSquare,
     FaInstagramSquare,
     FaTwitterSquare,
-    FaYoutubeSquare
+    FaYoutubeSquare,
 } from 'react-icons/fa';
 import { ModeToggle } from '../custom/mode-toggle';
 import { Button } from '../ui/button';
@@ -211,16 +211,16 @@ export default function Header({ metadata }: ComponentProps) {
                     </p>
                     <div className="flex gap-1">
                         <Link href={metadata?.fb || '#'}>
-                        <FaFacebookSquare className="size-4 text-blue-600" />
+                            <FaFacebookSquare className="size-4 text-blue-600" />
                         </Link>
                         <Link href={metadata?.ig || '#'}>
-                        <FaInstagramSquare className="size-4 text-pink-600" />
+                            <FaInstagramSquare className="size-4 text-pink-600" />
                         </Link>
                         <Link href={metadata?.tw || '#'}>
-                        <FaTwitterSquare className="size-4 text-blue-400" />
+                            <FaTwitterSquare className="size-4 text-blue-400" />
                         </Link>
                         <Link href={metadata?.yt || '#'}>
-                        <FaYoutubeSquare className="size-4 text-red-600" />
+                            <FaYoutubeSquare className="size-4 text-red-600" />
                         </Link>
                     </div>
                 </div>
@@ -355,16 +355,16 @@ export function Header2({ metadata }: ComponentProps) {
                     </p>
                     <div className="flex gap-1">
                         <Link href={metadata?.fb || '#'}>
-                        <FaFacebookSquare className="size-4 text-blue-600" />
+                            <FaFacebookSquare className="size-4 text-blue-600" />
                         </Link>
                         <Link href={metadata?.ig || '#'}>
-                        <FaInstagramSquare className="size-4 text-pink-600" />
+                            <FaInstagramSquare className="size-4 text-pink-600" />
                         </Link>
                         <Link href={metadata?.tw || '#'}>
-                        <FaTwitterSquare className="size-4 text-blue-400" />
+                            <FaTwitterSquare className="size-4 text-blue-400" />
                         </Link>
                         <Link href={metadata?.yt || '#'}>
-                        <FaYoutubeSquare className="size-4 text-red-600" />
+                            <FaYoutubeSquare className="size-4 text-red-600" />
                         </Link>
                     </div>
                 </div>

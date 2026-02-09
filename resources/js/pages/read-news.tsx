@@ -84,7 +84,6 @@ export default function ReadNews({
     const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
     const shareText = news?.judul || '';
     const stickyRef = useStickyScroll();
-    console.log(news);
 
     // Accessibility states
 

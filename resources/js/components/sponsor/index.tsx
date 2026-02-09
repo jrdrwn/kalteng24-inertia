@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn, shuffleArray } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { IklOnline } from '@/types/entities';
 import { Link, usePage } from '@inertiajs/react';
@@ -14,10 +14,9 @@ interface SponsorBeritaProps {
 }
 export default function SponsorBerita({ data, posisi }: SponsorBeritaProps) {
     const { imageUrl } = usePage<SharedData>().props;
-    console.log(posisi);
     return (
         <div>
-            {data.map((item, index) => (
+            {shuffleArray(data).map((item, index) => (
                 <Link
                     key={index}
                     as={'div'}

@@ -1,3 +1,4 @@
+import { shuffleArray } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { IklOnline } from '@/types/entities';
 import { Link, usePage } from '@inertiajs/react';
@@ -26,7 +27,7 @@ export default function SponsorUtama({ data }: SponsorUtamaProps) {
                 ]}
             >
                 <CarouselContent>
-                    {data.map((item, index) => (
+                    {shuffleArray(data).map((item, index) => (
                         <CarouselItem key={index}>
                             <Link
                                 as={'div'}

@@ -131,7 +131,9 @@ export default function News({
                                     </span>
                                 </div>
                                 <div className="line-clamp-4 leading-relaxed tracking-wide text-muted-foreground xl:line-clamp-5">
-                                    {parseHtmlToReact(latest_news_single[0].isi_berita)}
+                                    {parseHtmlToReact(
+                                        latest_news_single[0].isi_berita,
+                                    )}
                                 </div>
                             </div>
                         </Link>
