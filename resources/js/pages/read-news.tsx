@@ -289,7 +289,7 @@ export default function ReadNews({
                             </div>
                         </Card>
                         {author && (
-                            <Card className="not-prose relative overflow-hidden border-none bg-muted/50 p-0">
+                            <Card className="not-prose relative overflow-hidden border-none bg-muted/50 p-0 mb-4">
                                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/15 via-transparent to-transparent" />
                                 <div className="relative flex flex-col items-center gap-4 p-6 text-center sm:flex-row sm:items-center sm:text-left">
                                     <div className="relative">
@@ -333,7 +333,7 @@ export default function ReadNews({
                             </Card>
                         )}
                         <SponsorBerita
-                            data={sponsors?.berita_kanan || []}
+                            data={sponsors?.berita_bawah || []}
                             posisi={Posisi.DIBAWAH_BERITA}
                         />
                         <div className="not-prose mb-8 block md:hidden">
