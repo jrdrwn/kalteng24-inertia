@@ -1,3 +1,4 @@
+import { useRandomTags } from '@/hooks/use-random-tags';
 import { createSlug, getRubrikOrKategori } from '@/lib/utils';
 import { BeritaRed, Config } from '@/types/entities';
 import { Link } from '@inertiajs/react';
@@ -17,6 +18,7 @@ interface FooterProps {
 }
 
 export default function Footer({ popular_news, metadata }: FooterProps) {
+    const tags = useRandomTags();
     return (
         <footer className="mt-10 border-t bg-muted/20 px-4">
             <div className="container mx-auto">
@@ -78,15 +80,7 @@ export default function Footer({ popular_news, metadata }: FooterProps) {
                             kategori
                         </h1>
                         <div className="flex flex-wrap gap-2">
-                            {[
-                                'Kalteng',
-                                'Palangka Raya',
-                                'Berita',
-                                'Nasional',
-                                'Olahraga',
-                                'Teknologi',
-                                'Health',
-                            ].map((tag, index) => (
+                            {tags.map((tag, index) => (
                                 <Link href={'/search?q=' + tag} key={index}>
                                     <Badge
                                         key={tag}

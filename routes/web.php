@@ -106,6 +106,11 @@ Route::get('/api/rubrik/{kategori}', function ($kategori) {
     return response()->json($rubriks);
 })->name('api.rubrik');
 
+Route::get('/api/tags/random-tags', function () {
+    $tags = Config::select('tags')->first()->tags;
+    return response()->json($tags);
+})->name('api.random_tags');
+
 
 Route::get('/read-news/{slug}', function (Request $request, $slug) {
     // slug: id_judul-with-dashes

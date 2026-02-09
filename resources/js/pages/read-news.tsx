@@ -28,6 +28,7 @@ import {
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
+import { useRandomTags } from '@/hooks/use-random-tags';
 import { useStickyScroll } from '@/hooks/use-sticky-scroll';
 import { createSlug, getRubrikOrKategori } from '@/lib/utils';
 import { SharedData } from '@/types';
@@ -84,9 +85,9 @@ export default function ReadNews({
     const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
     const shareText = news?.judul || '';
     const stickyRef = useStickyScroll();
+    const tags = useRandomTags();
 
     // Accessibility states
-
     const [fontSize, setFontSize] = useState(1); // em unit
 
     function handleFontSize(change: number) {
@@ -118,6 +119,7 @@ export default function ReadNews({
         }
         window.open(shareLink, '_blank', 'noopener,noreferrer');
     }
+
     return (
         <>
             <SponsorUtama data={sponsors?.utama || []} />
@@ -364,15 +366,7 @@ export default function ReadNews({
                                 </div>
                                 <Separator className="mb-4" />
                                 <div className="flex flex-wrap gap-2">
-                                    {[
-                                        'Kalteng',
-                                        'Palangka Raya',
-                                        'Berita',
-                                        'Nasional',
-                                        'Olahraga',
-                                        'Teknologi',
-                                        'Health',
-                                    ].map((tag, index) => (
+                                    {tags.map((tag, index) => (
                                         <Link
                                             href={'/search?q=' + tag}
                                             key={index}
@@ -658,15 +652,7 @@ export default function ReadNews({
                             </div>
                             <Separator className="mb-4" />
                             <div className="flex flex-wrap gap-2">
-                                {[
-                                    'Kalteng',
-                                    'Palangka Raya',
-                                    'Berita',
-                                    'Nasional',
-                                    'Olahraga',
-                                    'Teknologi',
-                                    'Health',
-                                ].map((tag, index) => (
+                                {tags.map((tag, index) => (
                                     <Link href={'/search?q=' + tag} key={index}>
                                         <Badge
                                             key={tag}
