@@ -179,7 +179,7 @@ export interface UserCustom {
     id_user: number;
     nama: string;
     nm_blg: string;
-    kode_plg: string;
+    kode_plg: string | null;
     email: string;
     nohp: string;
     alamat: string;
@@ -189,7 +189,9 @@ export interface UserCustom {
     level: string;
     admin_type: string;
     foto_user: string;
-    status: 'aktif' | 'nonaktif';
+    role: string;
+    status: boolean | 'aktif' | 'nonaktif';
+    timestamp: string;
 }
 
 // ===== users_laravel (default laravel users) =====

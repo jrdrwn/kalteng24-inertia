@@ -17,7 +17,7 @@ export default function SponsorFooter({ data }: SponsorFooterProps) {
                     align: 'start',
                     loop: true,
                 }}
-                className="w-full"
+                className="mt-6 w-full"
                 plugins={[
                     Autoplay({
                         delay: 3000,

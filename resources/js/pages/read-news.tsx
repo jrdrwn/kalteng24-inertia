@@ -32,7 +32,13 @@ import { useRandomTags } from '@/hooks/use-random-tags';
 import { useStickyScroll } from '@/hooks/use-sticky-scroll';
 import { createSlug, getRubrikOrKategori } from '@/lib/utils';
 import { SharedData } from '@/types';
-import { BeritaRed, BeritaVid, Config, IklOnline } from '@/types/entities';
+import {
+    BeritaRed,
+    BeritaVid,
+    Config,
+    IklOnline,
+    UserCustom,
+} from '@/types/entities';
 import { InfiniteScroll, Link, usePage } from '@inertiajs/react';
 import Autoplay from 'embla-carousel-autoplay';
 import parse from 'html-react-parser';
@@ -41,8 +47,8 @@ import {
     Eye,
     LucideTriangle,
     Timer,
-    User,
     UserCircle,
+    UserIcon,
 } from 'lucide-react';
 import { useState } from 'react';
 import {
@@ -70,6 +76,7 @@ interface PageProps {
         footer: IklOnline[];
     };
     metadata: Config;
+    author?: UserCustom;
 }
 
 export default function ReadNews({
@@ -80,12 +87,15 @@ export default function ReadNews({
     latest_news,
     sponsors,
     metadata,
+    author,
 }: PageProps) {
     const { imageUrl } = usePage<SharedData>().props;
     const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
     const shareText = news?.judul || '';
     const stickyRef = useStickyScroll();
     const tags = useRandomTags();
+
+    console.log('Author:', author);
 
     // Accessibility states
     const [fontSize, setFontSize] = useState(1); // em unit
@@ -237,8 +247,8 @@ export default function ReadNews({
                         <Card className="mb-4 gap-0 p-4">
                             <div className="not-prose flex flex-wrap items-center justify-center gap-2 text-sm text-muted-foreground sm:justify-start">
                                 <span>
-                                    <User className="mr-2 inline-block size-4" />
-                                    {news.user}
+                                    <UserIcon className="mr-2 inline-block size-4" />
+                                    {author ? author.nama : news.user}
                                 </span>
                                 <span>
                                     <Eye className="mr-2 inline-block size-4" />
@@ -278,7 +288,50 @@ export default function ReadNews({
                                 {parse(news.isi_berita)}
                             </div>
                         </Card>
-                        <div></div>
+                        {author && (
+                            <Card className="not-prose relative overflow-hidden border-none bg-muted/50 p-0">
+                                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/15 via-transparent to-transparent" />
+                                <div className="relative flex flex-col items-center gap-4 p-6 text-center sm:flex-row sm:items-center sm:text-left">
+                                    <div className="relative">
+                                        <img
+                                            src={`${imageUrl}/${author.foto_user}`}
+                                            alt={author.nama}
+                                            className="size-24 rounded-full border-2 border-primary/20 bg-muted object-cover shadow-lg"
+                                            onError={(e) => {
+                                                (
+                                                    e.currentTarget as HTMLImageElement
+                                                ).src = '/no-image.png';
+                                            }}
+                                        />
+                                        <div className="absolute -right-1 -bottom-1 rounded-full bg-primary p-1">
+                                            <UserIcon className="size-3 text-primary-foreground" />
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-1 flex-col gap-1">
+                                        <span className="text-xs font-semibold tracking-widest text-primary uppercase">
+                                            Penulis
+                                        </span>
+                                        <h3 className="text-xl font-bold tracking-tight">
+                                            {author.nama} {author.nm_blg}
+                                        </h3>
+                                        <p className="text-sm text-muted-foreground">
+                                            @{author.username}
+                                        </p>
+                                        <div className="mt-1 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+                                            <Badge variant="secondary">
+                                                {author.role}
+                                            </Badge>
+                                            <span className="text-xs text-muted-foreground">
+                                                •
+                                            </span>
+                                            <span className="text-xs text-muted-foreground">
+                                                {author.email}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Card>
+                        )}
                         <SponsorBerita
                             data={sponsors?.berita_kanan || []}
                             posisi={Posisi.DIBAWAH_BERITA}

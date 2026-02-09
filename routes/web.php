@@ -156,7 +156,7 @@ Route::get('/read-news/{slug}', function (Request $request, $slug) {
             "footer" => IklOnline::where('ktg_ikl', 'FOOTER')->aktif()->get(),
         ],
         'metadata' => Config::take(1)->get()->first(),
-        // TODO: author by id_user
+        'author' => User::whereUsername($news->user)->first()
     ]);
 })->name('read-news');
 
