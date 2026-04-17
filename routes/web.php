@@ -46,7 +46,9 @@ Route::get('/search', function (Request $request) {
 
     $kategori = $request->input('kategori', null);
     $jenis_rubrik = $request->input('jenis_rubrik', null);
+    $jenis_kategori_rubrik = $request->input('jenis_kategori_rubrik', null);
 
+    $list_kategori = KategoriRubrik::select('kategori')->distinct()->get()->pluck('kategori')->toArray();
     $date_from = $request->input('date_from', null);
     $date_to = $request->input('date_to', null);
 
@@ -57,6 +59,10 @@ Route::get('/search', function (Request $request) {
                 ->orWhere('isi_berita', 'like', '%' . $search_query . '%');
         });
     })
+        ->when($jenis_kategori_rubrik, function ($query, $jenis_kategori_rubrik) {
+            $query->where('kategori', '=', $jenis_kategori_rubrik)
+                ->orWhere('jenis_rubrik', '=', $jenis_kategori_rubrik);
+        })
         ->when($kategori, function ($query, $kategori) {
             if ($kategori === 'null' || $kategori === 'unknown') {
                 $kategori = '';
@@ -89,6 +95,7 @@ Route::get('/search', function (Request $request) {
     return Inertia::render('search', [
         'popular_news' => BeritaRed::excludeHitway()->inRandomOrder()->orderBy('hits', 'desc')->take(5)->get(),
         'kategori_list' => KategoriRubrik::select('kategori')->distinct()->get(),
+        'kategori_new_list' => $list_kategori,
         'rubrik_list' => KategoriRubrik::select('rubrik')->where('kategori', $kategori ?? '')->get(),
         'search_results' => $search_results,
         'search_query' => $search_query,

@@ -54,44 +54,86 @@ const navigationItems: NavItem[] = [
         label: 'NASIONAL',
         href: '/search?jenis_rubrik=NASIONAL',
         sub: [
-            { label: 'NASIONAL', href: '/search?jenis_rubrik=NASIONAL' },
-            { label: 'IKN', href: '/search?q=IKN' },
-            { label: 'JAKARTA', href: '/search?q=JAKARTA' },
-            { label: 'KALIMANTAN', href: '/search?q=KALIMANTAN' },
+            {
+                label: 'NASIONAL',
+                href: '/search?jenis_kategori_rubrik=NASIONAL',
+            },
+            { label: 'IKN', href: '/search?jenis_kategori_rubrik=IKN' },
+            { label: 'JAKARTA', href: '/search?jenis_kategori_rubrik=JAKARTA' },
+            {
+                label: 'KALIMANTAN',
+                href: '/search?jenis_kategori_rubrik=KALIMANTAN',
+            },
         ],
     },
     {
         label: 'KALTENG',
-        href: '/search?q=KALTENG',
+        href: '/search?jenis_kategori_rubrik=KALTENG',
         sub: [
-            { label: 'Palangka Raya', href: '/search?q=Palangka Raya' },
+            {
+                label: 'Palangka Raya',
+                href: '/search?jenis_kategori_rubrik=Palangka Raya',
+            },
             {
                 label: 'Kotawaringin Barat',
-                href: '/search?q=Kotawaringin Barat',
+                href: '/search?jenis_kategori_rubrik=Kotawaringin Barat',
             },
             {
                 label: 'Kotawaringin Timur',
-                href: '/search?q=Kotawaringin Timur',
+                href: '/search?jenis_kategori_rubrik=Kotawaringin Timur',
             },
-            { label: 'Barito Utara', href: '/search?q=Barito Utara' },
-            { label: 'Barito Selatan', href: '/search?q=Barito Selatan' },
-            { label: 'Kapuas', href: '/search?q=Kapuas' },
-            { label: 'Murung Raya', href: '/search?q=Murung Raya' },
-            { label: 'Barito Timur', href: '/search?q=Barito Timur' },
-            { label: 'Pulang Pisau', href: '/search?q=Pulang Pisau' },
-            { label: 'Gunung Mas', href: '/search?q=Gunung Mas' },
-            { label: 'Katingaan', href: '/search?q=Katingan' },
-            { label: 'Seruyan', href: '/search?q=Seruyan' },
-            { label: 'Lamandau', href: '/search?q=Lamandau' },
-            { label: 'Sukamara', href: '/search?q=Sukamara' },
+            {
+                label: 'Barito Utara',
+                href: '/search?jenis_kategori_rubrik=Barito Utara',
+            },
+            {
+                label: 'Barito Selatan',
+                href: '/search?jenis_kategori_rubrik=Barito Selatan',
+            },
+            { label: 'Kapuas', href: '/search?jenis_kategori_rubrik=Kapuas' },
+            {
+                label: 'Murung Raya',
+                href: '/search?jenis_kategori_rubrik=Murung Raya',
+            },
+            {
+                label: 'Barito Timur',
+                href: '/search?jenis_kategori_rubrik=Barito Timur',
+            },
+            {
+                label: 'Pulang Pisau',
+                href: '/search?jenis_kategori_rubrik=Pulang Pisau',
+            },
+            {
+                label: 'Gunung Mas',
+                href: '/search?jenis_kategori_rubrik=Gunung Mas',
+            },
+            {
+                label: 'Katingaan',
+                href: '/search?jenis_kategori_rubrik=Katingan',
+            },
+            { label: 'Seruyan', href: '/search?jenis_kategori_rubrik=Seruyan' },
+            {
+                label: 'Lamandau',
+                href: '/search?jenis_kategori_rubrik=Lamandau',
+            },
+            {
+                label: 'Sukamara',
+                href: '/search?jenis_kategori_rubrik=Sukamara',
+            },
         ],
     },
     {
         label: 'METRO',
         href: '/search?jenis_rubrik=METRO',
         sub: [
-            { label: 'KRIMINALITAS', href: '/search?q=KRIMINALITAS' },
-            { label: 'HUKUM & HAM', href: '/search?q=HUKUM & HAM' },
+            {
+                label: 'KRIMINALITAS',
+                href: '/search?jenis_kategori_rubrik=KRIMINALITAS',
+            },
+            {
+                label: 'HUKUM & HAM',
+                href: '/search?jenis_kategori_rubrik=HUKUM & HAM',
+            },
         ],
     },
     {
@@ -100,42 +142,42 @@ const navigationItems: NavItem[] = [
         sub: [
             {
                 label: 'Pemprov Kalteng',
-                href: '/search?q=Pemprov Kalteng',
+                href: '/search?jenis_kategori_rubrik=Pemprov Kalteng',
             },
             {
                 label: 'DPRD',
                 sub: [
                     {
                         label: 'DPRD Kalteng',
-                        href: '/search?kategori=DPRD Kalteng',
+                        href: '/search?jenis_kategori_rubrik=DPRD Kalteng',
                     },
                     {
                         label: 'DPRD Palangka Raya',
-                        href: '/search?kategori=DPRD Palangka Raya',
+                        href: '/search?jenis_kategori_rubrik=DPRD Palangka Raya',
                     },
                     {
                         label: 'DPRD Barito Utara',
-                        href: '/search?kategori=DPRD_Barito_Utara',
+                        href: '/search?jenis_kategori_rubrik=DPRD_Barito_Utara',
                     },
                     {
                         label: 'DPRD Murung Raya',
-                        href: '/search?kategori=DPRD_Murung_Raya',
+                        href: '/search?jenis_kategori_rubrik=DPRD_Murung_Raya',
                     },
                     {
                         label: 'DPRD Kapuas',
-                        href: '/search?kategori=DPRD_Kapuas',
+                        href: '/search?jenis_kategori_rubrik=DPRD_Kapuas',
                     },
                     {
                         label: 'DPRD Barito Selatan',
-                        href: '/search?kategori=DPRD_Barito_Selatan',
+                        href: '/search?jenis_kategori_rubrik=DPRD_Barito_Selatan',
                     },
                     {
                         label: 'DPRD Katingan',
-                        href: '/search?kategori=DPRD Katingan',
+                        href: '/search?jenis_kategori_rubrik=DPRD Katingan',
                     },
                     {
                         label: 'DPRD Gunung Mas',
-                        href: '/search?kategori=DPRD Gunung Mas',
+                        href: '/search?jenis_kategori_rubrik=DPRD Gunung Mas',
                     },
                 ],
             },
@@ -144,37 +186,37 @@ const navigationItems: NavItem[] = [
                 sub: [
                     {
                         label: 'Pemko Palangka Raya',
-                        href: '/search?kategori=Pemko Palangka Raya',
+                        href: '/search?jenis_kategori_rubrik=Pemko Palangka Raya',
                     },
                     {
                         label: 'Pemkab Barito Utara',
-                        href: '/search?kategori=Pemkab_Barito_Utara',
+                        href: '/search?jenis_kategori_rubrik=Pemkab_Barito_Utara',
                     },
                     {
                         label: 'Pemkab Murung Raya',
-                        href: '/search?kategori=Pemkab Murung Raya',
+                        href: '/search?jenis_kategori_rubrik=Pemkab Murung Raya',
                     },
                     {
                         label: 'Pemkab Kapuas',
-                        href: '/search?kategori=Pemkab Kapuas',
+                        href: '/search?jenis_kategori_rubrik=Pemkab Kapuas',
                     },
                     {
                         label: 'Pemkab Barito Selatan',
-                        href: '/search?kategori=Pemkab Barito Selatan',
+                        href: '/search?jenis_kategori_rubrik=Pemkab Barito Selatan',
                     },
                     {
                         label: 'Pemkab Katingan',
-                        href: '/search?kategori=Pemkab_Katingan',
+                        href: '/search?jenis_kategori_rubrik=Pemkab_Katingan',
                     },
                     {
                         label: 'Pemkab Gunung Mas',
-                        href: '/search?kategori=Pemkab Gunung Mas',
+                        href: '/search?jenis_kategori_rubrik=Pemkab Gunung Mas',
                     },
                 ],
             },
         ],
     },
-    { label: 'OLAHRAGA', href: '/search?q=Olahraga' },
+    { label: 'OLAHRAGA', href: '/search?jenis_kategori_rubrik=Olahraga' },
 ];
 
 interface ComponentProps {

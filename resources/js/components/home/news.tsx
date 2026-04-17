@@ -1,4 +1,4 @@
-import { useStickyScroll } from '@/hooks/use-sticky-scroll';
+import { useStickyScroll } from '@/components/ui/hooks/use-sticky-scroll';
 import { createSlug, getRubrikOrKategori, parseHtmlToReact } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { BeritaRed, BeritaVid, IklOnline } from '@/types/entities';

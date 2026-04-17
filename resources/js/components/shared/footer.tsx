@@ -1,4 +1,4 @@
-import { useRandomTags } from '@/hooks/use-random-tags';
+import { useRandomTags } from '@/components/ui/hooks/use-random-tags';
 import { createSlug, getRubrikOrKategori } from '@/lib/utils';
 import { BeritaRed, Config } from '@/types/entities';
 import { Link } from '@inertiajs/react';

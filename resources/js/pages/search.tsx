@@ -15,6 +15,7 @@ import {
     DrawerFooter,
     DrawerTrigger,
 } from '@/components/ui/drawer';
+import { useStickyScroll } from '@/components/ui/hooks/use-sticky-scroll';
 import {
     InputGroup,
     InputGroupAddon,
@@ -42,7 +43,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { useStickyScroll } from '@/hooks/use-sticky-scroll';
 import { createSlug, getRubrikOrKategori, parseHtmlToReact } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { BeritaRed, Config, IklOnline } from '@/types/entities';
@@ -64,6 +64,7 @@ interface PageProps {
     search_results: TPagination<BeritaRed>;
     search_query: string;
     kategori_list: { kategori: string }[];
+    kategori_new_list: string[];
     rubrik_list: { rubrik: string }[];
     sponsors: {
         utama: IklOnline[];
@@ -78,6 +79,7 @@ export default function SearchResult({
     search_results,
     search_query,
     kategori_list,
+    kategori_new_list,
     rubrik_list,
     sponsors,
     metadata,
@@ -734,6 +736,7 @@ export default function SearchResult({
                                                 {getRubrikOrKategori(
                                                     item,
                                                     true,
+                                                    kategori_new_list,
                                                 )}
                                             </Badge>
                                             <div className="flex-1 overflow-hidden rounded-xl py-4 pr-4">

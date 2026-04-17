@@ -21,6 +21,8 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
+import { useRandomTags } from '@/components/ui/hooks/use-random-tags';
+import { useStickyScroll } from '@/components/ui/hooks/use-sticky-scroll';
 import {
     Popover,
     PopoverContent,
@@ -28,8 +30,6 @@ import {
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
-import { useRandomTags } from '@/hooks/use-random-tags';
-import { useStickyScroll } from '@/hooks/use-sticky-scroll';
 import { createSlug, getRubrikOrKategori } from '@/lib/utils';
 import { SharedData } from '@/types';
 import {
@@ -95,7 +95,6 @@ export default function ReadNews({
     const stickyRef = useStickyScroll();
     const tags = useRandomTags();
 
-    console.log('Author:', author);
 
     // Accessibility states
     const [fontSize, setFontSize] = useState(1); // em unit
@@ -289,7 +288,7 @@ export default function ReadNews({
                             </div>
                         </Card>
                         {author && (
-                            <Card className="not-prose relative overflow-hidden border-none bg-muted/50 p-0 mb-4">
+                            <Card className="not-prose relative mb-4 overflow-hidden border-none bg-muted/50 p-0">
                                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/15 via-transparent to-transparent" />
                                 <div className="relative flex flex-col items-center gap-4 p-6 text-center sm:flex-row sm:items-center sm:text-left">
                                     <div className="relative">
