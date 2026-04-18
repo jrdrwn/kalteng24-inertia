@@ -60,7 +60,7 @@ class BeritaForm
                             TextInput::make('judul')
                                 ->label('Judul')
                                 ->required()
-                                ->maxLength(50),
+                                ->maxLength(60),
                             TextInput::make('sub_up')
                                 ->label('Sub Judul Atas')
                                 ->maxLength(255),
