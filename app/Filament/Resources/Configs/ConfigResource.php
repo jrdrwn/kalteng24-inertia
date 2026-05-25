@@ -24,9 +24,9 @@ class ConfigResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Pengaturan';
 
-    protected static ?string $navigationLabel = 'Configurasi Website';
+    protected static ?string $navigationLabel = 'Pengaturan Website';
 
-    protected static ?string $label = 'Configurasi Website';
+    protected static ?string $label = 'Pengaturan Website';
 
     protected static ?int $navigationSort = 4;
 

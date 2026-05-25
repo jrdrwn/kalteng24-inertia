@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Config
- * 
+ *
  * @property int $id_con
  * @property string $title
  * @property string $coppyright
@@ -25,6 +25,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $tw
  * @property string $ig
  * @property string $yt
+ * @property string|null $about_us_content
+ * @property string|null $disclaimer_content
+ * @property string|null $pedoman_media_siber_content
  *
  * @package App\Models
  */
@@ -52,6 +55,9 @@ class Config extends Model
 		'tw',
 		'ig',
 		'yt',
+		'about_us_content',
+		'disclaimer_content',
+		'pedoman_media_siber_content',
 		'tags'
 	];
 }

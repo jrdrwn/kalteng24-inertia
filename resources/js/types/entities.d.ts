@@ -68,6 +68,9 @@ export interface Config {
     tw: string;
     ig: string;
     yt: string;
+    about_us_content?: string | null;
+    disclaimer_content?: string | null;
+    pedoman_media_siber_content?: string | null;
 }
 
 // ===== counter =====
