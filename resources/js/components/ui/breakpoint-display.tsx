@@ -26,16 +26,17 @@ const BREAKPOINT_ORDER = ["xxs", "xs", "sm", "md", "lg", "xl", "2xl", "3xl"] as 
 type BreakpointKey = (typeof BREAKPOINT_ORDER)[number]
 
 // Map breakpoint keys to their display labels
-const BREAKPOINT_LABELS: Record<BreakpointKey, string> = {
-  xxs: "XXS",
-  xs: "XS",
-  sm: "SM",
-  md: "MD",
-  lg: "LG",
-  xl: "XL",
-  "2xl": "2XL",
-  "3xl": "3XL",
-}
+// const BREAKPOINT_LABELS: Record<BreakpointKey, string> = {
+//   xxs: "XXS",
+//   xs: "XS",
+//   sm: "SM",
+//   md: "MD",
+//   lg: "LG",
+//   xl: "XL",
+//   "2xl": "2XL",
+//   "3xl": "3XL",
+// }
+// KADA KEPAKE LO ATAS NI?
 
 // Default Tailwind breakpoints (standard v3/v4)
 const DEFAULT_BREAKPOINTS: BreakpointKey[] = ["sm", "md", "lg", "xl", "2xl"]
