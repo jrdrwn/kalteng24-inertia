@@ -149,11 +149,11 @@ const navigationItems: NavItem[] = [
                 sub: [
                     {
                         label: 'DPRD Kalteng',
-                        href: '/search?jenis_kategori_rubrik=DPRD Kalteng',
+                        href: '/search?jenis_kategori_rubrik=DPRD_Kalteng',
                     },
                     {
                         label: 'DPRD Palangka Raya',
-                        href: '/search?jenis_kategori_rubrik=DPRD Palangka Raya',
+                        href: '/search?jenis_kategori_rubrik=DPRD_Palangka_Raya',
                     },
                     {
                         label: 'DPRD Barito Utara',
@@ -173,11 +173,11 @@ const navigationItems: NavItem[] = [
                     },
                     {
                         label: 'DPRD Katingan',
-                        href: '/search?jenis_kategori_rubrik=DPRD Katingan',
+                        href: '/search?jenis_kategori_rubrik=DPRD_Katingan',
                     },
                     {
                         label: 'DPRD Gunung Mas',
-                        href: '/search?jenis_kategori_rubrik=DPRD Gunung Mas',
+                        href: '/search?jenis_kategori_rubrik=DPRD_Gunung_Mas',
                     },
                 ],
             },
@@ -186,7 +186,7 @@ const navigationItems: NavItem[] = [
                 sub: [
                     {
                         label: 'Pemko Palangka Raya',
-                        href: '/search?jenis_kategori_rubrik=Pemko Palangka Raya',
+                        href: '/search?jenis_kategori_rubrik=Pemko_Palangka_Raya',
                     },
                     {
                         label: 'Pemkab Barito Utara',
@@ -194,15 +194,15 @@ const navigationItems: NavItem[] = [
                     },
                     {
                         label: 'Pemkab Murung Raya',
-                        href: '/search?jenis_kategori_rubrik=Pemkab Murung Raya',
+                        href: '/search?jenis_kategori_rubrik=Pemkab_Murung_Raya',
                     },
                     {
                         label: 'Pemkab Kapuas',
-                        href: '/search?jenis_kategori_rubrik=Pemkab Kapuas',
+                        href: '/search?jenis_kategori_rubrik=Pemkab_Kapuas',
                     },
                     {
                         label: 'Pemkab Barito Selatan',
-                        href: '/search?jenis_kategori_rubrik=Pemkab Barito Selatan',
+                        href: '/search?jenis_kategori_rubrik=Pemkab_Barito_Selatan',
                     },
                     {
                         label: 'Pemkab Katingan',
@@ -210,7 +210,7 @@ const navigationItems: NavItem[] = [
                     },
                     {
                         label: 'Pemkab Gunung Mas',
-                        href: '/search?jenis_kategori_rubrik=Pemkab Gunung Mas',
+                        href: '/search?jenis_kategori_rubrik=Pemkab_Gunung_Mas',
                     },
                 ],
             },
